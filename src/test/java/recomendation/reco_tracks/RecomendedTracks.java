@@ -258,7 +258,7 @@ public class RecomendedTracks extends BaseUrls {
                 Iterator<Object> itr = data.iterator();
                 while(itr.hasNext()){
                     JSONObject data_obj = (JSONObject) itr.next();
-                    return helper.validateEachObject(keys, data_obj, null);
+                    return helper.validateEachJsonObjectWithAllowedEmptyData(keys, data_obj);
                 }
             }else{
                 Assert.assertEquals(isExpectedKeysPresent, true, "Expected keys not present in "+name+" object!");
