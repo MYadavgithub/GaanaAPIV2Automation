@@ -58,8 +58,15 @@ public class Helper {
             for(Object key : keys){
                 String key_name = key.toString();
                 if(!list.contains(key_name)){
-                    Object key_value = data.get(key_name);
+                    Object key_value = "";
+                    try{
+                        key_value = data.get(key_name);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        log.info("Findings from here : "+data.keySet());
+                    }
                     if(!key_value.toString().equals("null") && key_value.toString().length() != 0){
+                        //log.info("Integer Type : "+ key +" : "+key_value.toString());
                         if(key_value instanceof String){
                             if(key_value.toString().length() > 0){
                                 isvalid = true;
