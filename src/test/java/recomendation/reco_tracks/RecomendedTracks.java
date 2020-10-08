@@ -183,7 +183,7 @@ public class RecomendedTracks extends BaseUrls {
                 }else{
                     isArtistValidated = false;
                     log.error("Artist validation failed, api was : \n"+url_list.get(api_hit_count)+"\n track data was : "+_track);
-                    // Assert.assertEquals(isArtistValidated, true); // remove soft assert
+                    Assert.assertEquals(isArtistValidated, true);
                 }
             }
         }
