@@ -12,7 +12,7 @@ public class CsvReader {
 
     public static ArrayList<String> readCsv(String filename) {
         ArrayList<String> data_list = new ArrayList<>();
-        String filepath = System.getProperty("user.dir")+"/resources/data/"+filename;
+        String filepath = System.getProperty("user.dir")+"/src/test/resources/data/"+filename;
         try {
             CSVReader read = new CSVReader(new FileReader(filepath));
             List<String[]> allRows;

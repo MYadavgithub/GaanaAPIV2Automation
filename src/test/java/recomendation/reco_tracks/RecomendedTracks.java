@@ -20,7 +20,6 @@ import common.Helper;
 import common.RequestHandler;
 import io.restassured.response.Response;
 import test_data.RecomendedTrackTd;
-import com.github.cliftonlabs.json_simple.JsonObject;
 
 public class RecomendedTracks extends BaseUrls {
 
@@ -31,7 +30,6 @@ public class RecomendedTracks extends BaseUrls {
     int RECOMENDED_TRACK_COUNT = 30;
     final static int INVOCATION = 5;
     ArrayList<String> url_list = null;
-    JsonObject common_data = new JsonObject();
     Helper helper = new Helper();
     RequestHandler req = new RequestHandler();
     Map<Integer, JSONObject> responses = new HashMap<>();
@@ -97,7 +95,7 @@ public class RecomendedTracks extends BaseUrls {
         boolean isJsonObjectCountValidated = Integer.parseInt(response_count) <= RECOMENDED_TRACK_COUNT;
         boolean isStatusOfResponseValidated = response_status;
         if (!isJsonObjectCountValidated && !isStatusOfResponseValidated) {
-            log.error(API_NAME + " count found : " + common_data.get("count").toString());
+            log.error(API_NAME + " count found : " +response_count);
             Assert.assertEquals(isStatusOfResponseValidated, true, "Status and count key validation failed!");
         } else {
             log.info("URL validated for common response data Url was : " +url_list.get(api_hit_count));

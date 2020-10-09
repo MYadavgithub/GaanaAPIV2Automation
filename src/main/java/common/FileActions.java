@@ -13,7 +13,7 @@ public class FileActions {
      * @return
      */
     public static File[] dataFolderTraverse() {
-        String path = System.getProperty("user.dir") + "/resources/data/";
+        String path = System.getProperty("user.dir") + "/src/test/resources/data/";
         File dir = new File(path);
         File[] dirList = dir.listFiles();
         return dirList;
@@ -44,7 +44,7 @@ public class FileActions {
      * Read Prop file
      */
     public static Properties readProp(String filename) {
-        String filepath = System.getProperty("user.dir") + "/resources/properties/" + filename;
+        String filepath = System.getProperty("user.dir") + "/src/main/resources/properties/" + filename;
         try {
             FileInputStream file = new FileInputStream(filepath);
             prop = new Properties();
