@@ -7,10 +7,10 @@ import org.testng.annotations.ITestAnnotation;
 
 public class RetryTransformListener implements IAnnotationTransformer {
 
-	public void transform(ITestAnnotation annotation,  @SuppressWarnings("rawtypes") Class testClass, 
-			@SuppressWarnings("rawtypes") Constructor testConstructor, Method testMethod) {
+	@Override
+	public void transform(ITestAnnotation annotation,  @SuppressWarnings("rawtypes") Class testClass, @SuppressWarnings("rawtypes") Constructor testConstructor, Method testMethod) {
 		Class<? extends IRetryAnalyzer> retry = annotation.getRetryAnalyzerClass();
-		if(retry == null) {
+		if(retry != null) {
 			annotation.setRetryAnalyzer(RetryAnalyzer.class);
 		}
 	}
