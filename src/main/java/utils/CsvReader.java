@@ -7,12 +7,16 @@ import java.util.List;
 import com.opencsv.CSVReader;
 import java.io.FileNotFoundException;
 import com.opencsv.exceptions.CsvException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CsvReader {
 
+    private static Logger log = LoggerFactory.getLogger(CsvReader.class);
+
     public static ArrayList<String> readCsv(String filename) {
         ArrayList<String> data_list = new ArrayList<>();
-        String filepath = System.getProperty("user.dir")+"/resources/data/"+filename;
+        String filepath = System.getProperty("user.dir")+"/src/test/resources/data/"+filename;
         try {
             CSVReader read = new CSVReader(new FileReader(filepath));
             List<String[]> allRows;
@@ -27,11 +31,7 @@ public class CsvReader {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        log.info(data_list.toString());
         return data_list;
-    }
-
-    public static void main(String[] args) throws IOException, CsvException {
-        ArrayList<String> value = CsvReader.readCsv("");
-        System.out.println(" => "+value);
     }
 }

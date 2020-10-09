@@ -58,8 +58,15 @@ public class Helper {
             for(Object key : keys){
                 String key_name = key.toString();
                 if(!list.contains(key_name)){
-                    Object key_value = data.get(key_name);
+                    Object key_value = "";
+                    try{
+                        key_value = data.get(key_name);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        log.info("Findings from here : "+data.keySet());
+                    }
                     if(!key_value.toString().equals("null") && key_value.toString().length() != 0){
+                        //log.info("Integer Type : "+ key +" : "+key_value.toString());
                         if(key_value instanceof String){
                             if(key_value.toString().length() > 0){
                                 isvalid = true;
@@ -87,5 +94,36 @@ public class Helper {
             }
         }
         return isvalid;
+    }
+
+    /**
+     * If data in json object is not mandatory then use this method
+     * @param keys
+     * @param data
+     * @return
+     */
+    public boolean validateEachJsonObjectWithAllowedEmptyData(List<Object> keys, JSONObject data){
+        boolean isJsonObjectValid = false;
+        if(keys.size() > 0){
+            for(Object key : keys){
+                String key_name = key.toString();
+                Object key_value = data.get(key_name);
+                if(key_value instanceof String){
+                    if(key_value.toString().trim().length() >= 0){
+                        isJsonObjectValid = true;
+                    }else{
+                        return false;
+                    }
+                }else if(key_value instanceof Integer){
+                    int val = Integer.parseInt(key_value.toString().trim());
+                    if(val >= 0){
+                        isJsonObjectValid = true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+        return isJsonObjectValid;
     }
 }

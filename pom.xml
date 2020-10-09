@@ -101,7 +101,7 @@
 						</property>
 					</systemProperties>
 					<suiteXmlFiles>
-						<suiteXmlFile>${project.basedir}/resources/suiteXmlFiles/${suiteXmlFile}</suiteXmlFile>
+						<suiteXmlFile>${project.basedir}/src/test/resources/suiteXmlFiles/${suiteXmlFile}</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
       </plugin>
@@ -247,13 +247,6 @@
         <version>3.0.6</version>
         <type>pom</type>
     </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>2.0.0-alpha1</version>
-    </dependency>
     
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     <dependency>
@@ -261,7 +254,21 @@
       <artifactId>slf4j-api</artifactId>
       <version>2.0.0-alpha1</version>
     </dependency>
-  
+
+    <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>1.3.0-alpha5</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.3.0-alpha5</version>
+    </dependency>
+
     <dependency>
         <groupId>com.squareup.okhttp3</groupId>
         <artifactId>okhttp</artifactId>
