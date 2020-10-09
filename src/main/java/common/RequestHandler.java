@@ -23,6 +23,8 @@ public class RequestHandler {
         
         if(response != null){
             if(validateStatusCodeAndResponseTime(response)){
+                log.info(url);
+                log.info(response.asString());
                 return response;
             }else{
                 log.error("The get api call was taking more time than expected api was \n"+url);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<configuration debug="true">
+<configuration scan = "true" debug="true" status = "INFO">
 
     <property name="GGM_LOG" value="logs/app.log"/>
     <property resource="logback.xml" />
@@ -22,9 +22,13 @@
         </encoder>
     </appender>
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
     <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${GGM_LOG}</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
@@ -45,12 +49,14 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="FILE-ROLLING"/>
+        <appender-ref ref="STDOUT" />
     </logger>
 
     <root level="DEBUG">
         <appender-ref ref="FILE" />
         <appender-ref ref="DEBUG" />
         <appender-ref ref="FILE-ROLLING"/>
+        <!-- <appender-ref ref="STDOUT" /> -->
     </root>
 
 </configuration>
