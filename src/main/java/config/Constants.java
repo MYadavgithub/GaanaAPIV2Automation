@@ -3,6 +3,7 @@ package config;
 public class Constants{
 
     public static int RESPONSE_TIME = 3;
+    public static String CUSTOM_REPORT_FOLDER = "/Reports/";
 
     public static String ANDROID = "Android"; // type = 0
     public static String IOS = "Ios"; // type = 1
