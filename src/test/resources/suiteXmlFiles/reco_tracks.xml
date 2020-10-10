@@ -5,6 +5,7 @@
 
     <listeners>
 		<listener class-name="utils.ExtentManagerListener" />
+		<listener class-name="utils.EmailableReportListener" />
 		<listener class-name="utils.RetryTransformListener" />
     </listeners>
 

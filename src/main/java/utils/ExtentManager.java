@@ -1,19 +1,19 @@
 package utils;
 import java.util.Date;
+import config.Constants;
 import java.net.InetAddress;
+import common.GlobalConfigHandler;
 import java.net.UnknownHostException;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-
-import common.GlobalConfigHandler;
 
 public class ExtentManager {
 
     private static ExtentReports extent;
 
     public static ExtentReports createExtentReportInstance() {
-        String path = System.getProperty("user.dir") + "/target/surefire-reports/report.html";
+        String path = System.getProperty("user.dir") +Constants.CUSTOM_REPORT_FOLDER +"/ExtentReport.html";
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(path);
         htmlReporter.config().setAutoCreateRelativePathMedia(false);
         htmlReporter.config().setEncoding("utf-8");

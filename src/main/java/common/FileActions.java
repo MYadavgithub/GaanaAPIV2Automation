@@ -4,10 +4,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileActions {
 
     public static Properties prop;
+    private static Logger log = LoggerFactory.getLogger(Helper.class);
+
     /**
      * Traverse data folder and get all list of items.
      * @return
@@ -56,4 +60,21 @@ public class FileActions {
         }
         return prop;
     }
+
+    /**
+     * Create Directory
+     */
+     public static String checkFolderExists(String ex_path, String filename){
+        File folder_name = new File(ex_path+filename);
+        if(!folder_name.isDirectory()){
+            log.info("Folder does not exists creating new folder with name : "+filename);
+            folder_name.mkdir();
+            folder_name.setReadable(true);
+            folder_name.setWritable(true);
+            folder_name.setExecutable(true);
+        }else{
+            log.info("Folder already exists with name : "+filename);
+        }
+        return ex_path+filename;
+     }
 }
