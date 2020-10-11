@@ -576,6 +576,7 @@ public class EmailableReportListener implements IReporter {
      * Groups {@link TestResult}s by suite.
      */
     protected static class SuiteResult {
+
         private final String suiteName;
         private final List<TestResult> testResults = Lists.newArrayList();
 
@@ -604,8 +605,7 @@ public class EmailableReportListener implements IReporter {
      */
     protected static class TestResult {
         /**
-         * Orders test results by class name and then by method name (in
-         * lexicographic order).
+         * Orders test results by class name and then by method name (in lexicographic order).
          */
         protected static final Comparator<ITestResult> RESULT_COMPARATOR = new Comparator<ITestResult>() {
             @Override
