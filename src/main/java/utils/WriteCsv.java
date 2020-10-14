@@ -19,6 +19,7 @@ public class WriteCsv {
         CSVWriter writer;
         try {
             String file = file_path + filename;
+            FileActions.checkFolderExists(file_path, filename);
             writer = new CSVWriter(new FileWriter(file));
 
             for(Entry<Integer, JSONObject> entry : data.entrySet()) {
@@ -26,11 +27,11 @@ public class WriteCsv {
                 String key = String.valueOf(entry.getKey());
                 JSONObject value = entry.getValue();
                 if(key != null && value != null){
-                    // builder.append(key);
-                    // builder.append(',');
-                    // builder.append(value);
-                    // builder.append(System.getProperty("line.separator"));
-                    // String[] record = builder.toString().split(",");
+                    /*builder.append(key);
+                    builder.append(',');
+                    builder.append(value);
+                    builder.append(System.getProperty("line.separator"));
+                    String[] record = builder.toString().split(","); */
                     String[] record = {key, value.toString()};
                     writer.writeNext(record);
                 }
