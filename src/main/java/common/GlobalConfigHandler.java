@@ -1,5 +1,7 @@
 package common;
+import java.util.Date;
 import config.Constants;
+import java.text.SimpleDateFormat;
 
 public class GlobalConfigHandler {
     
@@ -60,19 +62,9 @@ public class GlobalConfigHandler {
         return 0;
     }
 
-    /**
-     * API loop count 
-     * @param loop_count
-     * @param context
-     */
-    // public void provideApiHitCount(ITestContext context, int count){
-    //     ITestNGMethod currentTestNGMethod = null;
-    //     for(ITestNGMethod testNGMethod : context.getAllTestMethods()) {
-    //         if(testNGMethod.getInstance() == this) {
-    //             currentTestNGMethod = testNGMethod;
-    //             break;
-    //         }
-    //     }
-    //     currentTestNGMethod.setInvocationCount(count);
-    // }
+    public static String todaysDate(){
+        Date today = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.format(today);
+    }
 }

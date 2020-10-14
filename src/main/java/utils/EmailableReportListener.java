@@ -90,16 +90,18 @@ public class EmailableReportListener implements IReporter {
     	writer.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\">");
         writer.print("<style type=\"text/css\">");
         writer.print("table {margin-bottom:10px;border-collapse:collapse;empty-cells:show}");
-        writer.print("#summary {margin-top:30px; margin-left: 90px; margin-right: 90px;}");
-        writer.print("#m {margin-left: 90px; font-size: 16px; font-style: oblique;}");
+        writer.print("#summary {margin-top:30px; margin-left: 5%; margin-right: 5%;}");
+        writer.print("#m {margin-left: 5%; font-size: 16px; font-style: oblique;}");
         writer.print("h1 {font-size:30px}");
         writer.print("body {width:100%;}");
         writer.print("th,td {padding: 8px}");
         writer.print("th {vertical-align:bottom}");
         writer.print("td {vertical-align:top}");
         writer.print("table a {font-weight:bold;color:#0D1EB6;}");
-        writer.print(".easy-overview {margin-left: auto; margin-right: auto;} ");
+        writer.print(".tbl2 {table-layout: fixed; background-color: antiquewhite;}");
+        writer.print(".easy-overview  {margin-left: 5%; margin-right: 5%; table-layout: fixed}");
         writer.print(".easy-test-overview tr:first-child {background: #3092c0; color: white; font-family: serif;}");
+        writer.print(".easy-test-summary {margin-right: 5%; margin-left: 5%; table-layout: fixed;}");
         writer.print(".stripe td {background-color: #E6EBF9}");
         writer.print(".num {text-align:right}");
         writer.print(".passedodd td {background-color: #3F3}");
@@ -111,8 +113,7 @@ public class EmailableReportListener implements IReporter {
         writer.print(".stacktrace {font-family:monospace}");
         writer.print(".totop {font-size:85%;text-align:center;border-bottom:2px solid #000}");
         writer.print(".invisible {display:none}");
-        writer.print(".tbl2 {margin-left: auto; margin-right: auto; background-color: antiquewhite;}");
-        writer.print(".result {margin-left: 90px; margin-right: 1500px;}");
+        writer.print(".result {margin-left: 5%; margin-right: 5%; table-layout: fixed; background-color: #a5ada5;}");
         writer.println("</style>");
     }
 
@@ -144,7 +145,7 @@ public class EmailableReportListener implements IReporter {
         writer.print("<th>Test Name</th>");
         writer.print("<th>Test Count</th>");
         writer.print("<th>Passed</th>");
-        writer.print("<th>Skipped</th>");
+        writer.print("<th>Retry</th>");
         writer.print("<th>Failed</th>");
         writer.print("<th>Start Time</th>");
         writer.print("<th>End Time</th>");
@@ -235,11 +236,11 @@ public class EmailableReportListener implements IReporter {
      */
     protected void writeScenarioSummary() {
     	writer.print("<div class=\"easy-test-summary\">");
-        writer.print("<table class=\"table-bordered tbl2\" id='summary'>");
+        writer.print("<table class=\"table-bordered tbl2\">");
         writer.print("<thead class= \"easy-test-overview\">");
         writer.print("<tr>");
         writer.print("<th>Class Name</th>");
-        writer.print("<th>Method Name</th>");
+        writer.print("<th style=\"width: 20%;\">Method Name</th>");
         writer.print("<th>Short Exception</th>");
         writer.print("<th>Screenshot</th>");
         writer.print("<th>Start Time</th>");
@@ -251,7 +252,7 @@ public class EmailableReportListener implements IReporter {
         int scenarioIndex = 0;
         for (SuiteResult suiteResult : suiteResults) {
             writer.print("<tbody><tr><th colspan=\"6\">");
-            writer.print("<center><h6><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) +"<I></b></h6></center>");
+            writer.print("<center><h6><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName())+" Detailed" +"<I></b></h6></center>");
             writer.print("</th></tr></tbody>");
 
             for (TestResult testResult : suiteResult.getTestResults()) {
@@ -384,7 +385,7 @@ public class EmailableReportListener implements IReporter {
         int scenarioIndex = 0;
         for (SuiteResult suiteResult : suiteResults) {
             for (TestResult testResult : suiteResult.getTestResults()) {
-                writer.print("<h4 style = \"margin-left: 90px\">");
+                writer.print("<h4 style = \"margin-left: 5%\">");
                 writer.print("<b>"+Utils.escapeHtml(testResult.getTestName())+"</b>");
                 writer.print("</h4>");
 
@@ -576,6 +577,7 @@ public class EmailableReportListener implements IReporter {
      * Groups {@link TestResult}s by suite.
      */
     protected static class SuiteResult {
+
         private final String suiteName;
         private final List<TestResult> testResults = Lists.newArrayList();
 
@@ -604,8 +606,7 @@ public class EmailableReportListener implements IReporter {
      */
     protected static class TestResult {
         /**
-         * Orders test results by class name and then by method name (in
-         * lexicographic order).
+         * Orders test results by class name and then by method name (in lexicographic order).
          */
         protected static final Comparator<ITestResult> RESULT_COMPARATOR = new Comparator<ITestResult>() {
             @Override
