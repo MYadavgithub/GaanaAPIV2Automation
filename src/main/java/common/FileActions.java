@@ -18,25 +18,16 @@ public class FileActions {
     private static Logger log = LoggerFactory.getLogger(Helper.class);
 
     /**
-     * Traverse data folder and get all list of items.
-     * @return
-     */
-    public static File[] dataFolderTraverse() {
-        String path = System.getProperty("user.dir") + "/src/test/resources/data/";
-        File dir = new File(path);
-        File[] dirList = dir.listFiles();
-        return dirList;
-    }
-
-    /**
      * based on flag delete or validate folder exists or not.
-     * @param flag
+     * @param flag whether needs to delete or not for DELETE = 0, STATUS = 1
      * @param filename
+     * @param path file-path
      * @return
      */
-    public boolean fileOperation(int flag, String filename) {
-        File[] filelist = dataFolderTraverse();
-        for (File file : filelist) {
+    public boolean fileOperation(int flag, String path, String filename) {
+        File directory = new File(path);
+        File[] directory_files = directory.listFiles();
+        for (File file : directory_files) {
             if (file.getName().trim().equals(filename) && flag == 0) {
                 file.delete();
                 return true;

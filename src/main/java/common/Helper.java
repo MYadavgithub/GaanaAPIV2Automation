@@ -2,9 +2,13 @@ package common;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,5 +129,33 @@ public class Helper {
             }
         }
         return isJsonObjectValid;
+    }
+
+    /**
+     * Vaidate two JSONObjects having same data or not
+     * @param tracks
+     * @param previous_tracks
+     * @return
+     */
+    public boolean validateResDataWithOldData(String url, JSONArray previous_data, JSONArray current_data){
+        int counter = 0;
+        boolean result = false;
+        Iterator<Object> itr = current_data.iterator();
+        while (itr.hasNext()) {
+            JSONObject current_obj = (JSONObject) itr.next();
+            JSONObject prev_res_obj = previous_data.getJSONObject(counter);
+            JsonObject current = JsonParser.parseString(current_obj.toString()).getAsJsonObject();
+            JsonObject old = JsonParser.parseString(prev_res_obj.toString()).getAsJsonObject();
+            if(current.equals(old)){
+                result = true;
+            }else{
+                result = false;
+                log.error("Previous data didn't matched with current response data for response of : "+url+
+                    "\n current object : "+current+"\n prev object was : "+old);
+                break;
+            }
+            counter++;
+        }
+        return result;
     }
 }
