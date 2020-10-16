@@ -33,6 +33,6 @@ public class Constants{
     public static int MUSIC_GAANA_RECOMMENDATION_DB = 5;
 
     /* Recomended Track Constants */
-    public final static int REC_INVOCATION_COUNT = 5;
+    public final static int REC_INVOCATION_COUNT = 4;
 
 }
