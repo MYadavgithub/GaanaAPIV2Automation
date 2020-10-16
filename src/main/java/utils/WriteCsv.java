@@ -9,7 +9,7 @@ import common.FileActions;
 import config.Constants;
 
 public class WriteCsv {
-
+    String folder_name = "savedResponse";
     FileActions fa = new FileActions();
     CsvReader cr = new CsvReader();
     String file_path = Constants.WRITE_TD_CSV_FROM;
@@ -19,7 +19,7 @@ public class WriteCsv {
         CSVWriter writer;
         try {
             String file = file_path + filename;
-            FileActions.checkFolderExists(file_path, filename);
+            FileActions.checkFolderExists(file_path);
             writer = new CSVWriter(new FileWriter(file));
 
             for(Entry<Integer, JSONObject> entry : data.entrySet()) {
@@ -43,6 +43,6 @@ public class WriteCsv {
     }
 
     private void deleteExixting(String filename) {
-        fa.fileOperation(0, file_path, filename);
+        FileActions.fileOperation(0, file_path, filename);
     }
 }

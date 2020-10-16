@@ -9,6 +9,7 @@ import java.util.Map;
 import config.BaseUrls;
 import config.Constants;
 import config.Endpoints;
+import utils.CommonUtils;
 import utils.CsvReader;
 import utils.WriteCsv;
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import common.FileActions;
 import common.GlobalConfigHandler;
 import io.restassured.response.Response;
 import test_data.RecomendedTrackTd;
@@ -31,11 +33,13 @@ public class RecomendedTracks extends BaseUrls {
     int api_hit_count = 0;
     String API_NAME = "Recomended_Track";
     int RECOMENDED_TRACK_COUNT = 30;
-    ArrayList<String> previous_data = null;
+    boolean isPrevFilePresent = false;
     ArrayList<String> url_list = null;
+    ArrayList<String> previous_data = null;
     Helper helper = new Helper();
-    RequestHandler req = new RequestHandler();
     WriteCsv wcsv = new WriteCsv();
+    CommonUtils util = new CommonUtils();
+    RequestHandler req = new RequestHandler();
     Map<Integer, JSONObject> responses = new HashMap<>();
     private static Logger log = LoggerFactory.getLogger(RecomendedTracks.class);
 
@@ -52,12 +56,15 @@ public class RecomendedTracks extends BaseUrls {
 
     @BeforeClass
     public void generateAllRecoUrls() {
-        String file = "./src/test/resources/savedResponse/" + API_NAME + ".csv";
-        previous_data = CsvReader.readCsv(file);
+        String file_name_prev_data = API_NAME + ".csv";
+        String file_path = "./src/test/resources/savedResponse/";
+        isPrevFilePresent = FileActions.fileOperation(1, file_path, file_name_prev_data);
+        if(isPrevFilePresent)
+            previous_data = CsvReader.readCsv(file_path+file_name_prev_data);
+
         url_list = new ArrayList<>();
         String baseurl = BaseUrls.baseurl();
-        String input_file = System.getProperty("user.dir") + "/src/test/resources/data/"
-                + prop.getProperty("tracks_td");
+        String input_file = System.getProperty("user.dir") + "/src/test/resources/data/"+ prop.getProperty("tracks_td");
         ArrayList<String> input_values = CsvReader.readCsv(input_file);
         for (String val : input_values) {
             String url = prepareUrl(baseurl, val);
@@ -72,7 +79,7 @@ public class RecomendedTracks extends BaseUrls {
     @DataProvider(name = "urlProvider")
     public Object[][] DataProvider() {
         return new Object[][] { 
-            { 
+            {
                 url_list.get(api_hit_count) 
             }
         };
@@ -162,8 +169,7 @@ public class RecomendedTracks extends BaseUrls {
             if (track_common_data_validated) {
                 isKeyValueOfTrackValidated = true;
             } else {
-                log.error("While validating key value pairs in each track validation got failed for api \n"
-                        + url_list.get(api_hit_count));
+                log.error("While validating key value pairs in each track validation got failed for api \n"+ url_list.get(api_hit_count));
                 Assert.assertEquals(isKeyValueOfTrackValidated, true);
             }
         } else {
@@ -178,8 +184,7 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-    @Test(priority = 5, dependsOnMethods = {
-            "validateEachTrackKeyValueData" }, invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Test(priority = 5, dependsOnMethods = {"validateEachTrackKeyValueData" }, invocationCount = Constants.REC_INVOCATION_COUNT)
     public void validateEachTrackArtistData() {
         boolean isArtistValidated = false;
         JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
@@ -192,8 +197,7 @@ public class RecomendedTracks extends BaseUrls {
                     isArtistValidated = true;
                 } else {
                     isArtistValidated = false;
-                    log.error("Artist validation failed, api was : \n" + url_list.get(api_hit_count)
-                            + "\n track data was : " + _track);
+                    log.error("Artist validation failed, api was : \n" + url_list.get(api_hit_count)+ "\n track data was : " + _track);
                     Assert.assertEquals(isArtistValidated, true);
                 }
             }
@@ -245,7 +249,14 @@ public class RecomendedTracks extends BaseUrls {
     public void comparePreviosRunTracksWithNewRun() {
         boolean result = false;
         String url = url_list.get(api_hit_count);
+        if(previous_data == null && isPrevFilePresent == false){
+            String file_name_prev_data = API_NAME + ".csv";
+            String file_path = "./src/test/resources/savedResponse/";
+            previous_data = CsvReader.readCsv(file_path+file_name_prev_data);
+        }
+
         Assert.assertEquals(previous_data.size() == loop_count, true, "Previous data for new response comparision not available!");
+
         JSONArray tracks = responses.get(api_hit_count).getJSONArray("tracks");
         JSONArray previous_tracks = getPrevDataTracksData(previous_data.get(api_hit_count));
 
@@ -269,7 +280,8 @@ public class RecomendedTracks extends BaseUrls {
      * @return
      */
     private JSONArray getPrevDataTracksData(String prev_data) {
-        JSONObject Obj = new JSONObject(prev_data);
+        String rechecked_str = util.removeQoutesForCsvData(prev_data);
+        JSONObject Obj = new JSONObject(rechecked_str);
         JSONArray tracks_list = Obj.getJSONArray("tracks");
         Assert.assertEquals(tracks_list != null, true, "Previous data was not found in saved file please re-execute or manually check data!");
         return tracks_list;
