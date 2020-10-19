@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 
 public class Helper {
 
@@ -157,5 +158,47 @@ public class Helper {
             counter++;
         }
         return result;
+    }
+
+    /**
+     * Remove Specific key from json array from each json object.
+     * @param arr
+     * @param key
+     * @param url -> api url
+     * @return
+     */
+    public JSONArray removeJsonObject(JSONArray arr, String key, String url) {
+        JSONArray sorted_arr = new JSONArray();
+
+        if(arr == null){
+            log.error("Passed array was null, this argument was not valid please check : "+arr);
+            return arr;
+        }
+
+        int count = 0 ;
+        if(arr.length() > 0){
+            Iterator<Object> itr = arr.iterator();
+            while(itr.hasNext()){
+                JSONObject object = (JSONObject) itr.next();
+                try{
+                    if(object.getString(key) != null) {
+                        object.remove(key);
+                        sorted_arr.put(object);
+                        count++;
+                    }
+                }catch(Exception e){
+                    log.error(key+" not present in JSONObject : \n"+object);
+                    break;
+                }
+            }
+        }
+
+        // Assertion to validate whether we are getting key in each object or not because its mandatory field.
+        if(count != arr.length()){
+            log.error("Not able to find expected key for each json object please validate api manually url was : \n"+url);
+            Assert.assertEquals(count == arr.length(), true);
+        }
+
+        return sorted_arr;
     }
 }

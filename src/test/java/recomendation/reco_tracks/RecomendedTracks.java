@@ -33,7 +33,6 @@ public class RecomendedTracks extends BaseUrls {
     int api_hit_count = 0;
     String API_NAME = "Recomended_Track";
     int RECOMENDED_TRACK_COUNT = 30;
-    boolean isPrevFilePresent = false;
     ArrayList<String> url_list = null;
     ArrayList<String> previous_data = null;
     Helper helper = new Helper();
@@ -56,12 +55,6 @@ public class RecomendedTracks extends BaseUrls {
 
     @BeforeClass
     public void generateAllRecoUrls() {
-        String file_name_prev_data = API_NAME + ".csv";
-        String file_path = "./src/test/resources/savedResponse/";
-        isPrevFilePresent = FileActions.fileOperation(1, file_path, file_name_prev_data);
-        if(isPrevFilePresent)
-            previous_data = CsvReader.readCsv(file_path+file_name_prev_data);
-
         url_list = new ArrayList<>();
         String baseurl = BaseUrls.baseurl();
         String input_file = System.getProperty("user.dir") + "/src/test/resources/data/"+ prop.getProperty("tracks_td");
@@ -70,6 +63,8 @@ public class RecomendedTracks extends BaseUrls {
             String url = prepareUrl(baseurl, val);
             url_list.add(url);
         }
+
+        readPreviousDataFile(0);
 
         loop_count = url_list.size();
         if (url_list == null)
@@ -191,8 +186,7 @@ public class RecomendedTracks extends BaseUrls {
         if (!track_list.isEmpty()) {
             for (int i = 0; i < track_list.length(); i++) {
                 JSONObject _track = track_list.getJSONObject(i);
-                isArtistValidated = validateSubArraysInTrackObject("Artist", _track.optJSONArray("artist"),
-                        RecomendedTrackTd.exArtistObjectKeys());
+                isArtistValidated = validateSubArraysInTrackObject("Artist", _track.optJSONArray("artist"),RecomendedTrackTd.exArtistObjectKeys());
                 if (isArtistValidated) {
                     isArtistValidated = true;
                 } else {
@@ -249,16 +243,14 @@ public class RecomendedTracks extends BaseUrls {
     public void comparePreviosRunTracksWithNewRun() {
         boolean result = false;
         String url = url_list.get(api_hit_count);
-        if(previous_data == null && isPrevFilePresent == false){
-            String file_name_prev_data = API_NAME + ".csv";
-            String file_path = "./src/test/resources/savedResponse/";
-            previous_data = CsvReader.readCsv(file_path+file_name_prev_data);
-        }
+
+        if(previous_data == null || previous_data.size() != Constants.REC_INVOCATION_COUNT)
+            readPreviousDataFile(1);
 
         Assert.assertEquals(previous_data.size() == loop_count, true, "Previous data for new response comparision not available!");
 
-        JSONArray tracks = responses.get(api_hit_count).getJSONArray("tracks");
-        JSONArray previous_tracks = getPrevDataTracksData(previous_data.get(api_hit_count));
+        JSONArray tracks = helper.removeJsonObject(responses.get(api_hit_count).getJSONArray("tracks"), "stream_url", url_list.get(api_hit_count));
+        JSONArray previous_tracks = helper.removeJsonObject(getPrevDataTracksData(previous_data.get(api_hit_count)), "stream_url", url_list.get(api_hit_count));
 
         if(tracks.length() == previous_tracks.length()){
             result = helper.validateResDataWithOldData(url, previous_tracks, tracks);
@@ -267,10 +259,35 @@ public class RecomendedTracks extends BaseUrls {
             log.error("Previous Data count is not matched with current response count for more info please check response of : \n"+url);
             Assert.assertEquals(tracks.length() == previous_tracks.length(), true);
         }
+
         api_hit_count++;
         if(loop_count == api_hit_count){
             resetCounts();
             log.info("Old repoponse and new response matching as expected : "+result);
+        }
+    }
+
+
+    private void readPreviousDataFile(int flag) {
+        int readFile = 0;
+        String file_name_prev_data = API_NAME + ".csv";
+        String file_path = "./src/test/resources/savedResponse/";
+        boolean isPrevFilePresent = FileActions.fileOperation(1, file_path, file_name_prev_data);
+
+        if(isPrevFilePresent){
+            readFile = 1;
+        }else if(previous_data == null && isPrevFilePresent == false && flag == 0){
+            previous_data = null;
+        }else if(previous_data == null && isPrevFilePresent == true && flag == 1){
+            readFile = 1;
+        }else if(previous_data.size() > 0 && previous_data.size() != Constants.REC_INVOCATION_COUNT){
+            readFile = 1;
+        }else {
+            log.error("Invalid read previous file condition!");
+        }
+
+        if(readFile == 1){
+            previous_data = CsvReader.readCsv(file_path+file_name_prev_data); // refresh previous data on basis of condotions
         }
     }
 
