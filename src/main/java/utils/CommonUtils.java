@@ -1,6 +1,10 @@
 package utils;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,5 +38,21 @@ public class CommonUtils {
             updated = val;
         }
         return updated;
+    }
+
+    /**
+     * validate date is between last and after 10 years or not
+     * @param date
+     * @return
+     */
+    public static boolean validateYears(String date){
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+        LocalDateTime actual_date = LocalDate.parse(date, format).atStartOfDay();
+        LocalDateTime previous = actual_date.minusYears(10);
+        LocalDateTime after = actual_date.plusYears(10);
+        if(actual_date.isAfter(previous) &&  actual_date.isBefore(after)){
+            return true;
+        }
+        return false;
     }
 }

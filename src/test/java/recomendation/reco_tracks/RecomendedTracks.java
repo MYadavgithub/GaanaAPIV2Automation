@@ -236,10 +236,97 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
+    @Test(priority = 7, invocationCount = Constants.REC_INVOCATION_COUNT)
+    public void validateTrackReleaseDates(){
+        boolean isReleaseYearValidated = false;
+        JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
+        isReleaseYearValidated = specificKeyValueValidate(track_list, "release_date", 0, url_list.get(api_hit_count));
+
+        Assert.assertEquals(isReleaseYearValidated, true);
+
+        api_hit_count++;
+        if (loop_count == api_hit_count && isReleaseYearValidated) {
+            resetCounts();
+            log.info("Release date criteria validated successfully : " + isReleaseYearValidated);
+        }
+    }
+
+    @Test(priority = 8, invocationCount = Constants.REC_INVOCATION_COUNT)
+    public void validateLanguageAndLanguageId(){
+        int flag = 0;
+        JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
+        boolean isLanguageValidated = specificKeyValueValidate(track_list, "language", 1, url_list.get(api_hit_count));
+        boolean isLanguageIdValidated = specificKeyValueValidate(track_list, "language_id", 1, url_list.get(api_hit_count));
+        if(!isLanguageValidated){
+            flag = 1;
+        }else if(!isLanguageIdValidated){
+            flag = 1;
+        }
+
+        Assert.assertEquals(flag, 0);
+
+        api_hit_count++;
+        if (loop_count == api_hit_count) {
+            resetCounts();
+            log.info("Language and lagunage id validated successfully : " + (flag == 0));
+        }
+    }
+
+    @Test(priority = 9, invocationCount = Constants.REC_INVOCATION_COUNT)
+    public void validateGener(){
+        int flag = 0;
+        int first_gener_id = 0;
+        String first_gener_name = null;
+        JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
+        for(int i = 0; i<track_list.length(); i++){
+            JSONArray genre = track_list.getJSONObject(i).getJSONArray("gener");
+            if(genre.length() == 1){
+                boolean isObjectValidated = false;
+                Iterator<Object> itr = genre.iterator();
+                while(itr.hasNext()){
+                    JSONObject object = (JSONObject) itr.next();
+                    String gener_name = object.getString("name").toString().trim();
+                    int gener_id = Integer.parseInt(object.getString("genre_id").toString().trim());
+                    if(i == 0){
+                        first_gener_id = gener_id;
+                        first_gener_name = gener_name;
+                    }
+
+                    if(gener_name.equals(first_gener_name) && gener_id == first_gener_id){
+                        isObjectValidated = true;
+                    }else{
+                        isObjectValidated = false;
+                        log.error("for api : \n"+url_list.get(api_hit_count)+" \nObject data was : \n"+track_list.getJSONObject(i)
+                            +"\nGener name or id not matched with expected data.");
+                        break;
+                    }
+                }
+
+                if(!isObjectValidated){
+                    flag = 1;
+                    break;
+                }
+            }else{
+                flag = 1;
+                log.error("Gener array length is not correct manual check required for api : \n"+ url_list.get(api_hit_count)
+                    +"Object data was : "+track_list.getJSONObject(i));
+                break;
+            }
+        }
+
+        Assert.assertEquals(flag, 0);
+
+        api_hit_count++;
+        if (loop_count == api_hit_count) {
+            resetCounts();
+            log.info("Gener name and gener id validated successfully : "+ (flag == 0));
+        }
+    }
+
     /**
      * Compare Track Results from previous to new executed record.
      */
-    @Test(priority = 7, dependsOnMethods = { "callRecoTrack" }, invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Test(priority = 10, dependsOnMethods = { "callRecoTrack" }, invocationCount = Constants.REC_INVOCATION_COUNT)
     public void comparePreviosRunTracksWithNewRun() {
         boolean result = false;
         String url = url_list.get(api_hit_count);
@@ -267,7 +354,10 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-
+    /**
+     * To read previous executed file data
+     * @param flag if flag == 1 means previously no data found
+     */
     private void readPreviousDataFile(int flag) {
         int readFile = 0;
         String file_name_prev_data = API_NAME + ".csv";
@@ -342,5 +432,41 @@ public class RecomendedTracks extends BaseUrls {
             }
         }
         return false;
+    }
+
+    /**
+     * @param data_array
+     * @param key
+     * @param flag
+     * @param url
+     * @return
+     */
+    private boolean specificKeyValueValidate(JSONArray data_array, String key, int flag, String url){
+        int count = 0;
+        String first_object_key_value = null;
+        boolean isRecordValidated = false;
+        if(data_array != null){
+            Iterator<Object> itr = data_array.iterator();
+            while(itr.hasNext()){
+                JSONObject object = (JSONObject) itr.next();
+                if(count == 0)
+                    first_object_key_value = object.getString(key);
+
+                if(flag == 0){
+                    String release_year = helper.getKeyValue(object, key);
+                    isRecordValidated = CommonUtils.validateYears(release_year);
+                }else{
+                    isRecordValidated = first_object_key_value.equals(object.getString(key));
+                }
+
+                if(!isRecordValidated){
+                    isRecordValidated = false;
+                    log.error("For api : "+url+ "\n At Object "+object+"\n "+key+" creteria validation failed!.");
+                    break;
+                }
+                count++;
+            }
+        }
+        return isRecordValidated;
     }
 }

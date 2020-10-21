@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 
+
 public class Helper {
 
     private static Logger log = LoggerFactory.getLogger(Helper.class);
@@ -25,6 +26,10 @@ public class Helper {
      */
     public List<Object> keys(JSONObject val) {
         return Arrays.asList(val.keySet().toArray());
+    }
+
+    public String getKeyValue(JSONObject obj, String key){
+        return obj.getString(key).trim();
     }
 
     /**
