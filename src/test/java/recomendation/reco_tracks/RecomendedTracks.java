@@ -17,10 +17,11 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import common.FileActions;
+import db_queries.RecommendedTrack;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import common.FileActions;
 import common.GlobalConfigHandler;
 import io.restassured.response.Response;
 import test_data.RecomendedTrackTd;
@@ -352,6 +353,102 @@ public class RecomendedTracks extends BaseUrls {
             resetCounts();
             log.info("Old repoponse and new response matching as expected : "+result);
         }
+    }
+
+    /**
+     * TO validate Artist, gener, track_id, language_id, language, release_date, album id with self queried data to response data
+     */
+    @Test(priority = 11, invocationCount = Constants.REC_INVOCATION_COUNT)
+    public void validateResponseDataWithActiveDbRecords(){
+        ArrayList<String> track_ids = new ArrayList<>();
+        JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
+
+        if(track_list.length() > 0){
+            for(int i = 0; i<track_list.length(); i++){
+                track_ids.add(track_list.getJSONObject(i).getString("track_id").toString().trim());
+            }
+        }
+
+        RecommendedTrack rt = new RecommendedTrack();
+        JSONObject selfQuerydata = rt.getTracksInfo(track_ids);
+        JSONArray selfQueryTracks = selfQuerydata.getJSONArray("tracks");
+
+        boolean resAndSelfValidated = false;
+        if(track_list.length() == selfQueryTracks.length()){
+            resAndSelfValidated =  validateSelfQueryAndResponse(selfQueryTracks, track_list, url_list.get(api_hit_count));
+        }else{
+            log.error("Self Query Data length is : "+selfQueryTracks.length()+ "\n Which is not matching with response track list length : "+track_list.length());
+            Assert.assertEquals(track_list.length(), selfQueryTracks.length());
+        }
+
+        Assert.assertEquals(resAndSelfValidated, true, "Error while validating self queried data with response data!");
+
+        api_hit_count++;
+        if(loop_count == api_hit_count){
+            resetCounts();
+            log.info("Old repoponse and new response matching as expected : ");
+        }
+    }
+
+    private boolean validateSelfQueryAndResponse(JSONArray selfData, JSONArray response_data, String api_url) {
+        boolean result = false;
+        for(int i = 0; i<response_data.length(); i++){
+            JSONObject res_track_obj = response_data.getJSONObject(i);
+            String track_id = res_track_obj.getString("track_id").trim();
+
+            JSONObject self_track_obj = helper.findById(selfData, "track_id", track_id);
+            if(self_track_obj == null){
+                log.error("In query data track id "+track_id+ " not found!");
+                Assert.assertEquals(self_track_obj != null, true);
+            }
+
+            String common_key = null;
+            JSONArray res_artists = res_track_obj.getJSONArray("artist");
+            JSONArray self_artists = self_track_obj.getJSONArray("artist");
+            common_key = "artist_id";
+            boolean artist_validated = helper.matchJSONArray(res_artists, self_artists, common_key);
+            if(!artist_validated){
+                log.error("For api url : "+api_url+"\nError Object : "+res_track_obj);
+                Assert.assertEquals(artist_validated, true);
+            }
+
+            JSONArray res_geners = res_track_obj.getJSONArray("gener");
+            JSONArray self_geners = self_track_obj.getJSONArray("gener");
+            common_key = "genre_id";
+            boolean gener_validated = helper.matchJSONArray(res_geners, self_geners, common_key);
+            if(!artist_validated){
+                log.error("For api url : "+api_url+"\nError Object : "+res_track_obj);
+                Assert.assertEquals(gener_validated, true);
+            }
+
+            if(artist_validated && gener_validated){
+                String res_album_id = res_track_obj.getString("album_id").toString().trim();
+                String self_album_id = self_track_obj.getString("album_id").toString().trim();
+                Assert.assertEquals(res_album_id, self_album_id);
+
+                String res_language = res_track_obj.getString("language").toString().trim();
+                String self_language = self_track_obj.getString("language").toString().trim();
+                Assert.assertEquals(res_language, self_language);
+
+                String res_language_id = res_track_obj.getString("language_id").toString().trim();
+                String self_language_id = self_track_obj.getString("language_id").toString().trim();
+                Assert.assertEquals(res_language_id, self_language_id);
+
+                String res_release_date = res_track_obj.getString("release_date").toString().trim();
+                String self_release_date = self_track_obj.getString("release_date").toString().trim();
+                Assert.assertEquals(res_release_date, self_release_date);
+
+                String res_total_favourite_count = res_track_obj.optString("total_favourite_count").toString().trim();
+                String self_total_favourite_count = self_track_obj.getString("total_favourite_count").toString().trim();
+                Assert.assertEquals(res_total_favourite_count, self_total_favourite_count);
+
+                result = true;
+            }else{
+                result = false;
+                break;
+            }
+        }
+        return result;
     }
 
     /**

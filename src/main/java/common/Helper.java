@@ -206,4 +206,59 @@ public class Helper {
 
         return sorted_arr;
     }
+
+    /**
+     * Compare two same json array but if shorting is not proper
+     * @param res
+     * @param self
+     * @param common_key
+     * @return
+     */
+    public boolean matchJSONArray(JSONArray res, JSONArray self, String common_key){
+        boolean result = false;
+        if(res.length() == self.length()){
+            Iterator<Object> itr = res.iterator();
+            while(itr.hasNext()){
+                JSONObject res_obj =  (JSONObject) itr.next();
+                String id = res_obj.getString(common_key).trim();
+                JSONObject self_obj = findById(self, common_key, id);
+
+                List<Object> keys = keys(res_obj);
+                for(Object key : keys){
+                    String res_val = (String) res_obj.get(key.toString());
+                    String self_val = (String) self_obj.get(key.toString());
+                    if(res_val.equals(self_val)){
+                        result = true;
+                    }else{
+                        result = false;
+                        log.error("While comparing : "+res+"\nwith : "+self +"\nfor key "+key+"response value : "+res_val+
+                        "and self queried value was : "+self_val);
+                        break;
+                    }
+                }
+            }
+        }else{
+            log.error("Compare two JSON object length mismatched!");
+            return result;
+        }
+        return result;
+    }
+
+    /**
+     * To get same json object for coparision
+     * @param selfData
+     * @param id_key matching common id
+     * @param id
+     * @return
+     */
+    public JSONObject findById(JSONArray selfData, String id_key, String id) {
+        Iterator<Object> itr = selfData.iterator();
+        while(itr.hasNext()){
+            JSONObject val = (JSONObject) itr.next();
+            if(val.getString(id_key).equals(id)){
+                return val;
+            }
+        }
+        return null;
+    }
 }

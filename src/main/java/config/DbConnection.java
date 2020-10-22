@@ -33,6 +33,16 @@ public class DbConnection {
         return connection;
     }
 
+    public void closeConnection(Connection conn){
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void getDbCreds() {
         String prop_file_name = "";
         String env = GlobalConfigHandler.getEnv().toString().trim();
