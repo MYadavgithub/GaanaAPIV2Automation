@@ -18,33 +18,28 @@ public class FileActions {
     private static Logger log = LoggerFactory.getLogger(Helper.class);
 
     /**
-     * Traverse data folder and get all list of items.
-     * @return
-     */
-    public static File[] dataFolderTraverse() {
-        String path = System.getProperty("user.dir") + "/src/test/resources/data/";
-        File dir = new File(path);
-        File[] dirList = dir.listFiles();
-        return dirList;
-    }
-
-    /**
      * based on flag delete or validate folder exists or not.
-     * @param flag
+     * @param flag whether needs to delete or not for DELETE = 0, STATUS = 1
      * @param filename
+     * @param path file-path
      * @return
      */
-    public boolean fileOperation(int flag, String filename) {
-        File[] filelist = dataFolderTraverse();
-        for (File file : filelist) {
-            if (file.getName().trim().equals(filename) && flag == 0) {
-                file.delete();
-                return true;
-            } else if (flag == 1) {
-                if (file.getName().trim().equals(filename)) {
+    public static boolean fileOperation(int flag, String path, String filename) {
+        File directory = new File(path);
+        if(directory.exists()){
+            File[] directory_files = directory.listFiles();
+            for (File file : directory_files) {
+                if (file.getName().trim().equals(filename) && flag == 0) {
+                    file.delete();
                     return true;
+                } else if (flag == 1) {
+                    if (file.getName().trim().equals(filename)) {
+                        return true;
+                    }
                 }
             }
+        }else{
+            log.error("Requested folder not present, please check at path : "+path);
         }
         return false;
     }
@@ -69,18 +64,18 @@ public class FileActions {
     /**
      * Create Directory
      */
-    public static String checkFolderExists(String ex_path, String filename) {
-        File folder_name = new File(ex_path + filename);
+    public static String checkFolderExists(String ex_folder_path) {
+        File folder_name = new File(ex_folder_path);
         if (!folder_name.isDirectory()) {
-            log.info("Folder does not exists creating new folder with name : " + filename);
+            log.info("Folder does not exists creating new folder with name : " + ex_folder_path);
             folder_name.mkdir();
             folder_name.setReadable(true);
             folder_name.setWritable(true);
             folder_name.setExecutable(true);
         } else {
-            log.info("Folder already exists with name : " + filename);
+            log.info("Folder already exists with name : " + ex_folder_path);
         }
-        return ex_path + filename;
+        return ex_folder_path;
     }
 
     /**

@@ -31,7 +31,6 @@ import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
 
 public class EmailableReportListener implements IReporter {
-    private String report_folder = null;
     private String report_titile = "GGL NOIDA";
     private String report_name = "Search And Recommendation Test Report";
 	private String file_name = "EmailerReport.html";
@@ -42,10 +41,9 @@ public class EmailableReportListener implements IReporter {
 
     @Override
     public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outDir) {
-        outDir = System.getProperty("user.dir");
-        report_folder = outDir+Constants.CUSTOM_REPORT_FOLDER;
-        FileActions.checkFolderExists(outDir, Constants.CUSTOM_REPORT_FOLDER);
-        writer = createWriter(report_folder);
+        outDir = System.getProperty("user.dir")+Constants.CUSTOM_REPORT_FOLDER;
+        FileActions.checkFolderExists(outDir);
+        writer = createWriter(outDir);
         for (ISuite suite : suites) {
             suiteResults.add(new SuiteResult(suite));
         }

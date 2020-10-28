@@ -14,24 +14,31 @@ public class CsvReader {
 
     private static Logger log = LoggerFactory.getLogger(CsvReader.class);
 
-    public static ArrayList<String> readCsv(String filename) {
+    public static ArrayList<String> readCsv(String file) {
         ArrayList<String> data_list = new ArrayList<>();
-        String filepath = System.getProperty("user.dir")+"/src/test/resources/data/"+filename;
         try {
-            CSVReader read = new CSVReader(new FileReader(filepath));
+            CSVReader read = new CSVReader(new FileReader(file));
             List<String[]> allRows;
             try {
                 allRows = read.readAll();
-                for (String[] row : allRows) {
-                    data_list.add(Arrays.toString(row).toString().replaceAll("[\\[\\]\\(\\)]", ""));
+                if(allRows.size() > 0){
+                    for (String[] row : allRows) {
+                        if(row.length > 1){
+                            data_list.add(row[1]);
+                        }else{
+                            data_list.add(Arrays.toString(row).toString().replaceAll("[\\[\\]\\(\\)]", "")); // full line once
+                        }
+                    }
+                }else{
+                    log.error(file+ "have no data found!");
                 }
             } catch (IOException | CsvException e) {
                 e.printStackTrace();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            log.info(file+ " not found!");
         }
-        log.info(data_list.toString());
         return data_list;
     }
 }

@@ -12,13 +12,13 @@ public class ExecuteQuery {
 
     DbConnection dc = new DbConnection();
 
-    public JSONArray executeQuery(String query) {
-        Connection conn = null;
+    public JSONArray executeQuery(Connection conn, String query) {
+        // Connection conn = null;
         Statement stmt = null;
         ArrayList<String> columnName = new ArrayList<String>();
         JSONArray dataArray = new JSONArray();
         try {
-            conn = dc.createConnection();
+            // conn = dc.createConnection();
             try {
                 stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
@@ -51,7 +51,7 @@ public class ExecuteQuery {
             }
         }catch(SQLException e) {
             throw new Error("Connection creation failed!", e);
-        }finally {
+        }/*finally {
             try {
                 if(conn != null) {
                     conn.close();
@@ -59,7 +59,7 @@ public class ExecuteQuery {
             }catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
-        }
+        }*/
     }
 
     public void deleteQueryExecute(String query){
