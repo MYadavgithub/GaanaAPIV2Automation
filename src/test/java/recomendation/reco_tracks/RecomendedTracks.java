@@ -56,6 +56,9 @@ public class RecomendedTracks extends BaseUrls {
 
     @BeforeClass
     public void generateAllRecoUrls() {
+        System.setProperty("env", "local");
+        System.setProperty("type", "reco");
+        System.setProperty("device_type", "android");
         url_list = new ArrayList<>();
         String baseurl = BaseUrls.baseurl();
         String input_file = System.getProperty("user.dir") + "/src/test/resources/data/"+ prop.getProperty("tracks_td");
@@ -258,12 +261,9 @@ public class RecomendedTracks extends BaseUrls {
         JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
         boolean isLanguageValidated = specificKeyValueValidate(track_list, "language", 1, url_list.get(api_hit_count));
         boolean isLanguageIdValidated = specificKeyValueValidate(track_list, "language_id", 1, url_list.get(api_hit_count));
-        if(!isLanguageValidated){
-            flag = 1;
-        }else if(!isLanguageIdValidated){
-            flag = 1;
-        }
 
+        if(!isLanguageValidated || !isLanguageIdValidated)
+            flag = 1;
         Assert.assertEquals(flag, 0);
 
         api_hit_count++;
@@ -279,6 +279,7 @@ public class RecomendedTracks extends BaseUrls {
         int first_gener_id = 0;
         String first_gener_name = null;
         JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
+
         for(int i = 0; i<track_list.length(); i++){
             JSONArray genre = track_list.getJSONObject(i).getJSONArray("gener");
             if(genre.length() == 1){
@@ -386,7 +387,7 @@ public class RecomendedTracks extends BaseUrls {
         api_hit_count++;
         if(loop_count == api_hit_count){
             resetCounts();
-            log.info("Old repoponse and new response matching as expected : ");
+            log.info("Old repoponse and new response matching as expected : "+resAndSelfValidated);
         }
     }
 
