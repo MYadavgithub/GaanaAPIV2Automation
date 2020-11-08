@@ -15,7 +15,7 @@ public class WriteCsv {
     String file_path = Constants.WRITE_TD_CSV_FROM;
 
     public void writeCsv(String filename, Map<Integer, JSONObject> data) {
-        deleteExixting(filename);
+        deleteExisting(filename);
         CSVWriter writer;
         try {
             String file = file_path + filename;
@@ -42,7 +42,27 @@ public class WriteCsv {
         }
     }
 
-    private void deleteExixting(String filename) {
+    private void deleteExisting(String filename) {
         FileActions.fileOperation(0, file_path, filename);
+    }
+
+    public static void writeCsvWithHeader(String file_name, String[] head, Map<Integer, String[]> values) {
+        String path = "."+Constants.CUSTOM_REPORT_FOLDER+"/Runtime/"+file_name;
+        FileActions.checkFolderExists("."+Constants.CUSTOM_REPORT_FOLDER+"/Runtime/");
+        CSVWriter writer;
+        try {
+            String file = path;
+            writer = new CSVWriter(new FileWriter(file));
+            writer.writeNext(head);
+
+            for(Entry<Integer, String[]> val : values.entrySet()){
+                String[] write = val.getValue();
+                writer.writeNext(write);
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
