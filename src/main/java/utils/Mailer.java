@@ -49,7 +49,7 @@ public class Mailer {
     }
 
     private void messageContent(String name, String file_name){
-        String subject = getEmailSubject();
+        String subject = getEmailSubject(name);
         Multipart multipart = new MimeMultipart();
 
         try {
@@ -109,14 +109,13 @@ public class Mailer {
         }
     }
 
-    private String getEmailSubject(){
+    private static String getEmailSubject(String name){
         String env = GlobalConfigHandler.getEnv();
         if(env.equalsIgnoreCase("local"))
-            env = "Stage";
+            env = "Staging";
 
         String type = GlobalConfigHandler.getType();
 
-        return "GGM "+type+" api test suite execution report in "+env+ " environment at "+CommonUtils.getCurrentDateTime()+".";
+        return env+" | "+type+" | "+ name+" api test suite execution report | "+CommonUtils.getCurrentDateTime();
     }
-
 }

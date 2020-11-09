@@ -42,9 +42,9 @@ public class AutoSuggestLite extends BaseUrls {
 
     @BeforeClass
     public void prepareTestEnv(){
-        System.setProperty("env", "local");
-        System.setProperty("type", "Search");
-        System.setProperty("device_type", "android");
+        // System.setProperty("env", "local");
+        // System.setProperty("type", "Search");
+        // System.setProperty("device_type", "android");
         getTestData();
         if(testdatainputs.size() > 0)
             EX_EXE_COUNT = testdatainputs.size();
@@ -288,7 +288,7 @@ public class AutoSuggestLite extends BaseUrls {
         String end_point = genrateEndpoint(params);
         STAGE_URL = stage_base_url+end_point;
         PROD_URL = live_url+end_point;
-        SOLR_URL = stage_base_url+"/gaanasearch-ER/mobilesuggest/getErSolr?query=" + params + "&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English&testing=1";
+        SOLR_URL = stage_base_url+"/gaanasearch-api/mobilesuggest/getErSolr?query=" + params + "&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English&testing=1";
     }
 
     protected String genrateEndpoint(String query) {
