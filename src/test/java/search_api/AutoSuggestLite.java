@@ -174,7 +174,12 @@ public class AutoSuggestLite extends BaseUrls {
                 solr_val = solr_responses.get(EX_COUNT).asString();
             }
 
-            String result_val [] = {keyword, solr_val, _stage_val.toString(), _prod_val.toString(), _diff_val.toString(), type};
+            String diff_found = "N/A";
+            if(_diff_val.toString().replaceAll("[\\[\\]\\(\\)]", "").length() > 0){
+                diff_found = _diff_val.toString();
+            }
+
+            String result_val [] = {keyword, solr_val, _stage_val.toString(), _prod_val.toString(), diff_found, type};
             result.put(EX_COUNT, result_val);
         }
         setAndRestCounter();
@@ -225,7 +230,6 @@ public class AutoSuggestLite extends BaseUrls {
                 prod_res_obj.add(prod_title);
 
             }else{
-                System.out.println("sdhfhjsgfjsgfghjsgfj");
                 //inner GD LIST
             }
         }
