@@ -1,7 +1,9 @@
 package search_api;
 import java.util.Map;
 import config.BaseUrls;
+import config.Constants;
 import utils.CsvReader;
+import utils.Mailer;
 import utils.WriteCsv;
 import config.Endpoints;
 import org.json.JSONArray;
@@ -58,7 +60,7 @@ public class AutoSuggestLite extends BaseUrls {
         };
     }
 
-    @Test(priority = 1, dataProvider = "key_provider", invocationCount = 10)
+    @Test(priority = 1, dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
     public void prepareUrl(String key) {
         ArrayList<String> url = new ArrayList<>();
         key = key.replaceAll("\\s", "%20");
@@ -69,7 +71,7 @@ public class AutoSuggestLite extends BaseUrls {
                 url.add(PROD_URL);
                 url.add(SOLR_URL);
                 urls.put(EX_COUNT, url);
-                log.info("Execution url generated successfully. \nStaging url : "+STAGE_URL+"\nProd url : "+PROD_URL);
+                log.info("Execution url generated successfully. \nStaging url : "+STAGE_URL+"\nSolr url : "+SOLR_URL+"\nProd url : "+PROD_URL);
                 Response stage_response = req.createGetRequest(STAGE_URL);
                 stage_responses.put(EX_COUNT, stage_response);
                 Response solr_response = req.createGetRequest(SOLR_URL);
@@ -86,7 +88,7 @@ public class AutoSuggestLite extends BaseUrls {
         setAndRestCounter();
     }
 
-    @Test(priority = 2, invocationCount = 10)
+    @Test(priority = 2, invocationCount = Constants.AS_INVOCATION_COUNT)
     public void validateCommonResponseObjects(){
 
         if(EX_COUNT != 0){
@@ -119,7 +121,7 @@ public class AutoSuggestLite extends BaseUrls {
         setAndRestCounter();
     }
 
-    @Test(priority = 3, invocationCount = 10)
+    @Test(priority = 3, invocationCount = Constants.AS_INVOCATION_COUNT)
     public void matchStageAndProdResponses() {
 
         if(EX_COUNT != 0){
@@ -179,8 +181,15 @@ public class AutoSuggestLite extends BaseUrls {
         processCsvWrite(result);
     }
 
+    @Test(priority = 4)
+    public void sendEmail(){
+        String file_name = "AutoSuggestLite.csv";
+        Mailer mail = new Mailer();
+        mail.sendEmail("AutoSuggestLite", file_name);
+    }
+
     private void processCsvWrite(Map<Integer, String[]> result) {
-        String file_name = "Auto_Suggest_result.csv";
+        String file_name = "AutoSuggestLite.csv";
         String head[] = { "Keyword", "ErSolr", "Staging Response", "Live Response", "Difference", "Title(Algo)" };
         WriteCsv.writeCsvWithHeader(file_name, head, result);
     }
@@ -300,7 +309,7 @@ public class AutoSuggestLite extends BaseUrls {
 
     private void setAndRestCounter(){
         EX_COUNT++;
-        if(EX_COUNT == 10){
+        if(EX_COUNT == Constants.AS_INVOCATION_COUNT){
             EX_COUNT = 0;
         }
     }
