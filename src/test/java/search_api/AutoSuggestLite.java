@@ -72,11 +72,11 @@ public class AutoSuggestLite extends BaseUrls {
                 url.add(SOLR_URL);
                 urls.put(EX_COUNT, url);
                 log.info("Execution url generated successfully. \nStaging url : "+STAGE_URL+"\nSolr url : "+SOLR_URL+"\nProd url : "+PROD_URL);
-                Response stage_response = req.createGetRequest(STAGE_URL);
+                Response stage_response = req.createGetRequest(prop, STAGE_URL);
                 stage_responses.put(EX_COUNT, stage_response);
-                Response solr_response = req.createGetRequest(SOLR_URL);
+                Response solr_response = req.createGetRequest(prop, SOLR_URL);
                 solr_responses.put(EX_COUNT, solr_response);
-                Response prod_response = req.createGetRequest(PROD_URL);
+                Response prod_response = req.createGetRequest(prop, PROD_URL);
                 prod_responses.put(EX_COUNT, prod_response);
             }else{
                 Assert.assertEquals(STAGE_URL.length() > 0, true, "Stage url can't be null.");

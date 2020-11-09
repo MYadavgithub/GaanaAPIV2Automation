@@ -29,12 +29,15 @@ public class RequestHandler {
         return null;
     }
 
-    public Response createGetRequest(String url){
+    public Response createGetRequest(Properties prop, String url){
         RestAssured.baseURI = url;
         RequestSpecification httpRequest = RestAssured.given();
         Response response = httpRequest
+            .headers(GlobalConfigHandler.headers(prop))
             // .log().all()
             .when().get(url);
+
+        // response.prettyPrint();
 
         if(validateStatusCodeAndResponseTime(response, url)){
             return response;
