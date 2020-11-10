@@ -48,7 +48,7 @@ public class Mailer {
         });
     }
 
-    private void messageContent(String name, String file_name){
+    private void messageContent(String name, String file_name, String scope){
         String subject = getEmailSubject(name);
         Multipart multipart = new MimeMultipart();
 
@@ -65,10 +65,11 @@ public class Mailer {
                 sb.append("Hi Team, \n\nGreetings of the day! \n\n");
                 sb.append("This email was generated from GGM Api Test Suites. \n\n");
                 sb.append("API/Suite Name : "+name+"\n\n");
-                sb.append("Please download and attachment for detailed information.");
+                sb.append(scope+"\n\n");
+                sb.append("Please download the attachment for detailed information.");
                 messageBodyPart1.setText(sb.toString());
                 BodyPart messageBodyPart2 = new MimeBodyPart();
-                messageBodyPart2.setText("\n\nBest Regards \nUmesh Shukla \nGGM Search & Reco QA");
+                messageBodyPart2.setText("\n\nBest Regards, \nUmesh Shukla \nGGM Search & Reco QA");
                 // zf.createZip();
                 DataSource source = new FileDataSource("./"+Constants.CUSTOM_REPORT_FOLDER+"/Runtime/"+file_name);
                 BodyPart messageBodyPart3 = new MimeBodyPart();
@@ -94,12 +95,12 @@ public class Mailer {
         }
     }
 
-    public void sendEmail(String api_name, String file_name){
+    public void sendEmail(String api_name, String file_name, String scope){
         createSession();
         if(session != null){
             try {
                 recipientList();
-                messageContent(api_name, file_name);
+                messageContent(api_name, file_name, scope);
                 Transport.send(message);
                 System.out.println("Report Successfully Sent To Receipents.");
             } catch (MessagingException e) {
