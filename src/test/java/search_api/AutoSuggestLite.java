@@ -98,7 +98,7 @@ public class AutoSuggestLite extends BaseUrls {
             }
 
             JSONObject stage_response_object = new JSONObject(stage_responses.get(EX_COUNT).asString());
-            JSONObject prod_response_object = new JSONObject(stage_responses.get(EX_COUNT).asString());
+            JSONObject prod_response_object = new JSONObject(prod_responses.get(EX_COUNT).asString());
 
             String stage_srId = getOptionalJSONObject(stage_response_object, "srId");
             String prod_srId = getOptionalJSONObject(prod_response_object, "srId");
@@ -129,7 +129,7 @@ public class AutoSuggestLite extends BaseUrls {
             JSONObject stage_response_object = new JSONObject(stage_responses.get(EX_COUNT).asString());
             JSONArray stage_gr = stage_response_object.getJSONArray("gr");
 
-            JSONObject prod_response_object = new JSONObject(stage_responses.get(EX_COUNT).asString());
+            JSONObject prod_response_object = new JSONObject(prod_responses.get(EX_COUNT).asString());
             JSONArray prod_gr = prod_response_object.getJSONArray("gr");
 
             if(stage_gr.length() != prod_gr.length()){
@@ -290,18 +290,9 @@ public class AutoSuggestLite extends BaseUrls {
     protected void prepareStageLiveUrls(String params) {
         String stage_base_url = baseurl();
         String live_url = prop.getProperty("search_live_url").toString().trim();
-        String end_point = genrateEndpoint(params);
-        STAGE_URL = stage_base_url+end_point;
-        PROD_URL = live_url+end_point;
-        SOLR_URL = stage_base_url+"/gaanasearch-api/mobilesuggest/getErSolr?query=" + params + "&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English&testing=1";
-    }
-
-    protected String genrateEndpoint(String query) {
-        String end_point = Endpoints.autoSuggestLite;
-        StringBuilder query_params = new StringBuilder();
-        query_params.append("query="+query+"&UserType=0&geoLocation=IN&content_filter=2");
-        query_params.append("&include=allItems&isRegSrch=0&usrLang=Hindi,English&testing=1&autocomplete=1");
-        return end_point+query_params.toString(); 
+        STAGE_URL = stage_base_url+Endpoints.autoSuggestStageEndpoint(params);
+        PROD_URL = live_url+Endpoints.autoSuggestProdEndpoint(params);
+        SOLR_URL = stage_base_url+Endpoints.autoSuggestSolrEndpoint(params);
     }
 
     private void getTestData() {
