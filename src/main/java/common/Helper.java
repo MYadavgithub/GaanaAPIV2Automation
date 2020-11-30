@@ -1,4 +1,5 @@
 package common;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,10 +14,15 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 
 
 public class Helper {
 
+    int resCode = 200;
+    HttpURLConnection uc = null;
     private static Logger log = LoggerFactory.getLogger(Helper.class);
     
     /**
@@ -261,4 +267,38 @@ public class Helper {
         }
         return null;
     }
+
+    /**
+     * Validate Link is active or not
+     */
+    public boolean validateActiveLinks(ArrayList<String> links) {
+        boolean linkActive = false;
+
+        if(links.size() <= 0){
+            return linkActive;
+        }
+
+		for(String link : links) {
+			if(link.contains("http")) {
+                try {
+                    uc = (HttpURLConnection)(new URL(link).openConnection());
+                    uc.setRequestMethod("HEAD");
+                    uc.connect();
+                    int res = uc.getResponseCode();
+                    if(res == resCode) {
+                        linkActive = true;
+                    }else {
+                        linkActive = false;
+                        log.error(link+" This url is broken.");
+                        break;
+                    }
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+			}
+		}
+		return linkActive;
+	}
 }

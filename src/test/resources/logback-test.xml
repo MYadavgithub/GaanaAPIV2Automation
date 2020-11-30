@@ -42,11 +42,11 @@
         </encoder>
     </appender>
 
-    <logger name="recomendation" level="DEBUG" additivity="false">
+    <logger name="recomendation" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="FILE-ROLLING"/>
-        <!-- <appender-ref ref="STDOUT" /> -->
+        <appender-ref ref="STDOUT" />
     </logger>
 
     <logger name="search_api" level="DEBUG" additivity="false">
@@ -58,7 +58,7 @@
 
     <root level="DEBUG">
         <appender-ref ref="FILE" />
-        <appender-ref ref="DEBUG" />
+        <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE-ROLLING"/>
         <!-- <appender-ref ref="STDOUT" /> -->
     </root>

@@ -1,5 +1,7 @@
 package common;
 import config.Constants;
+
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
@@ -9,31 +11,29 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 public class RequestHandler {
-   
-    private static Logger log = LoggerFactory.getLogger(RequestHandler.class);
-    
-    public Response createGetRequestCall(Properties prop, String url) {
-        Response response = RestAssured.given()
-            // .log().all()
-            .header("gaanaAppVersion", prop.getProperty("gaanaAppVersionAndroid").toString().trim())
-            .header("deviceType", prop.getProperty("deviceTypeAndroid").toString().trim())
-            .header("deviceId", prop.getProperty("deviceId").toString().trim())
-            .header("COUNTRY", prop.getProperty("COUNTRY").toString().trim())
-            .header("appVersion", prop.getProperty("appVersion").toString().trim())
-            .when().get(url);
 
-        if(validateStatusCodeAndResponseTime(response, url)){
+    private static Logger log = LoggerFactory.getLogger(RequestHandler.class);
+
+    public Response createGetRequestCall(Properties prop, String url) {
+        Map<String, String> headers = GlobalConfigHandler.headers(prop);
+        Response response = RestAssured.given()
+                // .log().all()
+                .headers(headers)
+                .when().get(url);
+
+        if (validateStatusCodeAndResponseTime(response, url)) {
             return response;
         }
 
         return null;
     }
 
-    public Response createGetRequest(Properties prop, String url){
+    public Response createGetRequest(Properties prop, String url) {
+        Map<String, String> headers = GlobalConfigHandler.headers(prop);
         RestAssured.baseURI = url;
         RequestSpecification httpRequest = RestAssured.given();
         Response response = httpRequest
-            .headers(GlobalConfigHandler.headers(prop))
+            .headers(headers)
             // .log().all()
             .when().get(url);
 

@@ -8,8 +8,10 @@ import config.Endpoints;
 import org.slf4j.Logger;
 import java.util.HashMap;
 import org.testng.Assert;
+import org.testng.Reporter;
 import java.util.Iterator;
 import common.FileActions;
+import common.Helper;
 import org.json.JSONArray;
 import java.util.ArrayList;
 import org.json.JSONObject;
@@ -29,8 +31,11 @@ public class Vibes extends BaseUrls {
     static int RES_OBJ = 10;
     String API_NAME = "Vibes";
     final static int CASE_COUNT = 5;
+    JSONArray entities_list = null;
     RequestHandler rq = new RequestHandler();
+    Helper helper = new Helper();
     ArrayList<String> device_ids = null;
+    ArrayList<String> urls = new ArrayList<>();
     Map<Integer, Response> responses = new HashMap<>();
     Map<Integer, String[]> all_entitys_ids = new HashMap<>();
     private static Logger log = LoggerFactory.getLogger(Vibes.class);
@@ -40,7 +45,8 @@ public class Vibes extends BaseUrls {
         // System.setProperty("env", "local");
         // System.setProperty("type", "Reco");
         // System.setProperty("device_type", "android");
-        baseurl = "http://172.26.60.171:7080";
+        baseurl();
+        baseurl = prop.getProperty("reco_baseurl").toString().trim();
         // baseurl = "http://172.26.60.171:7079";
         device_ids = CsvReader.readCsv("./src/test/resources/data/deviceid.csv");
     }
@@ -48,9 +54,9 @@ public class Vibes extends BaseUrls {
     @Test(priority = 1, invocationCount = CASE_COUNT)
     @Parameters("id")
     public void validateStatusAndDataType(@Optional("1") String id) {
-        baseurl();
         String url = baseurl + Endpoints.vibes;
         prop.setProperty("deviceId", device_ids.get(DEVICE_ID_COUNT));
+        urls.add(url);
         Response response = rq.createGetRequest(prop, url);
         Assert.assertEquals(response != null, true, "Response time or code is not valid!");
         responses.put(DEVICE_ID_COUNT, response);
@@ -99,6 +105,123 @@ public class Vibes extends BaseUrls {
             Assert.assertEquals((previous_entities.size() == all_entitys_ids.size()), true, "Previous and new response size should be same!");
             boolean result = validatedata(previous_entities, all_entitys_ids);
             Assert.assertEquals(result, true, "Previous and new response matching!");
+        }
+    }
+
+    @Test(priority = 4)
+    public void validateEntityCount(){
+        JSONObject response = new JSONObject(responses.get(DEVICE_ID_COUNT).asString());
+        int response_entity_count = Integer.parseInt(response.getString("count").toString().trim());
+        int user_access_token = Integer.parseInt(response.optString("user_token_status").toString().trim());
+        Assert.assertEquals(RES_OBJ, response_entity_count, "Response entity count is not matching!");
+        Assert.assertEquals(1, user_access_token, "User access token should be 1!");
+
+        entities_list = response.getJSONArray("entities");
+        Assert.assertEquals(entities_list.length(), RES_OBJ, "entities count is not matching!");
+    }
+
+    @Test(priority = 5, dependsOnMethods = {"validateEntityCount"})
+    public void validateEachEntityArtWork(){
+        ArrayList<String> artworks = new ArrayList<>();
+        Iterator<Object> entities_itr = entities_list.iterator();
+        while(entities_itr.hasNext()){
+            JSONObject entity = (JSONObject) entities_itr.next();
+            String atw = entity.optString("atw").toString().trim();
+            String artwork = entity.optString("artwork").toString().trim();
+            if(atw.equals(artwork)){
+                artworks.add(artwork);
+            }else{
+                Reporter.log("********* ERROR *********");
+                log.error("atw not matching with artwork, which must be matching please check in response of url given below : \n"+urls.get(DEVICE_ID_COUNT-1));
+                Reporter.log("********* ERROR *********");
+            }
+        }
+
+        boolean isArtworkValidated = helper.validateActiveLinks(artworks);
+        Assert.assertEquals(isArtworkValidated, true, "Artwork not validated succesfully!");
+    }
+
+    @Test(priority = 6, dependsOnMethods = {"validateEachEntityArtWork"})
+    public void validateVertVDtoken(){
+        Iterator<Object> entities_itr = entities_list.iterator();
+        while(entities_itr.hasNext()){
+            JSONObject entity = (JSONObject) entities_itr.next();
+            JSONObject entity_map = entity.getJSONObject("entity_map");
+            String vert_vd = entity_map.opt("vert_vd").toString().trim();
+            Assert.assertEquals(vert_vd.length() > 0, true, "vert_vd token is not valdated for url : "+urls.get(DEVICE_ID_COUNT-1));
+        }
+    }
+
+    @Test(priority = 7, dependsOnMethods = {"validateVertVDtoken"})
+    public void validateShortTagsJSONArray(){
+        Iterator<Object> entities_itr = entities_list.iterator();
+        while(entities_itr.hasNext()){
+            JSONObject entity = (JSONObject) entities_itr.next();
+            JSONObject entity_map = entity.getJSONObject("entity_map");
+            JSONArray short_tracks = entity_map.optJSONArray("short_track");
+
+            for(int i = 0; i<short_tracks.length(); i++){
+                JSONObject short_track = short_tracks.getJSONObject(i);
+                String seokey = short_track.optString("seokey").toString().trim();
+                String track_id = short_track.getString("track_id").toString().trim();
+
+                ArrayList<String> artworks = new ArrayList<>();
+                if(seokey.length() > 0 && track_id.length() > 0){
+                    artworks.add(short_track.optString("atw").toString().trim());
+                    artworks.add(short_track.optString("artwork").toString().trim());
+                    boolean isArtworkValidated = helper.validateActiveLinks(artworks);
+                    Assert.assertEquals(isArtworkValidated, true, "Short Track artwork not validated succesfully!");
+                }else{
+                    log.error("SEO Key : "+seokey+ " Track id : "+track_id);
+                }
+            }
+        }
+    }
+
+    @Test(priority = 8, dependsOnMethods = {"validateShortTagsJSONArray"})
+    public void validateHashtagsJSONArray(){
+        Iterator<Object> entities_itr = entities_list.iterator();
+        while(entities_itr.hasNext()){
+            JSONObject entity = (JSONObject) entities_itr.next();
+            JSONObject entity_map = entity.getJSONObject("entity_map");
+            JSONArray hashtags = entity_map.optJSONArray("hashtags");
+
+            for(int i = 0; i<hashtags.length(); i++){
+                JSONObject hashtag = hashtags.getJSONObject(i);
+                String seokey = hashtag.optString("seokey").toString().trim();
+                String hashtag_id = hashtag.getString("hashtag_id").toString().trim();
+                if(seokey.length() <= 0 && hashtag_id.length() <= 0){
+                    Assert.assertEquals(hashtag_id.length() > 0, true, "Hashtag not validated succesfully!");
+                }
+            }
+        }
+    }
+
+    @Test(priority = 9, dependsOnMethods = {"validateHashtagsJSONArray"})
+    public void validateArtistJSONArray(){
+        Iterator<Object> entities_itr = entities_list.iterator();
+        while(entities_itr.hasNext()){
+            JSONObject entity = (JSONObject) entities_itr.next();
+            JSONObject entity_map = entity.getJSONObject("entity_map");
+            JSONArray artists = entity_map.optJSONArray("artist");
+            Assert.assertEquals(artists.length() > 0, true, "Artist details missing for url : "+urls.get(DEVICE_ID_COUNT-1));
+
+            for(int i = 0; i<artists.length(); i++){
+                JSONObject artist = artists.getJSONObject(i);
+                String seokey = artist.optString("seokey").toString().trim();
+                String name = artist.optString("name").toString().trim();
+                String artist_id = artist.getString("artist_id").toString().trim();
+
+                ArrayList<String> artworks = new ArrayList<>();
+                if(seokey.length() > 0 && name.length() > 0 && artist_id.length() > 0){
+                    artworks.add(artist.optString("atw").toString().trim());
+                    artworks.add(artist.optString("artwork").toString().trim());
+                    boolean isArtworkValidated = helper.validateActiveLinks(artworks);
+                    Assert.assertEquals(isArtworkValidated, true, "Artist artwork not validated succesfully!");
+                }else{
+                    log.error("SEO Key : "+seokey+" Artist Name : "+name+ " Artist id : "+artist_id);
+                }
+            }
         }
     }
 

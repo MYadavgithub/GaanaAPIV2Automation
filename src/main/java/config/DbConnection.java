@@ -50,7 +50,7 @@ public class DbConnection {
             prop_file_name = "local.properties";
         }else if(env.equalsIgnoreCase(Constants.PRE_PROD_ENV)){
             prop_file_name = "preprod.properties";
-        }else if(env.equalsIgnoreCase(Constants.PRE_PROD_ENV)){
+        }else if(env.equalsIgnoreCase(Constants.PROD_ENV)){
             prop_file_name = "prod.properties";
         }else{
             log.error("Unknown environment!");
