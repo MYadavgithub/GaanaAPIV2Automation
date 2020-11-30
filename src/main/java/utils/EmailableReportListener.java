@@ -1,5 +1,6 @@
 package utils;
 import common.FileActions;
+import common.GlobalConfigHandler;
 import config.Constants;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,8 +32,8 @@ import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
 
 public class EmailableReportListener implements IReporter {
-    private String report_titile = "GGL NOIDA";
-    private String report_name = "Search And Recommendation Test Report";
+    private String report_title = "GGL NOIDA";
+    private String report_name = "";
 	private String file_name = "EmailerReport.html";
     protected PrintWriter writer;
     protected final List<SuiteResult> suiteResults = Lists.newArrayList();
@@ -41,6 +42,12 @@ public class EmailableReportListener implements IReporter {
 
     @Override
     public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outDir) {
+        if(GlobalConfigHandler.getType().equals("Search")){
+            report_name = "Search Test Report";
+        }else if(GlobalConfigHandler.getType().equals("Reco")){
+            report_name = "Recommendation Test Report";
+        }
+
         outDir = System.getProperty("user.dir")+Constants.CUSTOM_REPORT_FOLDER;
         FileActions.checkFolderExists(outDir);
         writer = createWriter(outDir);
@@ -78,7 +85,7 @@ public class EmailableReportListener implements IReporter {
     protected void writeHead() {
         writer.println("<head>");
         writer.println("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"/>");
-        writer.println("<title>"+report_titile+"</title>");
+        writer.println("<title>"+report_title+"</title>");
         writeStylesheet();
         writer.println("</head>");
     }
@@ -119,8 +126,8 @@ public class EmailableReportListener implements IReporter {
         writer.println("<body>");
         writeReportTitle(report_name);
         writeSuiteSummary();
-        writeScenarioSummary();
-        writeScenarioDetails();
+        // writeScenarioSummary();
+        // writeScenarioDetails();
         writer.println("</body>");
     }
 
