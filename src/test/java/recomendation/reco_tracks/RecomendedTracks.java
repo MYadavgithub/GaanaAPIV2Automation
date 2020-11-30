@@ -295,7 +295,7 @@ public class RecomendedTracks extends BaseUrls {
                         isObjectValidated = true;
                     }else{
                         isObjectValidated = false;
-                        log.error("for api : \n"+url_list.get(api_hit_count)+" \nObject data was : \n"+track_list.getJSONObject(i)
+                        log.error("For api : \n"+url_list.get(api_hit_count)+" \nObject data was : \n"+track_list.getJSONObject(i)
                             +"\nGener name or id not matched with expected data.");
                         break;
                     }
@@ -358,33 +358,35 @@ public class RecomendedTracks extends BaseUrls {
      */
     @Test(priority = 11, invocationCount = Constants.REC_INVOCATION_COUNT)
     public void validateResponseDataWithActiveDbRecords(){
-        ArrayList<String> track_ids = new ArrayList<>();
-        JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
+        if(!GlobalConfigHandler.getEnv().equals(Constants.PROD_ENV)){
+            ArrayList<String> track_ids = new ArrayList<>();
+            JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
 
-        if(track_list.length() > 0){
-            for(int i = 0; i<track_list.length(); i++){
-                track_ids.add(track_list.getJSONObject(i).getString("track_id").toString().trim());
+            if(track_list.length() > 0){
+                for(int i = 0; i<track_list.length(); i++){
+                    track_ids.add(track_list.getJSONObject(i).getString("track_id").toString().trim());
+                }
             }
-        }
 
-        RecommendedTrack rt = new RecommendedTrack();
-        JSONObject selfQuerydata = rt.getTracksInfo(track_ids);
-        JSONArray selfQueryTracks = selfQuerydata.getJSONArray("tracks");
+            RecommendedTrack rt = new RecommendedTrack();
+            JSONObject selfQuerydata = rt.getTracksInfo(track_ids);
+            JSONArray selfQueryTracks = selfQuerydata.getJSONArray("tracks");
 
-        boolean resAndSelfValidated = false;
-        if(track_list.length() == selfQueryTracks.length()){
-            resAndSelfValidated =  validateSelfQueryAndResponse(selfQueryTracks, track_list, url_list.get(api_hit_count));
-        }else{
-            log.error("Self Query Data length is : "+selfQueryTracks.length()+ "\n Which is not matching with response track list length : "+track_list.length());
-            Assert.assertEquals(track_list.length(), selfQueryTracks.length());
-        }
+            boolean resAndSelfValidated = false;
+            if(track_list.length() == selfQueryTracks.length()){
+                resAndSelfValidated =  validateSelfQueryAndResponse(selfQueryTracks, track_list, url_list.get(api_hit_count));
+            }else{
+                log.error("Self Query Data length is : "+selfQueryTracks.length()+ "\n Which is not matching with response track list length : "+track_list.length());
+                Assert.assertEquals(track_list.length(), selfQueryTracks.length());
+            }
 
-        Assert.assertEquals(resAndSelfValidated, true, "Error while validating self queried data with response data!");
+            Assert.assertEquals(resAndSelfValidated, true, "Error while validating self queried data with response data!");
 
-        api_hit_count++;
-        if(loop_count == api_hit_count){
-            resetCounts();
-            log.info("Old repoponse and new response matching as expected : "+resAndSelfValidated);
+            api_hit_count++;
+            if(loop_count == api_hit_count){
+                resetCounts();
+                log.info("Old repoponse and new response matching as expected : "+resAndSelfValidated);
+            }
         }
     }
 
