@@ -161,7 +161,7 @@ public class EmailableReportListener implements IReporter {
 
         int testIndex = 0;
         for(SuiteResult suiteResult : suiteResults) {
-            writer.print("<tr><th colspan=\"11\">");
+            writer.print("<tr><th colspan=\"10\">");
             writer.println("<center><h5><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) +"<I><b></h6></center>");
             writer.println("</th></tr>");
 
