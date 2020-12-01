@@ -1,6 +1,5 @@
 package common;
 import config.Constants;
-
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -17,9 +16,9 @@ public class RequestHandler {
     public Response createGetRequestCall(Properties prop, String url) {
         Map<String, String> headers = GlobalConfigHandler.headers(prop);
         Response response = RestAssured.given()
-                // .log().all()
-                .headers(headers)
-                .when().get(url);
+            // .log().all()
+            .headers(headers)
+            .when().get(url);
 
         if (validateStatusCodeAndResponseTime(response, url)) {
             return response;
@@ -38,7 +37,19 @@ public class RequestHandler {
             .when().get(url);
 
         // response.prettyPrint();
+        if(validateStatusCodeAndResponseTime(response, url)){
+            return response;
+        }
+        return null;
+    }
 
+    public Response createGetRequestWithoutHeader(String url){
+        Response response = RestAssured.given()
+            .urlEncodingEnabled(false)
+            // .log().all()
+            .when().get(url);
+
+        // response.prettyPrint();
         if(validateStatusCodeAndResponseTime(response, url)){
             return response;
         }
