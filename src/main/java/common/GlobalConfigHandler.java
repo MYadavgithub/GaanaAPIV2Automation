@@ -1,5 +1,8 @@
 package common;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import config.Constants;
 import java.text.SimpleDateFormat;
 
@@ -66,5 +69,22 @@ public class GlobalConfigHandler {
         Date today = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(today);
+    }
+
+    public static Map<String, String> headers(Properties prop) {
+        Map<String, String> headers = new HashMap<String, String>();
+
+        if(getDeviceType() == 0){
+            headers.put("gaanaAppVersion", prop.getProperty("gaanaAppVersionAndroid").toString().trim());
+            headers.put("deviceType", prop.getProperty("deviceTypeAndroid").toString().trim());
+        }else if(getDeviceType() == 1){
+            headers.put("gaanaAppVersion", prop.getProperty("gaanaAppVersionIos").toString().trim());
+            headers.put("deviceType", prop.getProperty("deviceTypeIos").toString().trim());
+        }
+
+        headers.put("deviceId", prop.getProperty("deviceId").toString().trim());
+        headers.put("COUNTRY", prop.getProperty("COUNTRY").toString().trim());
+        headers.put("appVersion", prop.getProperty("appVersion").toString().trim());
+        return headers;
     }
 }

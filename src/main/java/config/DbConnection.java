@@ -33,6 +33,16 @@ public class DbConnection {
         return connection;
     }
 
+    public void closeConnection(Connection conn){
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void getDbCreds() {
         String prop_file_name = "";
         String env = GlobalConfigHandler.getEnv().toString().trim();
@@ -40,7 +50,7 @@ public class DbConnection {
             prop_file_name = "local.properties";
         }else if(env.equalsIgnoreCase(Constants.PRE_PROD_ENV)){
             prop_file_name = "preprod.properties";
-        }else if(env.equalsIgnoreCase(Constants.PRE_PROD_ENV)){
+        }else if(env.equalsIgnoreCase(Constants.PROD_ENV)){
             prop_file_name = "prod.properties";
         }else{
             log.error("Unknown environment!");
