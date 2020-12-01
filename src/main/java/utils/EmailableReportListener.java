@@ -217,7 +217,7 @@ public class EmailableReportListener implements IReporter {
 		
         // Print totals if there was more than one test
         if (testIndex > 1) {
-            writer.print("<tr>");
+            writer.print("<tr style=\"border: 1px solid #dee2e6;\">");
             writer.print("<th>Total</th>");
             writeTableHeader(integerFormat.format(totalTestsCount), "num");
             writeTableHeader(integerFormat.format(totalPassedTests), "num");
