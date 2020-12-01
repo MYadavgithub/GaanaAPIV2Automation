@@ -147,21 +147,21 @@ public class EmailableReportListener implements IReporter {
 
         writer.println("<div class=\"easy-test-overview\">");
         writer.println("<table class=\"table-bordered\" align=\"center\">");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">Test Name</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">Test Count</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">Passed</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">Retry</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">Failed</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">Start Time</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">End Time</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">Total Time<br /><span style= font-size:10px;>(hh:mm:ss)</span></th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">Included Groups</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif;\">Excluded Groups</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Name</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Count</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Passed</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Retry</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Failed</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Start Time</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">End Time</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Total Time<br /><span style= font-size:10px;>(hh:mm:ss)</span></th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Included Groups</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Excluded Groups</th>");
         writer.println("</tr>");
 
         int testIndex = 0;
         for(SuiteResult suiteResult : suiteResults) {
-            writer.print("<tr><th colspan=\"11\">");
+            writer.print("<tr><th colspan=\"11\" style=\"border: 1px solid #b3b0b0;\">");
             writer.println("<center><h5><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) +"<I><b></h6></center>");
             writer.println("</th></tr>");
 
