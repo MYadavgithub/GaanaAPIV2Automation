@@ -175,7 +175,7 @@ public class EmailableReportListener implements IReporter {
                 Date endTime = testResult.getTestEndTime();
                 long duration = testResult.getDuration();
 
-                writer.print("<tr");
+                writer.print("<tr style=\"border: 1px solid #dee2e6;\"");
                 if ((testIndex % 2) == 1) {
                     writer.print("class=\"stripe\"");
                 }
