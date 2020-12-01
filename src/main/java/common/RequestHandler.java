@@ -1,34 +1,46 @@
 package common;
 import config.Constants;
+
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
 public class RequestHandler {
-   
+
     private static Logger log = LoggerFactory.getLogger(RequestHandler.class);
-    
+
     public Response createGetRequestCall(Properties prop, String url) {
+        Map<String, String> headers = GlobalConfigHandler.headers(prop);
         Response response = RestAssured.given()
-            //.log().all()
-            .header("gaanaAppVersion", prop.getProperty("gaanaAppVersionAndroid").toString().trim())
-            .header("deviceType", prop.getProperty("deviceTypeAndroid").toString().trim())
-            .header("deviceId", prop.getProperty("deviceId").toString().trim())
-            .header("COUNTRY", prop.getProperty("COUNTRY").toString().trim())
-            .header("appVersion", prop.getProperty("appVersion").toString().trim())
+                // .log().all()
+                .headers(headers)
+                .when().get(url);
+
+        if (validateStatusCodeAndResponseTime(response, url)) {
+            return response;
+        }
+
+        return null;
+    }
+
+    public Response createGetRequest(Properties prop, String url) {
+        Map<String, String> headers = GlobalConfigHandler.headers(prop);
+        RestAssured.baseURI = url;
+        RequestSpecification httpRequest = RestAssured.given();
+        Response response = httpRequest
+            .headers(headers)
+            // .log().all()
             .when().get(url);
-        
-        if(response != null){
-            if(validateStatusCodeAndResponseTime(response)){
-                log.info(url);
-                log.info(response.asString());
-                return response;
-            }else{
-                log.error("The get api call was taking more time than expected api was \n"+url);
-            }
+
+        // response.prettyPrint();
+
+        if(validateStatusCodeAndResponseTime(response, url)){
+            return response;
         }
         return null;
     }
@@ -38,10 +50,23 @@ public class RequestHandler {
      * @param response
      * @return
      */
-    private boolean validateStatusCodeAndResponseTime(Response response){
-        if(response.getStatusCode() == 200 && response.getTimeIn(TimeUnit.SECONDS) <= Constants.RESPONSE_TIME){
-            return true;
+    private boolean validateStatusCodeAndResponseTime(Response response, String url){
+        boolean validateBasics = false;
+        if((response.getStatusCode() == 200 || response.getStatusCode() == 201) && response.getTimeIn(TimeUnit.SECONDS) <= Constants.RESPONSE_TIME){
+            validateBasics = true;
         }
-        return false;
+
+        if(response != null){
+            if(validateBasics){
+                log.info(url);
+                return validateBasics;
+            }else{
+                validateBasics = false;
+                log.info(url);
+                log.info(response.asString());
+                log.error("The get api call was taking more time than expected api was \n"+url);
+            }
+        }
+        return validateBasics;
     }
 }

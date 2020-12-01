@@ -97,7 +97,7 @@
 							<name>type</name>
 							<value>${type}</value>
 							<name>device_type</name>
-							<value>${device_type}</value> -->
+							<value>${device_type}</value>
 						</property>
 					</systemProperties>
 					<suiteXmlFiles>

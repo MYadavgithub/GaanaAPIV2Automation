@@ -1,5 +1,6 @@
 package utils;
 import common.FileActions;
+import common.GlobalConfigHandler;
 import config.Constants;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,9 +32,8 @@ import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
 
 public class EmailableReportListener implements IReporter {
-    private String report_folder = null;
-    private String report_titile = "GGL NOIDA";
-    private String report_name = "Search And Recommendation Test Report";
+    private String report_title = "GGL NOIDA";
+    private String report_name = "";
 	private String file_name = "EmailerReport.html";
     protected PrintWriter writer;
     protected final List<SuiteResult> suiteResults = Lists.newArrayList();
@@ -42,10 +42,15 @@ public class EmailableReportListener implements IReporter {
 
     @Override
     public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outDir) {
-        outDir = System.getProperty("user.dir");
-        report_folder = outDir+Constants.CUSTOM_REPORT_FOLDER;
-        FileActions.checkFolderExists(outDir, Constants.CUSTOM_REPORT_FOLDER);
-        writer = createWriter(report_folder);
+        if(GlobalConfigHandler.getType().equals("Search")){
+            report_name = "Search Test Report";
+        }else if(GlobalConfigHandler.getType().equals("Reco")){
+            report_name = "Recommendation Test Report";
+        }
+
+        outDir = System.getProperty("user.dir")+Constants.CUSTOM_REPORT_FOLDER;
+        FileActions.checkFolderExists(outDir);
+        writer = createWriter(outDir);
         for (ISuite suite : suites) {
             suiteResults.add(new SuiteResult(suite));
         }
@@ -80,7 +85,7 @@ public class EmailableReportListener implements IReporter {
     protected void writeHead() {
         writer.println("<head>");
         writer.println("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"/>");
-        writer.println("<title>"+report_titile+"</title>");
+        writer.println("<title>"+report_title+"</title>");
         writeStylesheet();
         writer.println("</head>");
     }
@@ -100,7 +105,7 @@ public class EmailableReportListener implements IReporter {
         writer.print("table a {font-weight:bold;color:#0D1EB6;}");
         writer.print(".tbl2 {table-layout: fixed; background-color: antiquewhite;}");
         writer.print(".easy-overview  {margin-left: 5%; margin-right: 5%; table-layout: fixed}");
-        writer.print(".easy-test-overview tr:first-child {background: #3092c0; color: white; font-family: serif;}");
+        // writer.print(".easy-test-overview tr:first-child {background: #3092c0; color: white; font-family: serif;}");
         writer.print(".easy-test-summary {margin-right: 5%; margin-left: 5%; table-layout: fixed;}");
         writer.print(".stripe td {background-color: #E6EBF9}");
         writer.print(".num {text-align:right}");
@@ -121,8 +126,8 @@ public class EmailableReportListener implements IReporter {
         writer.println("<body>");
         writeReportTitle(report_name);
         writeSuiteSummary();
-        writeScenarioSummary();
-        writeScenarioDetails();
+        // writeScenarioSummary();
+        // writeScenarioDetails();
         writer.println("</body>");
     }
 
@@ -141,23 +146,23 @@ public class EmailableReportListener implements IReporter {
         long totalDuration = 0;
 
         writer.println("<div class=\"easy-test-overview\">");
-        writer.println("<table class=\"table-bordered easy-overview\">");
-        writer.print("<th>Test Name</th>");
-        writer.print("<th>Test Count</th>");
-        writer.print("<th>Passed</th>");
-        writer.print("<th>Retry</th>");
-        writer.print("<th>Failed</th>");
-        writer.print("<th>Start Time</th>");
-        writer.print("<th>End Time</th>");
-        writer.print("<th>Total Time<br /><span style= font-size:10px;>(hh:mm:ss)</span></th>");
-        writer.print("<th>Included Groups</th>");
-        writer.print("<th>Excluded Groups</th>");
+        writer.println("<table class=\"table-bordered\" align=\"center\">");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Name</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Count</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Passed</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Retry</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Failed</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Start Time</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">End Time</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Total Time<br /><span style= font-size:10px;>(hh:mm:ss)</span></th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Included Groups</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Excluded Groups</th>");
         writer.println("</tr>");
 
         int testIndex = 0;
         for(SuiteResult suiteResult : suiteResults) {
-            writer.print("<tr><th colspan=\"11\">");
-            writer.println("<center><h6><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) +"<I><b></h6></center>");
+            writer.print("<tr><th colspan=\"10\" style=\"border: 1px solid #dee2e6;\">");
+            writer.println("<center><h5><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) +"<I><b></h6></center>");
             writer.println("</th></tr>");
 
             for (TestResult testResult : suiteResult.getTestResults()) {
@@ -170,7 +175,7 @@ public class EmailableReportListener implements IReporter {
                 Date endTime = testResult.getTestEndTime();
                 long duration = testResult.getDuration();
 
-                writer.print("<tr");
+                writer.print("<tr style=\"border: 1px solid #dee2e6;\"");
                 if ((testIndex % 2) == 1) {
                     writer.print("class=\"stripe\"");
                 }
@@ -212,7 +217,7 @@ public class EmailableReportListener implements IReporter {
 		
         // Print totals if there was more than one test
         if (testIndex > 1) {
-            writer.print("<tr>");
+            writer.print("<tr style=\"border: 1px solid #dee2e6;\">");
             writer.print("<th>Total</th>");
             writeTableHeader(integerFormat.format(totalTestsCount), "num");
             writeTableHeader(integerFormat.format(totalPassedTests), "num");
