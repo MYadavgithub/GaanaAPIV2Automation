@@ -1,20 +1,19 @@
 package solr;
 import java.util.List;
 import utils.CsvReader;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
-import java.net.URISyntaxException;
+import org.slf4j.Logger;
 import org.testng.Assert;
+import java.util.Optional;
+import java.util.ArrayList;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
+import java.util.concurrent.TimeUnit;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.request.QueryRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SolrCloud {
 
@@ -23,6 +22,7 @@ public class SolrCloud {
     ArrayList<String> testdatainputs = null;
     static final int INVOCATION_COUNT = 164;
     public String collection = "searchcollection";
+    ArrayList<Long> time_taken = new ArrayList<>();
     private static Logger log = LoggerFactory.getLogger(SolrCloud.class);
 
     public CloudSolrClient createConnection() {
@@ -41,10 +41,11 @@ public class SolrCloud {
         try {
             QueryRequest req = new QueryRequest(solrQuery);
             // solrClient.setDefaultCollection(collection);
-            long start = System.currentTimeMillis();
+            // long start = System.currentTimeMillis();
             QueryResponse response = req.process(solrClient);
-            long finish = System.currentTimeMillis();
-            long issue = finish - start;
+            // long finish = System.currentTimeMillis();
+            // long issue = finish - start;
+            // log.error("msg --> "+issue);
             list = response.getResults();
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,8 +54,8 @@ public class SolrCloud {
     }
 
     @Test(priority = 1, invocationCount = INVOCATION_COUNT)
-    public void solrCloudTest() throws URISyntaxException {
-
+    public void solrCloudTest() {
+        ArrayList<String> novalue = new ArrayList<>();
         if (solrClient == null) {
             createConnection();
         }
@@ -72,8 +73,9 @@ public class SolrCloud {
             long start = System.currentTimeMillis();
             SolrDocumentList documentList = getSolrResponse(solrQuery);
             long finish = System.currentTimeMillis();
+            time_taken.add(finish - start);
             long time_took = TimeUnit.MILLISECONDS.toSeconds(finish - start);
-            
+
             if((documentList != null && documentList.size() > 0) && time_took <= 1) {
                 for (SolrDocument document : documentList) {
                     int id = Integer.parseInt(document.get("id").toString().trim());
@@ -81,14 +83,26 @@ public class SolrCloud {
                 }
             }else{
                 log.error("Error!");
-                Assert.assertEquals(documentList.size() > 0, true, "Document list is empty!");
+                novalue.add(keyword);
+                //Assert.assertEquals(documentList.size() > 0, true, "Document list is empty!");
             }
         }
 
-        if(counter == 3){
-           System.exit(1);
-        }
         counter++;
+        if(counter == INVOCATION_COUNT){
+            int count = 1;
+            ArrayList<String> values = new ArrayList<>();
+            for(Long t_ms : time_taken){
+                if(t_ms > 200){
+                    values.add(testdatainputs.get(count));
+                }
+                count++;
+            }
+            log.info("Times in ms for each request : "+time_taken+"\n\n");
+            log.info("These keywords took more than 200ms to fetch data from solr : "+values);
+            log.info("\n\nThese keywords having no value in solr : "+novalue);
+        }
+
     }
 
     private void getTestData(){
