@@ -33,7 +33,7 @@ public class MoodMix extends BaseUrls{
 
     @BeforeClass
     public void prepareEnv(){
-        // System.setProperty("env", "local");
+        // System.setProperty("env", "production");
         // System.setProperty("type", "reco");
         // System.setProperty("device_type", "android");
         baseurl();
@@ -65,15 +65,20 @@ public class MoodMix extends BaseUrls{
         String subTitle = response.optString("subTitle").trim();
         String userType = response.optString("userType").trim();
         JSONArray entityMixObjects = response.getJSONArray("entityMixObjects");
-        
-        if(title.length() > 0 && subTitle.length() > 0 && userType.length() > 0){
+
+        if(subTitle.length() > 0 && userType.length() > 0){
+            log.info("SubTitle and userType available in response body.");
+        }
+
+        if(title.length() > 0 && entityMixObjects.getJSONObject(0).length() == 2){
             flag = 1; // to validate entity type & id
             if(entityMixObjects.length() > 0){
                 isEntitiesValid = entityMixObjects(flag, entityMixObjects);
             }else{
+                isEntitiesValid = true;
                 log.info("Entity objects are empty for below given url : \n"+urls.get(api_call_count));
             }
-        }else if(title.length() > 0 && subTitle.isEmpty() && userType.isEmpty()){
+        }else if(title.length() > 0 && entityMixObjects.getJSONObject(0).length() > 2){
             flag = 2; // others
             if(entityMixObjects.length() > 0){
                 isEntitiesValid = entityMixObjects(flag, entityMixObjects);
@@ -83,8 +88,13 @@ public class MoodMix extends BaseUrls{
             }    
         }
 
+        String failed_url = "";
+        if(!isEntitiesValid){
+            failed_url = urls.get(api_call_count);
+        }
+
         api_call_count = gHandler.invocationCounter(api_call_count, max_call);
-        Assert.assertEquals(isEntitiesValid, true, "In below given url, validation got failed : \n "+urls.get(api_call_count));        
+        Assert.assertEquals(isEntitiesValid, true, "In below given url, validation got failed : \n "+failed_url);  
     }
 
     private boolean entityMixObjects(int flag, JSONArray entityMixObjects) {
@@ -123,6 +133,7 @@ public class MoodMix extends BaseUrls{
                     }
                 }
             }else{
+                log.error("We got error in entity : "+entity);
                 result = false;
                 break;
             }
@@ -138,6 +149,8 @@ public class MoodMix extends BaseUrls{
     private void prepareUrls() {
         int[] entity_ids = MoodMixTd.entity_ids;
         max_call = entity_ids.length;
+        // max_call = 1;
+        // urls.add(baseurl+Endpoints.moodMix+"?deviceId="+device_id+"&entityId="+30);
         for(int entity_id : entity_ids){
             urls.add(baseurl+Endpoints.moodMix+"?deviceId="+device_id+"&entityId="+entity_id);
         }
