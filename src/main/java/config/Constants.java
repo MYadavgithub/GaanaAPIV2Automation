@@ -4,7 +4,7 @@ public class Constants{
 
     /**Commonly Used COnstants */
 
-    public static int RESPONSE_TIME = 1;
+    public static int RESPONSE_TIME = 2;
     public static String CUSTOM_REPORT_FOLDER = "/Reports";
 
     public static String ANDROID = "Android"; // type = 0
