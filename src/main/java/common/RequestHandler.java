@@ -24,7 +24,7 @@ public class RequestHandler {
             return response;
         }
 
-        return null;
+        return response;
     }
 
     public Response createGetRequest(Properties prop, String url) {
@@ -40,7 +40,8 @@ public class RequestHandler {
         if(validateStatusCodeAndResponseTime(response, url)){
             return response;
         }
-        return null;
+
+        return response;
     }
 
     public Response createGetRequestWithoutHeader(String url){
@@ -53,7 +54,8 @@ public class RequestHandler {
         if(validateStatusCodeAndResponseTime(response, url)){
             return response;
         }
-        return null;
+
+        return response;
     }
     
     /**
@@ -75,7 +77,7 @@ public class RequestHandler {
                 validateBasics = false;
                 log.info(url);
                 log.info(response.asString());
-                log.error("The get api call was taking more time than expected api was \n"+url);
+                log.error("The get api call was taking more time than expected, total time taken : "+response.getTimeIn(TimeUnit.SECONDS));
             }
         }
         return validateBasics;
