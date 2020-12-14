@@ -52,7 +52,7 @@ public class TancentStream extends BaseUrls {
 
     @Parameters({"consumer", "decryption_type"})
     @Test(priority = 1)
-    public void validateTencentStreamUrls(String consumer_ty, String decryption_ty){
+    public void validateStreamUrls(String consumer_ty, String decryption_ty){
         consumer = consumer_ty;
         decryption_type = decryption_ty;
         prepareTest(consumer, decryption_type);
@@ -74,7 +74,7 @@ public class TancentStream extends BaseUrls {
                 }else{
                     boolean isAkamaiUrl = false;
                     log.info("Akamai URL : "+decrypted_url);
-                    if(consumer.equals(Constants.GaanaWapApp)|| consumer.equals(Constants.GaanaWebsiteApp)){
+                    if(consumer.equals(Constants.GaanaWapApp) || consumer.equals(Constants.GaanaWebsiteApp)){
                         isAkamaiUrl = decrypted_url.contains("https://vodhlsweb-vh.akamaihd.net");
                     }else{
                         isAkamaiUrl = decrypted_url.contains("https://vodhls-vh.akamaihd.net");
@@ -92,7 +92,7 @@ public class TancentStream extends BaseUrls {
     }
 
     @Test(priority = 2)
-    public void validateTencentUrlsActive(){
+    public void validateStreamUrlsActive(){
         boolean isDecryptedUrlValidated = false;
         Helper helper = new Helper();
         if(decryption_type.equals(DECRYPTION_TYPE)){
