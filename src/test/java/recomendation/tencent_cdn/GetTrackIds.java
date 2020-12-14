@@ -31,7 +31,7 @@ public class GetTrackIds extends BaseUrls{
     public ArrayList<String> getAllTracks() {
         String url = prepareRequest();
         log.info("Get tracks URL : "+url);
-        Response response = handler.createGetRequestWithoutHeader(url);
+        Response response = handler.createGetRequest(url);
         ArrayList<String> tracklist = getAllTrackIds(response);
         return tracklist;
     }
@@ -62,7 +62,7 @@ public class GetTrackIds extends BaseUrls{
     public String createHashKey(String string){
         String url = createHashGenratorUrl(string);
         RequestHandler rq = new RequestHandler();
-        Response response = rq.createGetRequestCall(prop, url);
+        Response response = rq.createGetRequest(url);
         String hash = response.asString();
         if(hash.length() > 0)
             return hash;

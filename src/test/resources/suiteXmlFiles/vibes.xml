@@ -12,7 +12,7 @@
 
 	<test name="Vibes Api Initial" annotations="JDK" preserve-order="true">
 
-		<parameter name = "id" value="0"/> 
+		<parameter name = "id" value="0"/>
 
 		<classes>
 			<class name="recomendation.reco_tracks.Vibes" />
@@ -22,7 +22,7 @@
 
 	<test name="Vibes Api Second" annotations="JDK" preserve-order="true">
 
-		<parameter name = "id" value= "1"/> 
+		<parameter name = "id" value= "1"/>
 
 		<classes>
 			<class name="recomendation.reco_tracks.Vibes" />

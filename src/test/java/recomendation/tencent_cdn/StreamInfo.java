@@ -40,7 +40,7 @@ public class StreamInfo extends BaseUrls {
         String url = prepareUrl(trackids);
         log.info("Stream Url : "+url);
         RequestHandler rq = new RequestHandler();
-        Response api_response = rq.createGetRequestCall(prop, url);
+        Response api_response = rq.createGetRequest(url);
         JSONObject response = new JSONObject(api_response.asString());
         JSONArray stream_details = response.getJSONArray("streamingDetails");
         ArrayList<String> stream_url = getStreamUrls(stream_details);
@@ -65,6 +65,8 @@ public class StreamInfo extends BaseUrls {
 
         if(stream_url.size() == trackids.size()){
             return stream_url;
+        }else{
+            log.error("Stream Url and Track ids size not matching : "+stream_url.size()+" : "+trackids.size());
         }
 
         return null;

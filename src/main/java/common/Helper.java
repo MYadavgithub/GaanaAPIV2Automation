@@ -279,6 +279,7 @@ public class Helper {
             return linkActive;
         }
 
+        int count = 1;
 		for(String link : links) {
 			if(link.contains("http")) {
                 try {
@@ -290,14 +291,15 @@ public class Helper {
                         linkActive = true;
                     }else {
                         linkActive = false;
-                        inactiveUrls.add(link);
+                        inactiveUrls.add("Count : "+count+", URL :"+link);
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-			}
+            }
+            count++;
         }
 
         if(inactiveUrls.size() > 0){

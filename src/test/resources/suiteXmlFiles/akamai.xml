@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--JIRA ID -> https://timesgroup.jira.com/browse/GAANA-40505 -->
+<suite name="Akamai Test Suite" verbose="1" parallel="tests" thread-count="1" configfailurepolicy="continue">
+
+    <listeners>
+		<listener class-name="utils.ExtentManagerListener" />
+		<listener class-name="utils.EmailableReportListener" />
+		<listener class-name="utils.RetryTransformListener" />
+    </listeners>
+
+	<test name="Akamai Android" annotations="JDK" preserve-order="true">
+
+		<parameter name = "consumer" value="android"/>
+		<parameter name = "decryption_type" value="akamai"/>
+
+		<classes>
+			<class name="recomendation.tencent_cdn.TancentStream" />
+		</classes>
+
+	</test>
+
+	<test name="Akamai IOS" annotations="JDK" preserve-order="true">
+
+		<parameter name = "consumer" value="ios"/>
+		<parameter name = "decryption_type" value="akamai"/>
+
+		<classes>
+			<class name="recomendation.tencent_cdn.TancentStream" />
+		</classes>
+
+	</test>
+
+	<test name="Akamai Bosch" annotations="JDK" preserve-order="true">
+
+		<parameter name = "consumer" value="Bosch"/>
+		<parameter name = "decryption_type" value="akamai"/>
+
+		<classes>
+			<class name="recomendation.tencent_cdn.TancentStream" />
+		</classes>
+
+	</test>
+
+	<test name="Akamai GreatWall" annotations="JDK" preserve-order="true">
+
+		<parameter name = "consumer" value="GreatWall"/>
+		<parameter name = "decryption_type" value="akamai"/>
+
+		<classes>
+			<class name="recomendation.tencent_cdn.TancentStream" />
+		</classes>
+
+	</test>
+
+	<test name="Akamai SamsungFridge" annotations="JDK" preserve-order="true">
+
+		<parameter name = "consumer" value="SamsungFridge"/>
+		<parameter name = "decryption_type" value="akamai"/>
+
+		<classes>
+			<class name="recomendation.tencent_cdn.TancentStream" />
+		</classes>
+
+	</test>
+
+	<test name="Akamai GaanaWapApp" annotations="JDK" preserve-order="true">
+
+		<parameter name = "consumer" value="WapApp"/>
+		<parameter name = "decryption_type" value="akamai"/>
+
+		<classes>
+			<class name="recomendation.tencent_cdn.TancentStream" />
+		</classes>
+
+	</test>
+
+	<test name="Akamai GaanaWebsiteApp" annotations="JDK" preserve-order="true">
+
+		<parameter name = "consumer" value="WebApp"/>
+		<parameter name = "decryption_type" value="akamai"/>
+
+		<classes>
+			<class name="recomendation.tencent_cdn.TancentStream" />
+		</classes>
+
+	</test>
+
+</suite>
