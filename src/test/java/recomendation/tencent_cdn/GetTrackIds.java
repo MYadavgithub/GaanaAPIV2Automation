@@ -39,17 +39,19 @@ public class GetTrackIds extends BaseUrls{
     private ArrayList<String> getAllTrackIds(Response response_data) {
         ArrayList<String> trackList = new ArrayList<String>();     
         JSONObject response = new JSONObject(response_data.asString());
-        JSONArray tracklist = response.getJSONArray("section_data").getJSONObject(0).getJSONArray("tracks");
-
-        Iterator<Object> tracks = tracklist.iterator();
-        while(tracks.hasNext()){
-            JSONObject track = (JSONObject) tracks.next();
-            int content_source_value = Integer.parseInt(track.getString("content_source").trim());
-            if(content_source_value == content_source){
-                trackList.add(track.getString("track_id").trim());
+        try{
+            JSONArray tracklist = response.getJSONArray("section_data").getJSONObject(0).getJSONArray("tracks");
+            Iterator<Object> tracks = tracklist.iterator();
+            while(tracks.hasNext()){
+                JSONObject track = (JSONObject) tracks.next();
+                int content_source_value = Integer.parseInt(track.getString("content_source").trim());
+                if(content_source_value == content_source){
+                    trackList.add(track.getString("track_id").trim());
+                }
             }
+        }catch(Exception e){
+            log.error("No response found in get track api!");
         }
-
         return trackList;
     }
 

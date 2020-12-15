@@ -19,7 +19,7 @@ public class StreamInfo extends BaseUrls {
 
     ArrayList<String> trackids = null;
     RequestHandler handler = new RequestHandler();
-    private static Logger log = LoggerFactory.getLogger(GetTrackIds.class);
+    private static Logger log = LoggerFactory.getLogger(StreamInfo.class);
 
     private String prepareUrl(ArrayList<String> trackids) {
         // System.setProperty("env", "local");
@@ -37,13 +37,18 @@ public class StreamInfo extends BaseUrls {
     // @Test(priority = 1)
     public ArrayList<String> getAllStreamUrl(ArrayList<String> alltrackids) {
         trackids = alltrackids;
+        ArrayList<String> stream_url = null;
         String url = prepareUrl(trackids);
         log.info("Stream Url : "+url);
         RequestHandler rq = new RequestHandler();
         Response api_response = rq.createGetRequest(url);
-        JSONObject response = new JSONObject(api_response.asString());
-        JSONArray stream_details = response.getJSONArray("streamingDetails");
-        ArrayList<String> stream_url = getStreamUrls(stream_details);
+        try{
+            JSONObject response = new JSONObject(api_response.asString());
+            JSONArray stream_details = response.getJSONArray("streamingDetails");
+            stream_url = getStreamUrls(stream_details);
+        }catch(Exception e){
+            log.error("No stream urls exists!");
+        }
         return stream_url;
     }
 

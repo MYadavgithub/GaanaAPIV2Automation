@@ -19,7 +19,7 @@ public class TancentStream extends BaseUrls {
     ArrayList<String> trackids = null;
     ArrayList<String> allStreamUrls = null;
     ArrayList<String> decryptedUrls = new ArrayList<>();
-    private static Logger log = LoggerFactory.getLogger(GetTrackIds.class);
+    private static Logger log = LoggerFactory.getLogger(TancentStream.class);
 
     public void prepareTest(String consumer, String decryption_type){
         // System.setProperty("env", "local");
@@ -30,6 +30,11 @@ public class TancentStream extends BaseUrls {
         GetTrackIds getTrackids = new GetTrackIds();
         if(decryption_type.equals(DECRYPTION_TYPE)){
             trackids = getTrackids.getAllTracks();
+            if(trackids.size() <= 0){
+                ArrayList<String> tracks = CsvReader.readCsv("./src/test/resources/data/Tencent_CDN_Tracks.csv");
+                tracks.remove(0);
+                trackids = tracks;
+            }
         }else{
             ArrayList<String> tracks = CsvReader.readCsv("./src/test/resources/data/Track_Akamai_Test.csv");
             tracks.remove(0);
@@ -57,7 +62,8 @@ public class TancentStream extends BaseUrls {
         decryption_type = decryption_ty;
         prepareTest(consumer, decryption_type);
         RequestHandler rq = new RequestHandler();
-        if(trackids.size() == allStreamUrls.size()){
+
+        if(trackids.size() == allStreamUrls.size() && trackids.size() > 0){
             for(String stream_url : allStreamUrls){
                 String url = prepareUrl(stream_url);
                 Response response = rq.createGetRequest(url);
@@ -88,6 +94,9 @@ public class TancentStream extends BaseUrls {
                     }
                 }
             }
+        }else{
+            log.error("Not able to complete this test suite due to no track_ids exits as test data!");
+            Assert.assertEquals(trackids.size() > 0, true);
         }
     }
 
