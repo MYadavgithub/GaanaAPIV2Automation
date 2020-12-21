@@ -5,7 +5,7 @@ public class Endpoints {
     public static String recoTracks = "/recommendation/recommendedTracks/";
     public static String recoTracksPartner = "/recommendation/partnership/";
     public static String vibes = "/recommendation/vibes";
-
+    public static String moodMix = "/for-you/moodmix";
 
     /**Search Auto Suggest Endpoints */
     public static String autoSuggestStageEndpoint(String query_params) {
