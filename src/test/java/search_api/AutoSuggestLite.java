@@ -183,7 +183,8 @@ public class AutoSuggestLite extends BaseUrls {
             result.put(EX_COUNT, result_val);
         }
         setAndRestCounter();
-        processCsvWrite(result);
+        if(EX_COUNT == 0 && result.size() > 0)
+            processCsvWrite(result);
     }
 
     // @Test(priority = 4) // Emailer Disabled
