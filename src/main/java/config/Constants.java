@@ -34,11 +34,11 @@ public class Constants{
 
     /* Recomended Track Constants */
     public final static int REC_INVOCATION_COUNT = 4;
-    public final static int AS_INVOCATION_COUNT = 164;
+    public final static int AS_INVOCATION_COUNT = 10;
 
     /**Emailer Config */
     public static String EMAILER_EMAIL = "umesh.shukla@gaana.com";
-    public static String EMAILER_PWD = "lcjzzcwgnzrqbcbi";
+    public static String EMAILER_PWD = "lcjzzcwgnzrqbcbiwd"; // pwd 2L
     public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
     public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, radhika.garg@gaana.com";
     public static String EMAIL_BCC_LIST = "";

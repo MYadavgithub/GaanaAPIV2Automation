@@ -146,7 +146,7 @@ public class AutoSuggestLite extends BaseUrls {
                 JSONArray prod_gd_value = null;
 
                 JSONObject stage_gr_value = stage_gr.getJSONObject(i);
-                JSONObject prod_gr_value = stage_gr.getJSONObject(i);
+                JSONObject prod_gr_value = prod_gr.getJSONObject(i);
                 type = validateType(stage_gr_value, prod_gr_value);
 
                 if(type.length() > 0){
@@ -186,7 +186,7 @@ public class AutoSuggestLite extends BaseUrls {
         processCsvWrite(result);
     }
 
-    @Test(priority = 4)
+    // @Test(priority = 4) // Emailer Disabled
     public void sendEmail(){
         String file_name = "AutoSuggestLite.csv";
         String scope = "Scope : This suite compares stage response with production response.";

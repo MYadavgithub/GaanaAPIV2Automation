@@ -40,7 +40,7 @@ public class RequestHandler {
         if(validateStatusCodeAndResponseTime(response, url)){
             return response;
         }
-        return null;
+        return response;
     }
 
     public Response createGetRequestWithoutHeader(String url){
