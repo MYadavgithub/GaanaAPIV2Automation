@@ -18,14 +18,14 @@ public class Endpoints {
     public static String autoSuggestProdEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
         endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
-        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English&testing=1");
+        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English&testing=1&autocomplete=1");
         return endpoint.toString();
     }
 
     public static String autoSuggestSolrEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
         endpoint.append("/gaanasearch-api/mobilesuggest/getErSolr?query=" + query_params);
-        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English&testing=1");
+        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English&testing=1&autocomplete=1");
         return endpoint.toString();
     }
 }
