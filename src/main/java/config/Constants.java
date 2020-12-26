@@ -34,7 +34,7 @@ public class Constants{
 
     /* Recomended Track Constants */
     public final static int REC_INVOCATION_COUNT = 4;
-    public final static int AS_INVOCATION_COUNT = 1010;
+    public final static int AS_INVOCATION_COUNT = 3;
 
     /**Emailer Config */
     public static String EMAILER_EMAIL = "umesh.shukla@gaana.com";
