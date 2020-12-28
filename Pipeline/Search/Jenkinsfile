@@ -26,7 +26,7 @@ pipeline {
             trim: true
         )
         choice(
-            choices: ['local', 'preprod', 'prod'],
+            choices: ['prod', 'preprod', 'local'],
             description: 'Select environment according to your execution requirement.',
             name: 'env'
         )

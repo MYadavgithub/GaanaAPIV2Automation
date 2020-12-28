@@ -112,11 +112,14 @@ public class Mailer {
 
     private static String getEmailSubject(String name){
         String env = GlobalConfigHandler.getEnv();
-        if(env.equalsIgnoreCase("local"))
+        if(env.equalsIgnoreCase("local")){
             env = "Staging";
+        }else if(env.equalsIgnoreCase("prod")){
+            env = "Production";
+        }
 
         String type = GlobalConfigHandler.getType();
 
-        return env+" | "+type+" | "+ name+" api test suite execution report | "+CommonUtils.getCurrentDateTime();
+        return env+" | "+ type +" | "+ name +" Api Test Suite Execution Report (Compared Data) | "+CommonUtils.getCurrentDateTime();
     }
 }
