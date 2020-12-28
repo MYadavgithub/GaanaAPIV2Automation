@@ -73,7 +73,7 @@ public class EmailableReportListener implements IReporter {
     }
     
     protected void writeReportTitle(String title) {
-        writer.println("<center><h1>"+ title +"</h1></center>");
+        writer.println("<center><h4>"+ title +"</h4></center>");
 	}
 
     protected void writeDocumentStart() {

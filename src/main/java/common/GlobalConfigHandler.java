@@ -20,7 +20,7 @@ public class GlobalConfigHandler {
                 environment = Constants.STAGE_ENV;
             }else if(env.equalsIgnoreCase("preprod")){
                 environment = Constants.PRE_PROD_ENV;
-            }else if(env.equalsIgnoreCase("production")){
+            }else if(env.equalsIgnoreCase("prod")){
                 environment = Constants.PROD_ENV;
             }
         }else{

@@ -33,7 +33,7 @@ public class Constants{
     public static int MUSIC_GAANA_RECOMMENDATION_DB = 5;
 
     /* Recomended Track Constants */
-    public final static int REC_INVOCATION_COUNT = 4;
+    public final static int REC_INVOCATION_COUNT = 1;
     public final static int AS_INVOCATION_COUNT = 164;
 
     /**Emailer Config */
