@@ -1,7 +1,12 @@
 /* groovylint-disable NoDef */
 /* groovylint-disable-next-line CompileStatic */
 pipeline {
+
     agent any
+
+    triggers {
+        cron('30 11 * * *')
+    }
 
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
