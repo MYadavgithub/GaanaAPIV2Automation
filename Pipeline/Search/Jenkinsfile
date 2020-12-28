@@ -20,7 +20,7 @@ pipeline {
             trim: true
         )
         string(
-            defaultValue: 'reco_regression.xml',
+            defaultValue: 'search_auto_suggest.xml',
             description: 'Enter your suite xml file which you want to execute.',
             name: 'suiteXmlFile',
             trim: true
