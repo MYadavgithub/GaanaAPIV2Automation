@@ -26,12 +26,12 @@ pipeline {
             trim: true
         )
         choice(
-            choices: ['production', 'local', 'preprod'],
+            choices: ['local', 'preprod', 'production'],
             description: 'Select environment according to your execution requirement.',
             name: 'env'
         )
         choice(
-            choices: ['Reco', 'Search'],
+            choices: ['Reco'],
             description: 'Select whether you want to execute on Recommendation module or Search.',
             name: 'type'
         )
