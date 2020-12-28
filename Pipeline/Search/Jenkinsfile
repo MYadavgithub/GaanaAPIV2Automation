@@ -94,7 +94,7 @@ pipeline {
             subject: "${emailSub}"+'$DEFAULT_SUBJECT',
             /* groovylint-disable-next-line GStringExpressionWithinString */
             body: '''
-            ${FILE, path = "/var/lib/jenkins/workspace/pipeLine_build/Reports/EmailerReport.html"}<br>
+            ${FILE, path = "/var/lib/jenkins/workspace/Search_Regression/Reports/EmailerReport.html"}<br>
             ${SCRIPT, template="groovy-html.template"}
             <b><i>For Detailed information please download extent report from attachement.</i></b><br>
             Both Tencent and Akamai working as expected for shown consumer types in report.''',
