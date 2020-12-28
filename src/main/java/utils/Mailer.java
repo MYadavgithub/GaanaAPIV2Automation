@@ -69,7 +69,7 @@ public class Mailer {
                 sb.append("Please download the attachment for detailed information.");
                 messageBodyPart1.setText(sb.toString());
                 BodyPart messageBodyPart2 = new MimeBodyPart();
-                messageBodyPart2.setText("\n\nBest Regards, \nUmesh Shukla \nGGM Search & Reco QA");
+                messageBodyPart2.setText("\n\nBest Regards, \nUmesh Shukla"/*\nGGM Search & Reco QA"*/);
                 // zf.createZip();
                 DataSource source = new FileDataSource("./"+Constants.CUSTOM_REPORT_FOLDER+"/Runtime/"+file_name);
                 BodyPart messageBodyPart3 = new MimeBodyPart();
