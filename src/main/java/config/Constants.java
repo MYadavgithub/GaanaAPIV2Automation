@@ -7,13 +7,20 @@ public class Constants{
     public static int RESPONSE_TIME = 2;
     public static String CUSTOM_REPORT_FOLDER = "/Reports";
 
-    public static String ANDROID = "Android"; // type = 0
-    public static String IOS = "Ios"; // type = 1
-    public static String WEB = "Web"; // type = 2
+    /**Device Types (0 to 6)*/
+    public static String ANDROID = "Android";
+    public static String IOS = "Ios";
+    public static String Bosch = "Bosch";
+    public static String GreatWall = "GreatWall";
+    public static String SamsungFridge = "SamsungFridge";
+    public static String GaanaWapApp = "WapApp";
+    public static String GaanaWebsiteApp = "WebApp";
 
+    /**Api Type */
     public static String API_TYPE_SEARCH = "Search";
     public static String API_TYPE_RECO = "Reco";
 
+    /** Env Type */
     public static String STAGE_ENV = "local";
     public static String PRE_PROD_ENV = "preprod";
     public static String PROD_ENV = "prod";

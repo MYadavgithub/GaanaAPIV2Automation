@@ -46,7 +46,7 @@ public class MoodMix extends BaseUrls{
         prepareUrls();
         String url = urls.get(api_call_count);
         log.info("URL : "+url);
-        Response response = handler.createGetRequestWithoutHeader(url);
+        Response response = handler.createGetRequest(url);
         responses.put(api_call_count, response);
 
         if(api_call_count == (MoodMixTd.INVOCATION_COUNT-1)){

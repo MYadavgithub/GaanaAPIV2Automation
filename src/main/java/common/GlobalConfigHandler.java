@@ -3,27 +3,27 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Map.Entry;
 import config.Constants;
 import java.text.SimpleDateFormat;
 
 public class GlobalConfigHandler {
-    
     /**
      * Get Execution Environment
      * @return
      */
-    public static String getEnv(){
+    public static String getEnv() {
         String environment = "";
         String env = System.getProperty("env");
-        if(env != null){
-            if(env.equalsIgnoreCase("local")){
+        if (env != null) {
+            if (env.equalsIgnoreCase("local")) {
                 environment = Constants.STAGE_ENV;
-            }else if(env.equalsIgnoreCase("preprod")){
+            } else if (env.equalsIgnoreCase("preprod")) {
                 environment = Constants.PRE_PROD_ENV;
             }else if(env.equalsIgnoreCase("prod")){
                 environment = Constants.PROD_ENV;
             }
-        }else{
+        } else {
             environment = Constants.STAGE_ENV;
         }
         return environment;
@@ -32,40 +32,47 @@ public class GlobalConfigHandler {
     /**
      * Get API type
      */
-    public static String getType(){
+    public static String getType() {
         String type = "";
         String env = System.getProperty("type");
-        if(env != null){
-            if(env.equalsIgnoreCase("Search")){
+        if (env != null) {
+            if (env.equalsIgnoreCase("Search")) {
                 type = Constants.API_TYPE_SEARCH;
-            }else if(env.equalsIgnoreCase("Reco")){
+            } else if (env.equalsIgnoreCase("Reco")) {
                 type = Constants.API_TYPE_RECO;
             }
-        }else{
+        } else {
             type = null;
         }
         return type;
     }
 
     /**
-     * Get Device Type
-     * default value android.
+     * Get Device Type default value android.
      */
-    public static int getDeviceType(){
+    public static int getDeviceType() {
         String env = System.getProperty("device_type");
-        if(env != null){
-            if(env.equalsIgnoreCase(Constants.ANDROID)){
+        if (env != null) {
+            if (env.equalsIgnoreCase(Constants.ANDROID)) {
                 return 0;
-            }else if(env.equalsIgnoreCase(Constants.IOS)){
+            } else if (env.equalsIgnoreCase(Constants.IOS)) {
                 return 1;
-            }else if(env.equalsIgnoreCase(Constants.WEB)){
+            } else if (env.equalsIgnoreCase(Constants.Bosch)) {
                 return 2;
+            } else if (env.equalsIgnoreCase(Constants.GreatWall)) {
+                return 3;
+            } else if (env.equalsIgnoreCase(Constants.SamsungFridge)) {
+                return 4;
+            } else if (env.equalsIgnoreCase(Constants.GaanaWapApp)) {
+                return 5;
+            } else if (env.equalsIgnoreCase(Constants.GaanaWebsiteApp)) {
+                return 6;
             }
         }
         return 0;
     }
 
-    public static String todaysDate(){
+    public static String todaysDate() {
         Date today = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(today);
@@ -74,10 +81,10 @@ public class GlobalConfigHandler {
     public static Map<String, String> headers(Properties prop) {
         Map<String, String> headers = new HashMap<String, String>();
 
-        if(getDeviceType() == 0){
+        if (getDeviceType() == 0) {
             headers.put("gaanaAppVersion", prop.getProperty("gaanaAppVersionAndroid").toString().trim());
             headers.put("deviceType", prop.getProperty("deviceTypeAndroid").toString().trim());
-        }else if(getDeviceType() == 1){
+        } else if (getDeviceType() == 1) {
             headers.put("gaanaAppVersion", prop.getProperty("gaanaAppVersionIos").toString().trim());
             headers.put("deviceType", prop.getProperty("deviceTypeIos").toString().trim());
         }
@@ -88,11 +95,29 @@ public class GlobalConfigHandler {
         return headers;
     }
 
-    public int invocationCounter(int counter, int Max){
+    public int invocationCounter(int counter, int Max) {
         counter++;
-        if(counter == Max){
+        if (counter == Max) {
             counter = 0;
         }
         return counter;
+    }
+
+    public static String getAppName(int id) {
+        Map<Integer, String> appName = new HashMap<>();
+        appName.put(0, Constants.ANDROID);
+        appName.put(1, Constants.IOS);
+        appName.put(2, Constants.Bosch);
+        appName.put(3, Constants.GreatWall);
+        appName.put(4, Constants.SamsungFridge);
+        appName.put(5, Constants.GaanaWapApp);
+        appName.put(6, Constants.GaanaWebsiteApp);
+
+        for (Entry<Integer, String> app : appName.entrySet()) {
+            if(app.getKey().equals(id)){
+                return appName.get(id);
+            }
+        }
+        return "";
     }
 }
