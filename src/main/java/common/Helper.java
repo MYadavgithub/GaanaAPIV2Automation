@@ -273,11 +273,13 @@ public class Helper {
      */
     public boolean validateActiveLinks(ArrayList<String> links) {
         boolean linkActive = false;
+        ArrayList<String> inactiveUrls = new ArrayList<>();
 
         if(links.size() <= 0){
             return linkActive;
         }
 
+        int count = 1;
 		for(String link : links) {
 			if(link.contains("http")) {
                 try {
@@ -289,16 +291,21 @@ public class Helper {
                         linkActive = true;
                     }else {
                         linkActive = false;
-                        log.error(link+" This url is broken.");
-                        break;
+                        inactiveUrls.add("Count : "+count+", URL :"+link);
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-			}
-		}
+            }
+            count++;
+        }
+
+        if(inactiveUrls.size() > 0){
+            linkActive = false;
+            log.error("Below given urls are inactive state, please manually validate the same : \n"+inactiveUrls);
+        }
 		return linkActive;
 	}
 }

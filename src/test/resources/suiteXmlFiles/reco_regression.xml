@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="Regression Test Suite" verbose="1" parallel="tests" thread-count="1" configfailurepolicy="continue">
+<suite name="Reco Regression Test Suite" verbose="1" parallel="tests" thread-count="1" configfailurepolicy="continue">
 
     <listeners>
 		<listener class-name="utils.ExtentManagerListener" />
@@ -9,10 +9,18 @@
 		<listener class-name="utils.RetryTransformListener" />
 	</listeners>
 	
-	<test name="Recomended Track List " annotations="JDK" preserve-order="true">
+	<test name="Recomended Track List" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.reco_tracks.RecomendedTracks" />
+		</classes>
+
+	</test>
+
+	<test name="Recomended MoodMix" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.v2.MoodMix" />
 		</classes>
 
 	</test>

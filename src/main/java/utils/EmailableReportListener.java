@@ -73,7 +73,7 @@ public class EmailableReportListener implements IReporter {
     }
     
     protected void writeReportTitle(String title) {
-        writer.println("<center><h1>"+ title +"</h1></center>");
+        writer.println("<center><h4>"+ title +"</h4></center>");
 	}
 
     protected void writeDocumentStart() {
@@ -148,7 +148,7 @@ public class EmailableReportListener implements IReporter {
         writer.println("<div class=\"easy-test-overview\">");
         writer.println("<table class=\"table-bordered\" align=\"center\">");
         writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Name</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Count</th>");
+        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Steps</th>");
         writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Passed</th>");
         writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Retry</th>");
         writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Failed</th>");
@@ -166,7 +166,7 @@ public class EmailableReportListener implements IReporter {
             writer.println("</th></tr>");
 
             for (TestResult testResult : suiteResult.getTestResults()) {
-            	int testsCount = testResult.getTestCount();
+                int testsCount = testResult.getTestCount();
                 int passedTests = testResult.getPassedTestCount();
                 int skippedTests = testResult.getSkippedTestCount();
                 int failedTests = testResult.getFailedTestCount();
