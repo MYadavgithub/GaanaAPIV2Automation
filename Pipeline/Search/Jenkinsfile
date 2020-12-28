@@ -8,7 +8,7 @@ pipeline {
         def mvnHome = tool name: 'Maven', type: 'maven'
         def emailTo = "umeshshukla195@gmail.com"
         def replyTo = "umesh.shukla@gaana.com"
-        def emailSub = "Staging | CDN | Tencent Migration Test Suite along with Akamai | "
+        def emailSub = "TIP | Search | Daily Test Suite Report | "
     }
 
     parameters
