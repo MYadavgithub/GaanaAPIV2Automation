@@ -87,4 +87,12 @@ public class GlobalConfigHandler {
         headers.put("appVersion", prop.getProperty("appVersion").toString().trim());
         return headers;
     }
+
+    public int invocationCounter(int counter, int Max){
+        counter++;
+        if(counter == Max){
+            counter = 0;
+        }
+        return counter;
+    }
 }

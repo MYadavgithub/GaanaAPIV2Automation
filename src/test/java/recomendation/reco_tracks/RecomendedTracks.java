@@ -270,7 +270,7 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-    @Test(priority = 9, invocationCount = Constants.REC_INVOCATION_COUNT)
+    // @Test(priority = 9, invocationCount = Constants.REC_INVOCATION_COUNT)
     public void validateGener(){
         int flag = 0;
         int first_gener_id = 0;
