@@ -46,9 +46,7 @@ public class Constants{
     /**Emailer Config */
     public static String EMAILER_EMAIL = "umesh.shukla@gaana.com";
     public static String EMAILER_PWD = "pswagczcaoiybomw";
-    // public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
-    // public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, umesh.shukla@gaana.com";
-    public static String EMAIL_TO_LIST = "umeshshukla195@gmail.com";
-    public static String EMAIL_CC_LIST = "";
+    public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
+    public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, c-abhishek.gupta@gaana.com, umesh.shukla@gaana.com";
     public static String EMAIL_BCC_LIST = "";
 }
