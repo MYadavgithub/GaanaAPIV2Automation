@@ -61,19 +61,19 @@ public class RequestHandler {
         return response;
     }
 
-    // public Response createGetRequestWithoutHeader(String url){
-    //     Response response = RestAssured.given()
-    //         .urlEncodingEnabled(false)
-    //         // .log().all()
-    //         .when().get(url);
+    public Response createGetRequestWithCustomHeaders(String url, Map<String, String> headers){
+        Response response = RestAssured.given()
+            .urlEncodingEnabled(false)
+            .headers(headers)
+            // .log().all()
+            .when().get(url);
 
-    //     // response.prettyPrint();
-    //     if(validateStatusCodeAndResponseTime(response, url)){
-    //         return response;
-    //     }
+        if(validateStatusCodeAndResponseTime(response, url)){
+            return response;
+        }
 
-    //     return response;
-    // }
+        return response;
+    }
     
     /**
      * validate status code and response time
