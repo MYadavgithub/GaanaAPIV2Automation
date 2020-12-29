@@ -4,6 +4,12 @@ pipeline {
 
     agent any
 
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        timestamps()
+        retry(2)
+    }
+
     triggers {
         cron('30 11 * * *')
     }
@@ -12,6 +18,7 @@ pipeline {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
         def emailTo = "manish.pandey@gaana.com"
+        def abortedTo = "umesh.shukla@gaana.com"
         def replyTo = "umesh.shukla@gaana.com"
         def emailSub = "TIP | Search | Daily Test Suite Report | "
     }
@@ -47,10 +54,6 @@ pipeline {
         )
     }
 
-    options {
-        timestamps()
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -65,6 +68,12 @@ pipeline {
                         [
                             credentialsId: '23aea9c9-d673-4f84-a417-aa6efc2f921e',
                             url: 'git@bitbucket.org:umesh_qa/ggm_api.git'
+                        ]
+                    ],
+                    extensions: [
+                        [
+                            $class: 'CheckoutOption',
+                            timeout: 10
                         ]
                     ]
                 ])
@@ -91,21 +100,31 @@ pipeline {
     post {
         always {
             script {
-                def workspace = env.WORKSPACE
+               def buildStatus = "${currentBuild.currentResult}"
+                if(buildStatus.equalsIgnoreCase('ABORTED')){
+                    echo "Bulid was : ${buildStatus}"
+                    emailext attachLog: true,
+                    to: "${abortedTo}",
+                    replyTo: "${replyTo}",
+                    subject: "${emailSub}"+'$DEFAULT_SUBJECT',
+                    body: ''' ${SCRIPT, template="groovy-html.template"}''',
+                    mimeType: 'text/html',
+                    compressLog: true
+                }else{
+                    emailext attachLog: true,
+                    to: "${emailTo}",
+                    replyTo: "${replyTo}",
+                    subject: "${emailSub}"+'$DEFAULT_SUBJECT',
+                    /* groovylint-disable-next-line GStringExpressionWithinString */
+                    body: '''
+                    ${FILE, path = "/var/lib/jenkins/workspace/Search_Regression/Reports/EmailerReport.html"}<br>
+                    ${SCRIPT, template="groovy-html.template"}
+                    <b><i>For Detailed information please download extent report from attachement.</i></b><br>''',
+                    mimeType: 'text/html',
+                    compressLog: true,
+                    attachmentsPattern: '**/Reports/*ExtentReport.html'
+                }
             }
-            emailext attachLog: true,
-            to: "${emailTo}",
-            replyTo: "${replyTo}",
-            subject: "${emailSub}"+'$DEFAULT_SUBJECT',
-            /* groovylint-disable-next-line GStringExpressionWithinString */
-            body: '''
-            ${FILE, path = "/var/lib/jenkins/workspace/Search_Regression/Reports/EmailerReport.html"}<br>
-            ${SCRIPT, template="groovy-html.template"}
-            <b><i>For Detailed information please download extent report from attachement.</i></b><br>
-            Both Tencent and Akamai working as expected for shown consumer types in report.''',
-            mimeType: 'text/html',
-            compressLog: true,
-            attachmentsPattern: '**/Reports/*ExtentReport.html'
         }
     }
 }
