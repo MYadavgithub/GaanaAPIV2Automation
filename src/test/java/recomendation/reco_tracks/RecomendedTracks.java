@@ -89,7 +89,7 @@ public class RecomendedTracks extends BaseUrls {
 
     @Test(priority = 1, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
     public void callRecoTrack(String url) {
-        Response response = req.createGetRequestCall(prop, url);
+        Response response = req.createGetRequest(url);
         if (response != null) {
             JSONObject response_object = new JSONObject(response.asString());
             responses.put(api_hit_count, response_object);
