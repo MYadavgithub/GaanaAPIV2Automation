@@ -69,7 +69,7 @@ public class Mailer {
                 sb.append("Please download the attachment for detailed information.");
                 messageBodyPart1.setText(sb.toString());
                 BodyPart messageBodyPart2 = new MimeBodyPart();
-                messageBodyPart2.setText("\n\nBest Regards, \nUmesh Shukla \nGGM Search & Reco QA");
+                messageBodyPart2.setText("\n\nBest Regards, \nUmesh Shukla"/*\nGGM Search & Reco QA"*/);
                 // zf.createZip();
                 DataSource source = new FileDataSource("./"+Constants.CUSTOM_REPORT_FOLDER+"/Runtime/"+file_name);
                 BodyPart messageBodyPart3 = new MimeBodyPart();
@@ -112,11 +112,14 @@ public class Mailer {
 
     private static String getEmailSubject(String name){
         String env = GlobalConfigHandler.getEnv();
-        if(env.equalsIgnoreCase("local"))
+        if(env.equalsIgnoreCase("local")){
             env = "Staging";
+        }else if(env.equalsIgnoreCase("prod")){
+            env = "Production";
+        }
 
         String type = GlobalConfigHandler.getType();
 
-        return env+" | "+type+" | "+ name+" api test suite execution report | "+CommonUtils.getCurrentDateTime();
+        return env+" | "+ type +" | "+ name +" Api Test Suite Execution Report (Compared Data) | "+CommonUtils.getCurrentDateTime();
     }
 }

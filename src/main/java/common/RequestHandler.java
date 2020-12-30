@@ -1,5 +1,6 @@
 package common;
 import config.Constants;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +25,7 @@ public class RequestHandler {
             return response;
         }
 
-        return null;
+        return response;
     }
 
     public Response createGetRequest(Properties prop, String url) {
@@ -40,21 +41,39 @@ public class RequestHandler {
         if(validateStatusCodeAndResponseTime(response, url)){
             return response;
         }
-        return null;
+
+        return response;
     }
 
-    public Response createGetRequestWithoutHeader(String url){
+    public Response createGetRequest(String url){
+        Map<String, String> headers = Headers.getHeaders(0);
         Response response = RestAssured.given()
             .urlEncodingEnabled(false)
             // .log().all()
+            .headers(headers)
             .when().get(url);
 
         // response.prettyPrint();
         if(validateStatusCodeAndResponseTime(response, url)){
             return response;
         }
-        return null;
+
+        return response;
     }
+
+    // public Response createGetRequestWithoutHeader(String url){
+    //     Response response = RestAssured.given()
+    //         .urlEncodingEnabled(false)
+    //         // .log().all()
+    //         .when().get(url);
+
+    //     // response.prettyPrint();
+    //     if(validateStatusCodeAndResponseTime(response, url)){
+    //         return response;
+    //     }
+
+    //     return response;
+    // }
     
     /**
      * validate status code and response time
@@ -75,9 +94,46 @@ public class RequestHandler {
                 validateBasics = false;
                 log.info(url);
                 log.info(response.asString());
-                log.error("The get api call was taking more time than expected api was \n"+url);
+                log.error("The get api call was taking more time than expected, total time taken : "+response.getTimeIn(TimeUnit.SECONDS));
             }
         }
         return validateBasics;
+    }
+
+
+    /**
+     * Validate Link is active or not
+     * @param urls
+     * @return
+     */
+    public static boolean validateGetUrlStatusCode(ArrayList<String> urls){
+        boolean linkActive = false;
+        ArrayList<String> inactiveUrls = new ArrayList<>();
+
+        if(urls.size() <= 0){
+            return linkActive;
+        }
+
+        int count = 1;
+		for(String url : urls) {
+			if(url.contains("http")) {
+               Response response = RestAssured.given()
+                    .urlEncodingEnabled(false)
+                    .when().get(url);
+                if(response.getStatusCode() == 200){
+                    linkActive = true;
+                }else{
+                    linkActive = false;
+                    inactiveUrls.add("Count : "+count+", URL :"+url);
+                }
+            }
+            count++;
+        }
+
+        if(inactiveUrls.size() > 0){
+            linkActive = false;
+            log.error("Below given urls are inactive state, please manually validate the same : \n"+inactiveUrls);
+        }
+		return linkActive;
     }
 }

@@ -4,16 +4,23 @@ public class Constants{
 
     /**Commonly Used COnstants */
 
-    public static int RESPONSE_TIME = 1;
+    public static int RESPONSE_TIME = 2;
     public static String CUSTOM_REPORT_FOLDER = "/Reports";
 
-    public static String ANDROID = "Android"; // type = 0
-    public static String IOS = "Ios"; // type = 1
-    public static String WEB = "Web"; // type = 2
+    /**Device Types (0 to 6)*/
+    public static String ANDROID = "Android";
+    public static String IOS = "Ios";
+    public static String Bosch = "Bosch";
+    public static String GreatWall = "GreatWall";
+    public static String SamsungFridge = "SamsungFridge";
+    public static String GaanaWapApp = "WapApp";
+    public static String GaanaWebsiteApp = "WebApp";
 
+    /**Api Type */
     public static String API_TYPE_SEARCH = "Search";
     public static String API_TYPE_RECO = "Reco";
 
+    /** Env Type */
     public static String STAGE_ENV = "local";
     public static String PRE_PROD_ENV = "preprod";
     public static String PROD_ENV = "prod";
@@ -33,13 +40,13 @@ public class Constants{
     public static int MUSIC_GAANA_RECOMMENDATION_DB = 5;
 
     /* Recomended Track Constants */
-    public final static int REC_INVOCATION_COUNT = 4;
-    public final static int AS_INVOCATION_COUNT = 164;
+    public final static int REC_INVOCATION_COUNT = 1;
+    public final static int AS_INVOCATION_COUNT = 25;
 
     /**Emailer Config */
     public static String EMAILER_EMAIL = "umesh.shukla@gaana.com";
-    public static String EMAILER_PWD = "lcjzzcwgnzrqbcbi";
+    public static String EMAILER_PWD = "pswagczcaoiybomw";
     public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
-    public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, radhika.garg@gaana.com";
+    public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, c-abhishek.gupta@gaana.com, umesh.shukla@gaana.com";
     public static String EMAIL_BCC_LIST = "";
 }

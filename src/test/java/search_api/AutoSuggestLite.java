@@ -4,6 +4,7 @@ import config.BaseUrls;
 import config.Constants;
 import utils.CsvReader;
 import utils.Mailer;
+import common.Helper;
 import utils.WriteCsv;
 import config.Endpoints;
 import org.json.JSONArray;
@@ -13,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import org.testng.Assert;
 import common.FileActions;
-import common.Helper;
 import java.util.ArrayList;
 import common.RequestHandler;
 import org.slf4j.LoggerFactory;
@@ -123,6 +123,10 @@ public class AutoSuggestLite extends BaseUrls {
 
     @Test(priority = 3, invocationCount = Constants.AS_INVOCATION_COUNT)
     public void matchStageAndProdResponses() {
+        StringBuilder STAGE_VALUE = new StringBuilder();
+        StringBuilder PROD_VALUE = new StringBuilder();
+        StringBuilder DIFF_VALUE = new StringBuilder();
+        StringBuilder DIFF_KEY_VALUE = new StringBuilder();
 
         if(EX_COUNT != 0){
 
@@ -132,39 +136,54 @@ public class AutoSuggestLite extends BaseUrls {
             JSONObject prod_response_object = new JSONObject(prod_responses.get(EX_COUNT).asString());
             JSONArray prod_gr = prod_response_object.getJSONArray("gr");
 
-            if(stage_gr.length() != prod_gr.length()){
-                Assert.assertEquals(stage_gr.length() == prod_gr.length(), true, "Gr length for stage and prod not matched comparison not possible!");
-            }
+            ArrayList<Integer> validated_gr_data = new ArrayList<>();
 
-            StringBuilder _stage_val = new StringBuilder();
-            StringBuilder _prod_val = new StringBuilder();
-            StringBuilder _diff_val = new StringBuilder();
+            for(int i = 0; i<prod_gr.length(); i++){
+                JSONObject prod_gr_object = prod_gr.getJSONObject(i);
+                String prod_gr_type_title = prod_gr_object.optString("ty").toString().trim();
 
-            String type = "";
-            for(int i = 0; i<stage_gr.length(); i++){
-                JSONArray stage_gd_value = null;
-                JSONArray prod_gd_value = null;
+                for(int j = 0; j<stage_gr.length(); j++){
+                    JSONObject stage_gr_object = stage_gr.getJSONObject(j);
+                    String stage_gr_type_title = stage_gr_object.optString("ty").toString().trim();
+                    if(stage_gr_type_title.equals(prod_gr_type_title)){
+                        validated_gr_data.add(i); // for ext index validations
+                        JSONArray prod_gd_array = prod_gr_object.getJSONArray("gd");
+                        JSONArray stage_gd_array = stage_gr_object.getJSONArray("gd");
+                        // System.out.println("Prod GD = "+prod_gd_array);
+                        // System.out.println("Stage GD = "+stage_gd_array);
 
-                JSONObject stage_gr_value = stage_gr.getJSONObject(i);
-                JSONObject prod_gr_value = stage_gr.getJSONObject(i);
-                type = validateType(stage_gr_value, prod_gr_value);
-
-                if(type.length() > 0){
-                    try{
-                        stage_gd_value = stage_gr_value.getJSONArray("gd");
-                        prod_gd_value = prod_gr_value.getJSONArray("gd");
-                        Assert.assertEquals(stage_gd_value.length() == prod_gd_value.length(), true, "Gd length for stage and prod not matched comparison not possible!");
-                    }catch(Exception e){
-                        log.error("Gd Not found for requested key : "+testdatainputs.get(EX_COUNT));
-                        e.printStackTrace();
+                        ArrayList<String> comparison_result = validateGdData(prod_gr_type_title, prod_gd_array, stage_gd_array);
+                        STAGE_VALUE.append(comparison_result.get(0).toString().replaceAll("[\\[\\]\\(\\)]", " "));
+                        PROD_VALUE.append(comparison_result.get(1).toString().replaceAll("[\\[\\]\\(\\)]", " "));
+                        if(comparison_result.get(2).length() > 0){
+                            DIFF_VALUE.append(comparison_result.get(2).toString().replaceAll("[\\[\\]\\(\\)]", " "));
+                            DIFF_KEY_VALUE.append(prod_gr_type_title+", ");
+                        }
+                        break;
                     }
                 }
-
-                ArrayList<String> values = validateGdValues(stage_gd_value, prod_gd_value);
-                _stage_val.append(values.get(0));
-                _prod_val.append(values.get(1));
-                _diff_val.append(values.get(2)); 
             }
+
+            // Prod having more data
+            if(prod_gr.length() != validated_gr_data.size()){
+                ArrayList<Integer> extra_gr_indexes = getMissingIndexId(prod_gr.length(), validated_gr_data);
+                for(int index : extra_gr_indexes){
+                    JSONObject ext_prod_gr_object = prod_gr.getJSONObject(index);
+                    String type_title = ext_prod_gr_object.optString("ty").toString().trim();
+                    JSONArray prod_gd_array = ext_prod_gr_object.getJSONArray("gd");
+                    ArrayList<String> comparison_result = validateGdData(type_title, prod_gd_array, null);
+                    STAGE_VALUE.append(comparison_result.get(0).toString().replaceAll("[\\[\\]\\(\\)]", " "));
+                    PROD_VALUE.append(comparison_result.get(1).toString().replaceAll("[\\[\\]\\(\\)]", ", "));
+                    if(comparison_result.get(2).length() > 0){
+                        DIFF_VALUE.append(comparison_result.get(2).toString().replaceAll("[\\[\\]\\(\\)]", " "));
+                        DIFF_KEY_VALUE.append(type_title+", ");
+                    }
+                }
+            }
+            // System.out.println("Stage : "+STAGE_VALUE.toString().trim());
+            // System.out.println("Prod : "+PROD_VALUE.toString().trim());
+            // System.out.println("Diff : "+DIFF_VALUE.toString().trim());
+            // System.out.println(DIFF_KEY_VALUE.toString().trim());
 
             String solr_val = "N/A";
             String keyword = testdatainputs.get(EX_COUNT).toString().trim();
@@ -174,19 +193,25 @@ public class AutoSuggestLite extends BaseUrls {
                 solr_val = solr_responses.get(EX_COUNT).asString();
             }
 
+            String stage = STAGE_VALUE.toString().trim();
+            String prod = PROD_VALUE.toString().trim();
+
             String diff_found = "N/A";
-            if(_diff_val.toString().replaceAll("[\\[\\]\\(\\)]", "").length() > 0){
-                diff_found = _diff_val.toString();
+            if(DIFF_VALUE.toString().trim().length() > 0){
+                diff_found = DIFF_VALUE.toString().trim();
             }
 
-            String result_val [] = {keyword, solr_val, _stage_val.toString(), _prod_val.toString(), diff_found, type};
+            String diff_keys = DIFF_KEY_VALUE.toString();
+
+            String result_val [] = {keyword, solr_val, stage, prod, diff_found, diff_keys};
             result.put(EX_COUNT, result_val);
         }
         setAndRestCounter();
-        processCsvWrite(result);
+        if(EX_COUNT == 0 && result.size() > 0)
+            processCsvWrite(result);
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4) // Emailer Disabled
     public void sendEmail(){
         String file_name = "AutoSuggestLite.csv";
         String scope = "Scope : This suite compares stage response with production response.";
@@ -200,38 +225,87 @@ public class AutoSuggestLite extends BaseUrls {
         WriteCsv.writeCsvWithHeader(file_name, head, result);
     }
 
-    private ArrayList<String> validateGdValues(JSONArray stage, JSONArray prod) {
+    private ArrayList<String> validateGdData(String type_title, JSONArray prod_gds, JSONArray stage_gds) {
+        boolean isMix = false;
         String stageUniqueId = "";
         String prodUniqueId = "";
-
-        ArrayList<String> stage_res_obj = new ArrayList<>();
         ArrayList<String> prod_res_obj = new ArrayList<>();
+        ArrayList<String> stage_res_obj = new ArrayList<>();
         ArrayList<String> diff_key = new ArrayList<>();
 
-        for(int i = 0; i<stage.length(); i++){
-            JSONObject stage_gd_object = stage.getJSONObject(i);
-            JSONObject prod_gd_object = prod.getJSONObject(i);
-            List<Object> keys = helper.keys(prod_gd_object);
+        if(prod_gds == null){
+            Assert.assertEquals(prod_gds != null, true, "Prod Gd can't be null!");
+        }
 
-            if(!keys.contains("innerGdList")){
-                String stage_gd_type = getOptionalJSONObject(stage_gd_object, "ty");
-                String prod_gd_type = getOptionalJSONObject(prod_gd_object, "ty");
+        if(type_title.equalsIgnoreCase("Mix")){
+            isMix = true;
+        }
 
-                stageUniqueId = stage_gd_object.getString("iid").toString().trim()+"_"+stage_gd_type;
-                prodUniqueId = prod_gd_object.getString("iid").toString().trim()+"_"+prod_gd_type;
-
-                String stage_title = getOptionalJSONObject(stage_gd_object, "ti").trim();
-                String prod_title = getOptionalJSONObject(prod_gd_object, "ti").trim();
-
-                if(!stageUniqueId.equals(prodUniqueId)){
-                    diff_key.add(prodUniqueId+"__"+prod_title);
+        if(stage_gds == null){
+            if(prod_gds.length() > 0){
+                for(int i = 0; i <prod_gds.length(); i++){
+                    JSONObject prod_gd_object = prod_gds.getJSONObject(i);
+                    String object_type_title = prod_gd_object.optString("ty").toString().trim();
+                    if(object_type_title.equals(type_title)){
+                        prodUniqueId = prod_gd_object.getString("iid").toString().trim()+"_"+object_type_title;
+                        String prod_gd_object_title = prod_gd_object.optString("ti").toString().trim();
+                        if(prodUniqueId.length() > 0){
+                            prod_res_obj.add(prod_gd_object_title);
+                            diff_key.add(prodUniqueId+"__"+prod_gd_object_title);
+                        }
+                    }else{
+                        Assert.assertEquals(object_type_title, type_title, "Gr title should match with gr objects title but its not matching!");
+                    }
                 }
+            }
+        }else if(prod_gds.length() > 0 && stage_gds.length() > 0){
+            for(int i = 0; i<prod_gds.length(); i++){
+                JSONObject prod_gd_object = prod_gds.getJSONObject(i);
+                List<Object> keys = helper.keys(prod_gd_object);
 
-                stage_res_obj.add(stage_title);
-                prod_res_obj.add(prod_title);
+                for(int j = 0; j<stage_gds.length(); j++){
+                    // if prod & stage both present
+                    String stage_gd_type = "";
+                    JSONObject stage_gd_object = null;
 
-            }else{
-                //inner GD LIST
+                    try{
+                        stage_gd_object = stage_gds.getJSONObject(i);
+                    }catch(Exception e){
+                        log.error("No stage object found!");
+                    }
+
+                    String prod_gd_type = getOptionalJSONObject(prod_gd_object, "ty");
+
+                    if(stage_gd_object != null){
+                        stage_gd_type = getOptionalJSONObject(stage_gd_object, "ty");
+                    }
+
+                    if(prod_gd_type.equals(stage_gd_type) && (prod_gd_type.equals(type_title) || isMix == true)){
+                        if(!keys.contains("innerGdList")){
+                            stageUniqueId = stage_gd_object.getString("iid").toString().trim()+"_"+stage_gd_type;
+                            prodUniqueId = prod_gd_object.getString("iid").toString().trim()+"_"+prod_gd_type;
+
+                            String stage_title = getOptionalJSONObject(stage_gd_object, "ti").trim();
+                            String prod_title = getOptionalJSONObject(prod_gd_object, "ti").trim();
+
+                            if(!stageUniqueId.equals(prodUniqueId)){
+                                diff_key.add(prodUniqueId+"__"+prod_title);
+                            }
+
+                            stage_res_obj.add(stage_title);
+                            prod_res_obj.add(prod_title);
+
+                        }else{
+                            //inner GD LIST
+                        }
+                        break;
+                    }else if(stage_gd_type.length() <= 0){
+                        prodUniqueId = prod_gd_object.getString("iid").toString().trim()+"_"+prod_gd_type;
+                        String prod_title = getOptionalJSONObject(prod_gd_object, "ti").trim();
+                        diff_key.add(prodUniqueId+"__"+prod_title);
+                        prod_res_obj.add(prod_title);
+                    }
+                }
             }
         }
 
@@ -240,19 +314,6 @@ public class AutoSuggestLite extends BaseUrls {
         result_set.add(prod_res_obj.toString());
         result_set.add(diff_key.toString());
         return result_set;
-    }
-
-    private String validateType(JSONObject stage_gr_value, JSONObject prod_gr_value) {
-        String type = "";
-        String stage_gr_type = getOptionalJSONObject(stage_gr_value, "ty");
-        String prod_gr_type = getOptionalJSONObject(prod_gr_value, "ty");
-
-        if(stage_gr_type.equalsIgnoreCase(prod_gr_type)){
-            type = stage_gr_type;
-        }else{
-            Assert.assertEquals(stage_gr_type.equalsIgnoreCase(prod_gr_type), true, "Gr type not matched!");
-        }
-        return type;
     }
 
     protected String getOptionalJSONObject(JSONObject response, String param) {
@@ -301,6 +362,23 @@ public class AutoSuggestLite extends BaseUrls {
         boolean isFilePresent = FileActions.fileOperation(1, file_path, file_name_prev_data);
         if(isFilePresent)
             testdatainputs = CsvReader.readCsv(file_path + file_name_prev_data);
+    }
+
+    private ArrayList<Integer> getMissingIndexId(int length, ArrayList<Integer> visited_indexes) {
+        ArrayList<Integer> ex_index_values = new ArrayList<>();
+        ArrayList<Integer> not_visited_indexes = new ArrayList<>();
+
+        for(int i = 0; i<length; i++){
+            ex_index_values.add(i);
+        }
+
+        for(int index : ex_index_values){
+            if(!visited_indexes.contains(index)){
+                not_visited_indexes.add(index);
+            }
+        }
+
+        return not_visited_indexes;
     }
 
     private void setAndRestCounter(){
