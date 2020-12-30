@@ -1,4 +1,6 @@
 package config;
+import java.util.Arrays;
+import java.util.List;
 
 public class Constants{
 
@@ -49,4 +51,14 @@ public class Constants{
     public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
     public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, c-abhishek.gupta@gaana.com, umesh.shukla@gaana.com";
     public static String EMAIL_BCC_LIST = "";
+
+    /**
+     * Solr Cloud Constants
+     */
+    public static final int ZOOKEEPER_INVOCATION_COUNT = 10;
+    public static List<String> zookeeperServers(){
+        // {"172.26.11.216:2181", "172.26.11.217:2181", "172.26.11.218:2181"} old servers
+        String arr [] = {"172.26.69.113:2181", "172.26.69.114:2181", "172.26.69.226:2181"};
+        return Arrays.asList(arr);
+    }
 }

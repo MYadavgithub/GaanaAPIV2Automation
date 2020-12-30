@@ -15,7 +15,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
 import common.GlobalConfigHandler;
 import config.Constants;
 
@@ -118,8 +117,14 @@ public class Mailer {
             env = "Production";
         }
 
+        String details = "Api Test Suite Execution Report (Compared Data) |";
         String type = GlobalConfigHandler.getType();
+        if(type == null){
+            env = "Staging";
+            type = "Search & Recommendation";
+            details = " Execution Report";
+        }
 
-        return env+" | "+ type +" | "+ name +" Api Test Suite Execution Report (Compared Data) | "+CommonUtils.getCurrentDateTime();
+        return env+" | "+ type +" | "+ name +" " +details+" "+CommonUtils.getCurrentDateTime();
     }
 }

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,5 +55,10 @@ public class CommonUtils {
             return true;
         }
         return false;
+    }
+
+    public static void processMailer(Map<String, String> mail_data){
+        Mailer mail = new Mailer();
+        mail.sendEmail(mail_data.get("task_name"), mail_data.get("file_name"), mail_data.get("scope"));
     }
 }
