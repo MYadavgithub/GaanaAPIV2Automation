@@ -1,7 +1,6 @@
 package recomendation.v2;
 import java.util.Map;
 import common.Helper;
-import config.BaseUrls;
 import config.Endpoints;
 import org.slf4j.Logger;
 import org.testng.Assert;
@@ -18,10 +17,9 @@ import org.testng.annotations.Test;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 
-public class MoodMix extends BaseUrls{
+public class MoodMix extends MadeForYou{
 
     int max_call = 0;
-    String baseurl = "";
     int api_call_count = 0;
     String device_id = "ONEPLUS%20A5010_7445b8c92f959ba2";
     ArrayList<String> urls = new ArrayList<>();
@@ -32,13 +30,8 @@ public class MoodMix extends BaseUrls{
     private static Logger log = LoggerFactory.getLogger(MoodMix.class);
 
     @BeforeClass
-    public void prepareEnv(){
-        // System.setProperty("env", "production");
-        // System.setProperty("type", "reco");
-        // System.setProperty("device_type", "android");
-        baseurl();
-        baseurl = prop.getProperty("prec_baseurl").toString().trim();
-        // device_id =  prop.getProperty("deviceId").toString().trim();
+    public void prepareEnv() {
+        prepeareEnv();
     }
 
     @Test(priority = 1, invocationCount = MoodMixTd.INVOCATION_COUNT)
@@ -152,7 +145,7 @@ public class MoodMix extends BaseUrls{
         // max_call = 1;
         // urls.add(baseurl+Endpoints.moodMix+"?deviceId="+device_id+"&entityId="+30);
         for(int entity_id : entity_ids){
-            urls.add(baseurl+Endpoints.moodMix+"?deviceId="+device_id+"&entityId="+entity_id);
+            urls.add(BASEURL+Endpoints.moodMix+"?deviceId="+device_id+"&entityId="+entity_id);
         }
     }
 }

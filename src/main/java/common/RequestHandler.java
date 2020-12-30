@@ -1,12 +1,11 @@
 package common;
+import java.util.Map;
+import org.slf4j.Logger;
 import config.Constants;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.restassured.RestAssured;
+import java.util.concurrent.TimeUnit;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -14,30 +13,22 @@ public class RequestHandler {
 
     private static Logger log = LoggerFactory.getLogger(RequestHandler.class);
 
-    public Response createGetRequestCall(Properties prop, String url) {
-        Map<String, String> headers = GlobalConfigHandler.headers(prop);
-        Response response = RestAssured.given()
-            // .log().all()
-            .headers(headers)
-            .when().get(url);
-
-        if (validateStatusCodeAndResponseTime(response, url)) {
-            return response;
-        }
-
-        return response;
-    }
-
-    public Response createGetRequest(Properties prop, String url) {
-        Map<String, String> headers = GlobalConfigHandler.headers(prop);
+    /**
+     * Create Get Request with RequestSpecification Or Http Method
+     * @param url
+     * @return
+     */
+    public Response createGetRequestHttp(String url) {
         RestAssured.baseURI = url;
+        Map<String, String> headers = Headers.getHeaders(0);
         RequestSpecification httpRequest = RestAssured.given();
         Response response = httpRequest
+            .urlEncodingEnabled(false)
             .headers(headers)
             // .log().all()
             .when().get(url);
 
-        // response.prettyPrint();
+        response.prettyPrint();
         if(validateStatusCodeAndResponseTime(response, url)){
             return response;
         }
@@ -45,12 +36,17 @@ public class RequestHandler {
         return response;
     }
 
+    /**
+     * Rest-Assured Get Call Without Specification
+     * @param url
+     * @return
+     */
     public Response createGetRequest(String url){
         Map<String, String> headers = Headers.getHeaders(0);
         Response response = RestAssured.given()
             .urlEncodingEnabled(false)
-            // .log().all()
             .headers(headers)
+            // .log().all()
             .when().get(url);
 
         // response.prettyPrint();
@@ -61,19 +57,19 @@ public class RequestHandler {
         return response;
     }
 
-    // public Response createGetRequestWithoutHeader(String url){
-    //     Response response = RestAssured.given()
-    //         .urlEncodingEnabled(false)
-    //         // .log().all()
-    //         .when().get(url);
+    public Response createGetRequestWithCustomHeaders(String url, Map<String, String> headers){
+        Response response = RestAssured.given()
+            .urlEncodingEnabled(false)
+            .headers(headers)
+            // .log().all()
+            .when().get(url);
 
-    //     // response.prettyPrint();
-    //     if(validateStatusCodeAndResponseTime(response, url)){
-    //         return response;
-    //     }
+        if(validateStatusCodeAndResponseTime(response, url)){
+            return response;
+        }
 
-    //     return response;
-    // }
+        return response;
+    }
     
     /**
      * validate status code and response time
