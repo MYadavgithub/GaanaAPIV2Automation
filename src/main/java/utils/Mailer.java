@@ -115,7 +115,7 @@ public class Mailer {
         if(env.equalsIgnoreCase("local")){
             env = "Staging";
         }else if(env.equalsIgnoreCase("prod")){
-            env = "Production";
+            env = "TIP";
         }
 
         String type = GlobalConfigHandler.getType();
