@@ -12,7 +12,7 @@ pipeline {
     }
 
     // triggers {
-    //     cron('30 11 * * *')
+    //     cron('00 09 * * *')
     // }
 
     environment {
