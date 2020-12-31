@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,5 +55,10 @@ public class CommonUtils {
             return true;
         }
         return false;
+    }
+
+    public static String generateRandomDeviceId(){
+        UUID randomId = UUID.randomUUID();
+        return "GM"+randomId.toString().toUpperCase().replaceAll("-", "").substring(0, 12);
     }
 }
