@@ -87,7 +87,7 @@ pipeline {
         stage ('Build') {
             steps {
                 sh "${mvnHome}/bin/mvn -version"
-                sh 'chmod 777 -R target/ && rm -rf target/'
+                // sh 'chmod 777 -R target/ && rm -rf target/'
                 sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
                 sh "chmod a+x ${env.WORKSPACE}/pom.xml"
             }
