@@ -87,9 +87,8 @@ pipeline {
         stage ('Build') {
             steps {
                 sh "${mvnHome}/bin/mvn -version"
-                sh "sudo su"
                 sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
-                sh "chmod 777 -R ${env.WORKSPACE}/pom.xml"
+                sh "chmod a+x ${env.WORKSPACE}/pom.xml"
             }
         }
 
@@ -98,7 +97,6 @@ pipeline {
                 /* groovylint-disable-next-line LineLength */
                 /* groovylint-disable-next-line ConsecutiveStringConcatenation, GStringExpressionWithinString, LineLength */
                 sh "mvn -B -f ${env.WORKSPACE}/pom.xml clean install " + '-Denv=${env} -Dtype=${type} -Ddevice_type=${device_type} -DsuiteXmlFile=${suiteXmlFile}'
-                sh "exit"
             }
         }
     }
@@ -109,13 +107,13 @@ pipeline {
                def buildStatus = "${currentBuild.currentResult}"
                 if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
                     echo "Bulid was : ${buildStatus}"
-                    emailext attachLog: true,
-                    to: "${abortedTo}",
-                    replyTo: "${replyTo}",
-                    subject: "${emailSub}"+"${dateTime}",
-                    body: ''' ${SCRIPT, template="groovy-html.template"}''',
-                    mimeType: 'text/html',
-                    compressLog: true
+                    // emailext attachLog: true,
+                    // to: "${abortedTo}",
+                    // replyTo: "${replyTo}",
+                    // subject: "${emailSub}"+"${dateTime}",
+                    // body: ''' ${SCRIPT, template="groovy-html.template"}''',
+                    // mimeType: 'text/html',
+                    // compressLog: true
                 }else{
                     emailext attachLog: true,
                     to: "${emailTo}",
