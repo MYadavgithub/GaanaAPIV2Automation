@@ -5,7 +5,7 @@ pipeline {
     agent any
 
     options {
-        retry(2)
+        // retry(2)
         timestamps()
         timeout(time: 1, unit: 'HOURS')
         disableConcurrentBuilds()
