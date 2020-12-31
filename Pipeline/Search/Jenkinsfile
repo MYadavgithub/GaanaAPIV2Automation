@@ -89,6 +89,7 @@ pipeline {
                 sh "${mvnHome}/bin/mvn -version"
                 sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
                 sh "chmod 777 -R ${env.WORKSPACE}/pom.xml"
+                sh "sudo su"
             }
         }
 
@@ -97,6 +98,7 @@ pipeline {
                 /* groovylint-disable-next-line LineLength */
                 /* groovylint-disable-next-line ConsecutiveStringConcatenation, GStringExpressionWithinString, LineLength */
                 sh "mvn -B -f ${env.WORKSPACE}/pom.xml clean install " + '-Denv=${env} -Dtype=${type} -Ddevice_type=${device_type} -DsuiteXmlFile=${suiteXmlFile}'
+                sh "exit"
             }
         }
     }
