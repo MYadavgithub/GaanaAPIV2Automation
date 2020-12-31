@@ -87,9 +87,9 @@ pipeline {
         stage ('Build') {
             steps {
                 sh "${mvnHome}/bin/mvn -version"
+                sh "sudo su"
                 sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
                 sh "chmod 777 -R ${env.WORKSPACE}/pom.xml"
-                sh "sudo su"
             }
         }
 
