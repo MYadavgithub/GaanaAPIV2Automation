@@ -345,6 +345,7 @@ public class AutoSuggestLite extends BaseUrls {
                         String prod_title = getOptionalJSONObject(prod_gd_object, "ti").trim();
                         diff_key.add(prodUniqueId+"__"+prod_title);
                         prod_res_obj.add(prod_title);
+                        break;
                     }
                 }
             }
