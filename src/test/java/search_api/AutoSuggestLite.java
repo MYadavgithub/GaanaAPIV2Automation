@@ -212,12 +212,14 @@ public class AutoSuggestLite extends BaseUrls {
             processCsvWrite(result);
     }
 
-    @Test(priority = 4) // Emailer Disabled
+    @Test(priority = 4)
     public void sendEmail(){
-        String file_name = "AutoSuggestLite.csv";
-        String scope = "Scope : This suite compares stage response with production response.";
-        Mailer mail = new Mailer();
-        mail.sendEmail("AutoSuggestLite", file_name, scope);
+        if(Constants.EMAILER_ENABLED == 1){
+            String file_name = "AutoSuggestLite.csv";
+            String scope = "Scope : This suite compares stage response with production response.";
+            Mailer mail = new Mailer();
+            mail.sendEmail("AutoSuggestLite", file_name, scope);
+        }
     }
 
     private void processCsvWrite(Map<Integer, String[]> result) {
