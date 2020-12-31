@@ -42,7 +42,7 @@ public class Vibes extends BaseUrls {
 
     @BeforeClass
     public void prepareRequestData() {
-        // System.setProperty("env", "local");
+        // System.setProperty("env", "prod");
         // System.setProperty("type", "Reco");
         // System.setProperty("device_type", "android");
         baseurl();
@@ -57,7 +57,7 @@ public class Vibes extends BaseUrls {
         String url = baseurl + Endpoints.vibes;
         prop.setProperty("deviceId", device_ids.get(DEVICE_ID_COUNT));
         urls.add(url);
-        Response response = rq.createGetRequest(prop, url);
+        Response response = rq.createGetRequest(url);
         Assert.assertEquals(response != null, true, "Response time or code is not valid!");
         responses.put(DEVICE_ID_COUNT, response);
         deviceIdCounter();
@@ -230,10 +230,10 @@ public class Vibes extends BaseUrls {
         for(int i = 1; i<=previous_entities.size(); i++){
             ArrayList<String> pre_response_entities = previous_entities.get(i);
             String[] new_response_entities = new_entities.get(i);
-            log.info(pre_response_entities.toString());
+            // log.info(pre_response_entities.toString());
             for(String val : new_response_entities){
                 if(!pre_response_entities.contains(val)){
-                    log.info(val);
+                    // log.info(val);
                     result = true;
                 }else{
                     result = false;

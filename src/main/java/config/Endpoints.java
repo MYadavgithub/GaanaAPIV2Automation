@@ -6,6 +6,8 @@ public class Endpoints {
     public static String recoTracksPartner = "/recommendation/partnership/";
     public static String vibes = "/recommendation/vibes";
     public static String moodMix = "/for-you/moodmix";
+    public static String madeForYou = "/madeforyou";
+    public static String deviceConsumedLanguage = "/recommendation/deviceConsumedLanguage?deviceId=";
 
     /**Search Auto Suggest Endpoints */
     public static String autoSuggestStageEndpoint(String query_params) {

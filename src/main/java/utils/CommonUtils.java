@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,5 +61,10 @@ public class CommonUtils {
     public static void processMailer(Map<String, String> mail_data){
         Mailer mail = new Mailer();
         mail.sendEmail(mail_data.get("task_name"), mail_data.get("file_name"), mail_data.get("scope"));
+    }
+
+    public static String generateRandomDeviceId(){
+        UUID randomId = UUID.randomUUID();
+        return "GM"+randomId.toString().toUpperCase().replaceAll("-", "").substring(0, 12);
     }
 }

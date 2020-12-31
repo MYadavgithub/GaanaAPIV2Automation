@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import org.testng.Assert;
 import common.FileActions;
@@ -42,7 +43,7 @@ public class AutoSuggestLite extends BaseUrls {
 
     @BeforeClass
     public void prepareTestEnv(){
-        // System.setProperty("env", "local");
+        // System.setProperty("env", "prod");
         // System.setProperty("type", "Search");
         // System.setProperty("device_type", "android");
         getTestData();
@@ -72,11 +73,11 @@ public class AutoSuggestLite extends BaseUrls {
                 url.add(SOLR_URL);
                 urls.put(EX_COUNT, url);
                 log.info("Execution url generated successfully. \nStaging url : "+STAGE_URL+"\nSolr url : "+SOLR_URL+"\nProd url : "+PROD_URL);
-                Response stage_response = req.createGetRequest(prop, STAGE_URL);
+                Response stage_response = req.createGetRequest(STAGE_URL);
                 stage_responses.put(EX_COUNT, stage_response);
-                Response solr_response = req.createGetRequest(prop, SOLR_URL);
+                Response solr_response = req.createGetRequest(SOLR_URL);
                 solr_responses.put(EX_COUNT, solr_response);
-                Response prod_response = req.createGetRequest(prop, PROD_URL);
+                Response prod_response = req.createGetRequest(PROD_URL);
                 prod_responses.put(EX_COUNT, prod_response);
             }else{
                 Assert.assertEquals(STAGE_URL.length() > 0, true, "Stage url can't be null.");
@@ -211,7 +212,7 @@ public class AutoSuggestLite extends BaseUrls {
             processCsvWrite(result);
     }
 
-    @Test(priority = 4) // Emailer Disabled
+    // @Test(priority = 4) // Emailer Disabled
     public void sendEmail(){
         String file_name = "AutoSuggestLite.csv";
         String scope = "Scope : This suite compares stage response with production response.";
@@ -296,7 +297,47 @@ public class AutoSuggestLite extends BaseUrls {
                             prod_res_obj.add(prod_title);
 
                         }else{
-                            //inner GD LIST
+                            try{
+                                JSONArray stageInnerGdList = stage_gd_object.getJSONArray("innerGdList");
+                                JSONArray prodInnerGdList = prod_gd_object.getJSONArray("innerGdList");
+
+                                if(prodInnerGdList.length() > 0){
+                                    Iterator<Object> itr = prodInnerGdList.iterator();
+                                    while(itr.hasNext()){
+                                        JSONObject prodInnerGdObject = (JSONObject) itr.next();
+                                        if(stageInnerGdList.length() > 0){
+                                            for(int g = 0; g<stageInnerGdList.length(); g++){
+                                                JSONObject stageInnerGdObject = stageInnerGdList.getJSONObject(g);
+                                                prodUniqueId = prodInnerGdObject.getString("iid").toString().trim()+"_"+prod_gd_type;
+                                                stageUniqueId = stageInnerGdObject.getString("iid").toString().trim()+"_"+stage_gd_type;
+
+                                                if(prodUniqueId.equals(stageUniqueId)){
+                                                    String stage_title = getOptionalJSONObject(stageInnerGdObject, "ti").trim();
+                                                    String prod_title = getOptionalJSONObject(prodInnerGdObject, "ti").trim();
+
+                                                    if(!stageUniqueId.equals(prodUniqueId)){
+                                                        diff_key.add(prodUniqueId+"__"+prod_title);
+                                                    }
+
+                                                    stage_res_obj.add(stage_title);
+                                                    prod_res_obj.add(prod_title);
+                                                    break;
+                                                }
+                                            }
+                                        }else{
+                                            String object_type_title = prodInnerGdObject.optString("ty").toString().trim();
+                                            prodUniqueId = prodInnerGdObject.getString("iid").toString().trim()+"_"+object_type_title;
+                                            String prod_gd_object_title = prodInnerGdObject.optString("ti").toString().trim();
+                                            if(prodUniqueId.length() > 0){
+                                                prod_res_obj.add(prod_gd_object_title);
+                                                diff_key.add(prodUniqueId+"__"+prod_gd_object_title);
+                                            }
+                                        }
+                                    }
+                                }
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
                         }
                         break;
                     }else if(stage_gd_type.length() <= 0){
@@ -304,6 +345,7 @@ public class AutoSuggestLite extends BaseUrls {
                         String prod_title = getOptionalJSONObject(prod_gd_object, "ti").trim();
                         diff_key.add(prodUniqueId+"__"+prod_title);
                         prod_res_obj.add(prod_title);
+                        break;
                     }
                 }
             }

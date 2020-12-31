@@ -9,7 +9,7 @@
 		<listener class-name="utils.RetryTransformListener" />
 	</listeners>
 	
-	<test name="Recomended Track List" annotations="JDK" preserve-order="true">
+	<test name="Recommended Track List" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.reco_tracks.RecomendedTracks" />
@@ -17,10 +17,26 @@
 
 	</test>
 
-	<test name="Recomended MoodMix" annotations="JDK" preserve-order="true">
+	<test name="Recommended MoodMix" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.v2.MoodMix" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended MadeForYou" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.v2.MadeForYou" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended DeviceConsumedLanguage" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.v2.DeviceConsumedLanguage" />
 		</classes>
 
 	</test>
