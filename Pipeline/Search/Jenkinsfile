@@ -18,10 +18,11 @@ pipeline {
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
-        def emailTo = "manish.pandey@gaana.com, umesh.shukla@gaana.com"
+        def emailTo = "umesh.shukla@gaana.com"
         def abortedTo = "umesh.shukla@gaana.com"
         def replyTo = "umesh.shukla@gaana.com"
-        def emailSub = "TIP | Search | Daily Test Suite Report | "
+        def emailSub = "TIP | Search | Daily Regression Test Suite | "
+        def dateTime = new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
     }
 
     parameters
@@ -43,10 +44,11 @@ pipeline {
             description: 'Select environment according to your execution requirement.',
             name: 'env'
         )
-        choice(
-            choices: ['Search'],
-            description: 'Select whether you want to execute on Recommendation module or Search.',
-            name: 'type'
+        string(
+            defaultValue: 'Search',
+            description: 'Execution module search is default value.',
+            name: 'branch',
+            trim: true
         )
         choice(
             choices: ['Android', 'Ios', 'Web'],
@@ -103,12 +105,12 @@ pipeline {
         always {
             script {
                def buildStatus = "${currentBuild.currentResult}"
-                if(buildStatus.equalsIgnoreCase('ABORTED')){
+                if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
                     echo "Bulid was : ${buildStatus}"
                     emailext attachLog: true,
                     to: "${abortedTo}",
                     replyTo: "${replyTo}",
-                    subject: "${emailSub}"+'$DEFAULT_SUBJECT',
+                    subject: "${emailSub}"+"${dateTime}",
                     body: ''' ${SCRIPT, template="groovy-html.template"}''',
                     mimeType: 'text/html',
                     compressLog: true
@@ -116,7 +118,7 @@ pipeline {
                     emailext attachLog: true,
                     to: "${emailTo}",
                     replyTo: "${replyTo}",
-                    subject: "${emailSub}"+'$DEFAULT_SUBJECT',
+                    subject: "${emailSub}"+"${dateTime}",
                     /* groovylint-disable-next-line GStringExpressionWithinString */
                     body: '''
                     ${FILE, path = "/data/jenkins/workspace/Solr_Cloud/Reports/EmailerReport.html"}<br>
