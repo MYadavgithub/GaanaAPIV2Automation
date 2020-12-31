@@ -47,7 +47,7 @@ pipeline {
         string(
             defaultValue: 'Search',
             description: 'Execution module search is default value.',
-            name: 'branch',
+            name: 'type',
             trim: true
         )
         choice(
