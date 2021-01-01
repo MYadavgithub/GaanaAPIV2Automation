@@ -49,14 +49,14 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="search_api" level="DEBUG" additivity="false">
+    <logger name="search_api" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="FILE-ROLLING"/>
         <!-- <appender-ref ref="STDOUT" /> -->
     </logger>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="FILE" />
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE-ROLLING"/>
