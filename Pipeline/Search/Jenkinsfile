@@ -69,7 +69,6 @@ pipeline {
                     submoduleCfg: [],
                     userRemoteConfigs: [
                         [
-                            // credentialsId: '23aea9c9-d673-4f84-a417-aa6efc2f921e',
                             credentialsId: 'b48d7528-2319-416d-b08b-ce5001fad3d8',
                             url: 'git@bitbucket.org:umesh_qa/ggm_api.git'
                         ]
@@ -87,7 +86,6 @@ pipeline {
         stage ('Build') {
             steps {
                 sh "${mvnHome}/bin/mvn -version"
-                // sh 'chmod 777 -R target/ && rm -rf target/'
                 sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
                 sh "chmod a+x ${env.WORKSPACE}/pom.xml"
             }
@@ -108,13 +106,13 @@ pipeline {
                def buildStatus = "${currentBuild.currentResult}"
                 if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
                     echo "Bulid was : ${buildStatus}"
-                    // emailext attachLog: true,
-                    // to: "${abortedTo}",
-                    // replyTo: "${replyTo}",
-                    // subject: "${emailSub}"+"${dateTime}",
-                    // body: ''' ${SCRIPT, template="groovy-html.template"}''',
-                    // mimeType: 'text/html',
-                    // compressLog: true
+                    emailext attachLog: true,
+                    to: "${abortedTo}",
+                    replyTo: "${replyTo}",
+                    subject: "${emailSub}"+"${dateTime}",
+                    body: ''' ${SCRIPT, template="groovy-html.template"}''',
+                    mimeType: 'text/html',
+                    compressLog: true
                 }else{
                     emailext attachLog: true,
                     to: "${emailTo}",
