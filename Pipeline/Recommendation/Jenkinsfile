@@ -104,7 +104,7 @@ pipeline {
         always {
             script {
                def buildStatus = "${currentBuild.currentResult}"
-               if(buildStatus.equalsIgnoreCase('ABORTED')){
+                if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
                     echo "Bulid was : ${buildStatus}"
                     emailext attachLog: true,
                     to: "${abortedTo}",
@@ -113,7 +113,7 @@ pipeline {
                     body: ''' ${SCRIPT, template="groovy-html.template"}''',
                     mimeType: 'text/html',
                     compressLog: true
-               }else{
+                }else{
                     emailext attachLog: true,
                     to: "${emailTo}",
                     replyTo: "${replyTo}",
@@ -126,7 +126,7 @@ pipeline {
                     mimeType: 'text/html',
                     compressLog: true,
                     attachmentsPattern: '**/Reports/*ExtentReport.html'
-               }
+                }
             }
         }
     }
