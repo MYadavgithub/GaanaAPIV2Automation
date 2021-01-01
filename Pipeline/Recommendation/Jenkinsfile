@@ -69,7 +69,7 @@ pipeline {
                     submoduleCfg: [],
                     userRemoteConfigs: [
                         [
-                            credentialsId: '23aea9c9-d673-4f84-a417-aa6efc2f921e',
+                            credentialsId: 'b48d7528-2319-416d-b08b-ce5001fad3d8',
                             url: 'git@bitbucket.org:umesh_qa/ggm_api.git'
                         ]
                     ],
