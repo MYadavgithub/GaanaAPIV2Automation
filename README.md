@@ -27,3 +27,6 @@
 ### Execution Queries
 * Single Test : mvn clean install -Denv=local -Dtype=reco -Ddevice_type=android -Dtest=RecomendedTracks.java
 * Test Suites : mvn clean install -Denv=local -Dtype=reco -Ddevice_type=android -DsuiteXmlFile=testng.xml
+
+### Reporting 
+*Allure command : /opt/allure-2.13.8/bin/allure serve allure-results

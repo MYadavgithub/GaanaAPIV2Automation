@@ -19,6 +19,13 @@ import java.util.ArrayList;
 import common.RequestHandler;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
+import io.qameta.allure.Attachment;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -62,6 +69,12 @@ public class AutoSuggestLite extends BaseUrls {
     }
 
     @Test(priority = 1, dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
+    @Severity(SeverityLevel.NORMAL)
+    @Description("VErify Search")
+    @Story("https://timesgroup.jira.com/browse/GAANA-40068")
+    @Step("Hit APi and get response")
+    @Attachment("{0}")
+    @Feature("This is uniue")
     public void prepareUrl(String key) {
         ArrayList<String> url = new ArrayList<>();
         key = key.replaceAll("\\s", "%20");
