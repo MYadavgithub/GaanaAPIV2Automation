@@ -94,7 +94,7 @@ public class EmailableReportListener implements IReporter {
     protected void writeStylesheet() {
     	writer.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\">");
         writer.print("<style type=\"text/css\">");
-        writer.print("table {margin-bottom:10px;border-collapse:collapse;empty-cells:show}");
+        // writer.print("table {margin-bottom:10px;border-collapse:collapse;empty-cells:show}");
         writer.print("#summary {margin-top:30px; margin-left: 5%; margin-right: 5%;}");
         writer.print("#m {margin-left: 5%; font-size: 16px; font-style: oblique;}");
         writer.print("h1 {font-size:30px}");
@@ -139,7 +139,7 @@ public class EmailableReportListener implements IReporter {
         NumberFormat integerFormat = NumberFormat.getIntegerInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a");
 
-        int totalTestsCount = 0;
+        // int totalTestsCount = 0;
         int totalPassedTests = 0;
         int totalSkippedTests = 0;
         int totalFailedTests = 0;
@@ -161,12 +161,12 @@ public class EmailableReportListener implements IReporter {
 
         int testIndex = 0;
         for(SuiteResult suiteResult : suiteResults) {
-            writer.print("<tr><th colspan=\"10\" style=\"border: 1px solid #dee2e6;\">");
+            writer.print("<tr><th colspan=\"9\" style=\"border: 1px solid #dee2e6;\">");
             writer.println("<center><h5><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) +"<I><b></h6></center>");
             writer.println("</th></tr>");
 
             for (TestResult testResult : suiteResult.getTestResults()) {
-                int testsCount = testResult.getTestCount();
+                // int testsCount = testResult.getTestCount();
                 int passedTests = testResult.getPassedTestCount();
                 int skippedTests = testResult.getSkippedTestCount();
                 int failedTests = testResult.getFailedTestCount();
@@ -206,7 +206,7 @@ public class EmailableReportListener implements IReporter {
                 }
                 
                 writer.println("</tr>");
-                totalTestsCount +=testsCount;
+                // totalTestsCount +=testsCount;
                 totalPassedTests += passedTests;
                 totalSkippedTests += skippedTests;
                 totalFailedTests += failedTests;
@@ -219,7 +219,7 @@ public class EmailableReportListener implements IReporter {
         if (testIndex > 1) {
             writer.print("<tr style=\"border: 1px solid #dee2e6;\">");
             writer.print("<th>Total</th>");
-            writeTableHeader(integerFormat.format(totalTestsCount), "num");
+            // writeTableHeader(integerFormat.format(totalTestsCount), "num"); //total Test
             writeTableHeader(integerFormat.format(totalPassedTests), "num");
             writeTableHeader(integerFormat.format(totalSkippedTests), (totalSkippedTests > 0 ? "num attn" : "num"));
             writeTableHeader(integerFormat.format(totalFailedTests), (totalFailedTests > 0 ? "num attn" : "num"));
