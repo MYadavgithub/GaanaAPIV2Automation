@@ -72,9 +72,9 @@ public class EmailableReportListener implements IReporter {
         return null;
     }
     
-    protected void writeReportTitle(String title) {
-        writer.println("<center><h4>"+ title +"</h4></center>");
-	}
+    // protected void writeReportTitle(String title) {
+    //     writer.println("<center><h4><b>"+ title +"</b></h4></center>");
+	// }
 
     protected void writeDocumentStart() {
         writer.println("<span style=\"font-size:5px;\"> </span>");
@@ -124,7 +124,7 @@ public class EmailableReportListener implements IReporter {
 
     protected void writeBody() {
         writer.println("<body>");
-        writeReportTitle(report_name);
+        // writeReportTitle(report_name);
         writeSuiteSummary();
         // writeScenarioSummary();
         // writeScenarioDetails();
@@ -148,7 +148,7 @@ public class EmailableReportListener implements IReporter {
         writer.println("<div class=\"easy-test-overview\">");
         writer.println("<table class=\"table-bordered\" align=\"center\">");
         writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Name</th>");
-        writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Steps</th>");
+        // writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Test Steps</th>");
         writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Passed</th>");
         writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Retry</th>");
         writer.print("<th style=\"background: #3092c0; color: white; font-family: serif; border: 1px solid #b3b0b0; \">Failed</th>");
@@ -182,8 +182,8 @@ public class EmailableReportListener implements IReporter {
                 writer.print(">");
 
                 buffer.setLength(0);
-                writeTableData(buffer.append("<a href=\"#t\").append(testIndex).append(\"\">").append(Utils.escapeHtml(testResult.getTestName())).append("</a>").toString());
-                writeTableData(integerFormat.format(testsCount), "num");
+                writeTableData(buffer.append("<b>").append(Utils.escapeHtml(testResult.getTestName())).append("</b>").toString());
+                // writeTableData(integerFormat.format(testsCount), "num");
                 writeTableData(integerFormat.format(passedTests), "num");
                 writeTableData(integerFormat.format(skippedTests), (skippedTests > 0 ? "num attn" : "num"));
                 writeTableData(integerFormat.format(failedTests), (failedTests > 0 ? "num attn" : "num"));
