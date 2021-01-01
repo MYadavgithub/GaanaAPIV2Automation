@@ -5,22 +5,24 @@ pipeline {
     agent any
 
     options {
-        timeout(time: 1, unit: 'HOURS')
+        // retry(2)
         timestamps()
-        retry(2)
+        timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
     }
 
     triggers {
-        cron('30 11 * * *')
+        cron('30 09 * * *')
     }
 
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
-        def emailTo = "manish.pandey@gaana.com, rohit.ranjan@gaana.com"
+        def emailTo = "umesh.shukla@gaana.com"
         def abortedTo = "umesh.shukla@gaana.com"
         def replyTo = "umesh.shukla@gaana.com"
-        def emailSub = "TIP | Recommendation | Daily Test Suite Report | "
+        def emailSub = "TIP | Recommendation | Daily Regression Test Suite | "
+        def dateTime = new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
     }
 
     parameters
@@ -42,10 +44,11 @@ pipeline {
             description: 'Select environment according to your execution requirement.',
             name: 'env'
         )
-        choice(
-            choices: ['Reco'],
-            description: 'Select whether you want to execute on Recommendation module or Search.',
-            name: 'type'
+        string(
+            defaultValue: 'Reco',
+            description: 'Execution module Recommendation is default value.',
+            name: 'type',
+            trim: true
         )
         choice(
             choices: ['Android', 'Ios', 'Web'],
@@ -117,7 +120,7 @@ pipeline {
                     subject: "${emailSub}"+'$DEFAULT_SUBJECT',
                     /* groovylint-disable-next-line GStringExpressionWithinString */
                     body: '''
-                    ${FILE, path = "/var/lib/jenkins/workspace/Recommendation_Regression/Reports/EmailerReport.html"}<br>
+                    ${FILE, path = "/data/jenkins/workspace/Recommendation_Regression/Reports/EmailerReport.html"}<br>
                     ${SCRIPT, template="groovy-html.template"}
                     <b><i>For Detailed information please download extent report from attachement.</i></b><br>''',
                     mimeType: 'text/html',
