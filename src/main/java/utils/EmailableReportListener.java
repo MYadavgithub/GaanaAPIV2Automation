@@ -94,7 +94,7 @@ public class EmailableReportListener implements IReporter {
     protected void writeStylesheet() {
     	writer.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\">");
         writer.print("<style type=\"text/css\">");
-        // writer.print("table {margin-bottom:10px;border-collapse:collapse;empty-cells:show}");
+        writer.print("table {margin-bottom:10px;border-collapse:collapse;empty-cells:show}");
         writer.print("#summary {margin-top:30px; margin-left: 5%; margin-right: 5%;}");
         writer.print("#m {margin-left: 5%; font-size: 16px; font-style: oblique;}");
         writer.print("h1 {font-size:30px}");
