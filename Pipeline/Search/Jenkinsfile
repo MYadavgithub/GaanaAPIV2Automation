@@ -120,7 +120,7 @@ pipeline {
                     subject: "${emailSub}"+"${dateTime}",
                     /* groovylint-disable-next-line GStringExpressionWithinString */
                     body: '''
-                    ${FILE, path = "/data/jenkins/workspace/Solr_Cloud/Reports/EmailerReport.html"}<br>
+                    ${FILE, path = "/data/jenkins/workspace/Reco_Stage_Tests/Reports/EmailerReport.html"}<br>
                     ${SCRIPT, template="groovy-html.template"}
                     <b><i>For Detailed information please download extent report from attachement.</i></b><br>''',
                     mimeType: 'text/html',
