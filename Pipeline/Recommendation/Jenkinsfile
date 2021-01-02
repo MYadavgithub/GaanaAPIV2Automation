@@ -60,7 +60,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                sh 'git stash'
+                script{
+                    def buildNum = "${currentBuild.number}"
+                    if(buildNum != 9) {
+                        sh 'git stash'
+                    }
+                }
+
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: '$branch']],
@@ -98,35 +104,57 @@ pipeline {
                 sh "mvn -B -f ${env.WORKSPACE}/pom.xml clean install " + '-Denv=${env} -Dtype=${type} -Ddevice_type=${device_type} -DsuiteXmlFile=${suiteXmlFile}'
             }
         }
+
+        stage ('Genrate Report'){
+            steps{
+                allure includeProperties: false,
+                jdk: '',
+                results: [
+                    [
+                        path: 'allure-results'
+                    ]
+                ]
+            }
+        }
     }
 
     post {
         always {
             script {
                def buildStatus = "${currentBuild.currentResult}"
-                // if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
-                //     echo "Bulid was : ${buildStatus}"
-                //     emailext attachLog: true,
-                //     to: "${abortedTo}",
-                //     replyTo: "${replyTo}",
-                //     subject: "${emailSub}"+"${dateTime}",
-                //     body: ''' ${SCRIPT, template="groovy-html.template"}''',
-                //     mimeType: 'text/html',
-                //     compressLog: true
-                // }else{
-                //     emailext attachLog: true,
-                //     to: "${emailTo}",
-                //     replyTo: "${replyTo}",
-                //     subject: "${emailSub}"+"${dateTime}",
-                //     /* groovylint-disable-next-line GStringExpressionWithinString */
-                //     body: '''
-                //     ${FILE, path = "/data/jenkins/workspace/Recommendation_Regression/Reports/EmailerReport.html"}<br>
-                //     ${SCRIPT, template="groovy-html.template"}
-                //     <b><i>For Detailed information please download extent report from attachement.</i></b><br>''',
-                //     mimeType: 'text/html',
-                //     compressLog: true,
-                //     attachmentsPattern: '**/Reports/*ExtentReport.html'
-                // }
+                if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
+                    echo "Bulid was : ${buildStatus}"
+                    emailext attachLog: true,
+                    to: "${abortedTo}",
+                    replyTo: "${replyTo}",
+                    subject: "${emailSub}"+"${dateTime}",
+                    body: ''' ${SCRIPT, template="groovy-html.template"}<br>
+                    <b>Best Regards,</b><br>
+                    <i>Umesh Shukla<br>
+                    QA GGM Noida</i></b>''',
+                    mimeType: 'text/html',
+                    compressLog: true
+                }else{
+                    emailext attachLog: true,
+                    to: "${emailTo}",
+                    replyTo: "${replyTo}",
+                    subject: "${emailSub}"+"${dateTime}",
+                    /* groovylint-disable-next-line GStringExpressionWithinString */
+                    body: '''
+                    ${FILE, path = "/data/jenkins/workspace/Recommendation_Regression/Reports/EmailerReport.html"}<br><br>
+                    <b><i>To see detailed information either click and login with help of provided url & credential : <br>
+                    ${BUILD_URL}allure/<br>
+                    User Name : report<br>
+                    Password : 123456<br>
+                    Or Download attached Extent Report.</i></b><br><br>
+                    ${SCRIPT, template="groovy-html.template"}<br>
+                    <b>Best Regards,</b><br>
+                    <i>Umesh Shukla<br>
+                    QA GGM Noida</i></b>''',
+                    mimeType: 'text/html',
+                    compressLog: true,
+                    attachmentsPattern: '**/Reports/*ExtentReport.html'
+                }
             }
         }
     }
