@@ -13,7 +13,7 @@
 
   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aspectj.version>1.9.5</aspectj.version>
+		<aspectj.version>1.9.6</aspectj.version>
 	</properties>
   
   <build>
@@ -353,6 +353,13 @@
       <artifactId>aspectjweaver</artifactId>
       <version>${aspectj.version}</version>
       <scope>runtime</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjtools -->
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjtools</artifactId>
+      <version>${aspectj.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
