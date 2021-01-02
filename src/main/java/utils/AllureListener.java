@@ -20,10 +20,17 @@ public class AllureListener implements IExecutionListener {
             prop.setProperty("User Name", System.getProperty("user.name"));
             prop.setProperty("Host Name", InetAddress.getLocalHost().getHostName());
             prop.setProperty("Java Version", System.getProperty("java.version"));
-            prop.setProperty("Execution Context", GlobalConfigHandler.getEnv());
+            prop.setProperty("Execution Context", getenv());
             prop.store(outputStream, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getenv() {
+        if(GlobalConfigHandler.getEnv().equalsIgnoreCase("prod")){
+            return "Production";
+        }
+        return null;
     }
 }
