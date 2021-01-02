@@ -7,6 +7,7 @@
 		<listener class-name="utils.ExtentManagerListener" />
 		<listener class-name="utils.EmailableReportListener" />
 		<listener class-name="utils.RetryTransformListener" />
+		<listener class-name="utils.AllureListener" />
 	</listeners>
 	
 	<test name="Recommended Track List" annotations="JDK" preserve-order="true">
