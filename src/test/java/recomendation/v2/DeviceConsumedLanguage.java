@@ -12,6 +12,11 @@ import org.testng.Assert;
 import java.util.Map.Entry;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import test_data.MoodMixTd;
 import org.testng.annotations.BeforeClass;
@@ -28,6 +33,10 @@ public class DeviceConsumedLanguage extends MadeForYou {
     }
 
     @Test(priority = 1)
+    @Feature("https://timesgroup.jira.com/browse/GAANA-41034")
+    @Story("To Test Device Consumed API Response Time, Status Code and Response Body.")
+    @Description("Genrate url and call api using get method to get complete response for further validations.")
+    @Severity(SeverityLevel.BLOCKER)
     public void callDeviceConsumedLanguage(){
         String device_id = prop.getProperty("deviceId").toString().trim();
         String url = BASEURL+Endpoints.deviceConsumedLanguage+device_id;
@@ -52,6 +61,9 @@ public class DeviceConsumedLanguage extends MadeForYou {
     }
 
     @Test(priority = 2)
+    @Feature("https://timesgroup.jira.com/browse/GAANA-41034")
+    @Description("Validating language details data with registered and not registred device ids.")
+    @Severity(SeverityLevel.NORMAL)
     public void validateDeviceConsumedLanguageResponse(){
         int counter = 0;
         boolean isResponseValidated = true;

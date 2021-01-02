@@ -18,6 +18,12 @@ import common.RequestHandler;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import test_data.MoodMixTd;
 import org.testng.annotations.BeforeClass;
@@ -40,6 +46,10 @@ public class MadeForYou extends BaseUrls {
     }
 
     @Test(priority = 1)
+    @Feature("https://timesgroup.jira.com/browse/GAANA-41033")
+    @Story("To Test Device Consumed API Response Time, Status Code and Response Body.")
+    @Description("Genrate url and call api using get method to get complete response for further validations.")
+    @Severity(SeverityLevel.BLOCKER)
     public void createCallToMadeForYou() {
         String url = BASEURL + Endpoints.madeForYou;
         Response response = handler.createGetRequest(url);
@@ -60,6 +70,9 @@ public class MadeForYou extends BaseUrls {
     }
 
     @Test(priority = 2)
+    @Feature("https://timesgroup.jira.com/browse/GAANA-41033")
+    @Description("Validating response on basis of registred and not registred devices.")
+    @Severity(SeverityLevel.NORMAL)
     public void validateMadeForYouResponseBody(){
         int counter = 0;
         boolean isMadeForYouValidated = false;
@@ -82,7 +95,8 @@ public class MadeForYou extends BaseUrls {
             Assert.assertEquals(true, isMadeForYouValidated);
         }
     }
-
+    
+    @Step("Validating made for you response array on basis of response data : {1}")
     private boolean validateMadeForYouDetails(int counter, JSONArray madeForYouArr) {
         boolean isDatavalidated = false;
         ArrayList<String> artworks = new ArrayList<>();
@@ -125,6 +139,7 @@ public class MadeForYou extends BaseUrls {
         return isDatavalidated;
     }
 
+    @Step("Validating received keys along-with expected keys respectivey data are : {0} {1}")
     public boolean validatekeys(List<String> expectedKeys, List<Object> keys) {
         boolean isKeyValidated = false;
         if(expectedKeys.size() == keys.size()){

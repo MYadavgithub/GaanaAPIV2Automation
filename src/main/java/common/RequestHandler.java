@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import config.Constants;
 import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import java.util.concurrent.TimeUnit;
 import io.restassured.response.Response;
@@ -41,6 +42,7 @@ public class RequestHandler {
      * @param url
      * @return
      */
+    @Step("Creating get request to api : {0} ")
     public Response createGetRequest(String url){
         Map<String, String> headers = Headers.getHeaders(0);
         Response response = RestAssured.given()
