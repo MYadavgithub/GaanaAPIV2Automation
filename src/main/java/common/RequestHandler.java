@@ -59,6 +59,7 @@ public class RequestHandler {
         return response;
     }
 
+    @Step("Creating get request with url : {0} \n Custom header values are : {1}")
     public Response createGetRequestWithCustomHeaders(String url, Map<String, String> headers){
         Response response = RestAssured.given()
             .urlEncodingEnabled(false)

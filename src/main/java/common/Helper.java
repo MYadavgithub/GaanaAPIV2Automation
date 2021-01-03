@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import io.qameta.allure.Step;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -30,6 +31,7 @@ public class Helper {
      * @param val
      * @return
      */
+    @Step("Getting keys from Json Object : {0}")
     public List<Object> keys(JSONObject val) {
         return Arrays.asList(val.keySet().toArray());
     }
@@ -44,6 +46,7 @@ public class Helper {
      * @param ex_list
      * @return
      */
+    @Step("Comparing two lists, actual list : {0} expected list : {1}")
     public boolean compareList(List<Object> actual_list, List<String> ex_list){
         List<String> actual = actual_list.stream()
             .map(object -> Objects.toString(object, null))
@@ -271,6 +274,7 @@ public class Helper {
     /**
      * Validate Link is active or not
      */
+    @Step("validating links are active or not and list values are : {0}")
     public boolean validateActiveLinks(ArrayList<String> links) {
         boolean linkActive = false;
         ArrayList<String> inactiveUrls = new ArrayList<>();

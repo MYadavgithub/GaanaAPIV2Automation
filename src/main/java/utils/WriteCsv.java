@@ -7,6 +7,7 @@ import com.opencsv.CSVWriter;
 import org.json.JSONObject;
 import common.FileActions;
 import config.Constants;
+import io.qameta.allure.Step;
 
 public class WriteCsv {
     String folder_name = "savedResponse";
@@ -14,6 +15,7 @@ public class WriteCsv {
     CsvReader cr = new CsvReader();
     String file_path = Constants.WRITE_TD_CSV_FROM;
 
+    @Step("Wrting csv with file name {0}, and data : {1}")
     public void writeCsv(String filename, Map<Integer, JSONObject> data) {
         deleteExisting(filename);
         CSVWriter writer;
