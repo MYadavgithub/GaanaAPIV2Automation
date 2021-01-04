@@ -104,29 +104,29 @@ pipeline {
         always {
             script {
                def buildStatus = "${currentBuild.currentResult}"
-                if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
-                    echo "Bulid was : ${buildStatus}"
-                    emailext attachLog: true,
-                    to: "${abortedTo}",
-                    replyTo: "${replyTo}",
-                    subject: "${emailSub}"+"${dateTime}",
-                    body: ''' ${SCRIPT, template="groovy-html.template"}''',
-                    mimeType: 'text/html',
-                    compressLog: true
-                }else{
-                    emailext attachLog: true,
-                    to: "${emailTo}",
-                    replyTo: "${replyTo}",
-                    subject: "${emailSub}"+"${dateTime}",
-                    /* groovylint-disable-next-line GStringExpressionWithinString */
-                    body: '''
-                    ${FILE, path = "/data/jenkins/workspace/Reco_Stage_Tests/Reports/EmailerReport.html"}<br>
-                    ${SCRIPT, template="groovy-html.template"}
-                    <b><i>For Detailed information please download extent report from attachement.</i></b><br>''',
-                    mimeType: 'text/html',
-                    compressLog: true,
-                    attachmentsPattern: '**/Reports/*ExtentReport.html'
-                }
+                // if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
+                //     echo "Bulid was : ${buildStatus}"
+                //     emailext attachLog: true,
+                //     to: "${abortedTo}",
+                //     replyTo: "${replyTo}",
+                //     subject: "${emailSub}"+"${dateTime}",
+                //     body: ''' ${SCRIPT, template="groovy-html.template"}''',
+                //     mimeType: 'text/html',
+                //     compressLog: true
+                // }else{
+                //     emailext attachLog: true,
+                //     to: "${emailTo}",
+                //     replyTo: "${replyTo}",
+                //     subject: "${emailSub}"+"${dateTime}",
+                //     /* groovylint-disable-next-line GStringExpressionWithinString */
+                //     body: '''
+                //     ${FILE, path = "/data/jenkins/workspace/Reco_Stage_Tests/Reports/EmailerReport.html"}<br>
+                //     ${SCRIPT, template="groovy-html.template"}
+                //     <b><i>For Detailed information please download extent report from attachement.</i></b><br>''',
+                //     mimeType: 'text/html',
+                //     compressLog: true,
+                //     attachmentsPattern: '**/Reports/*ExtentReport.html'
+                // }
             }
         }
     }

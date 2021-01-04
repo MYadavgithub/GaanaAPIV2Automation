@@ -43,7 +43,7 @@ public class AutoSuggestLite extends BaseUrls {
 
     @BeforeClass
     public void prepareTestEnv(){
-        // System.setProperty("env", "prod");
+        // System.setProperty("env", "local");
         // System.setProperty("type", "Search");
         // System.setProperty("device_type", "android");
         getTestData();
@@ -300,8 +300,13 @@ public class AutoSuggestLite extends BaseUrls {
 
                         }else{
                             try{
-                                JSONArray stageInnerGdList = stage_gd_object.getJSONArray("innerGdList");
+                                JSONArray stageInnerGdList = new JSONArray();
                                 JSONArray prodInnerGdList = prod_gd_object.getJSONArray("innerGdList");
+                                try{
+                                    stageInnerGdList = stage_gd_object.getJSONArray("innerGdList");
+                                }catch(Exception e){
+                                    log.error("Stage doesn't having inner gd list.");
+                                }
 
                                 if(prodInnerGdList.length() > 0){
                                     Iterator<Object> itr = prodInnerGdList.iterator();
