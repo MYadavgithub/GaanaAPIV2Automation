@@ -43,7 +43,7 @@ public class Constants{
 
     /* Recomended Track Constants */
     public final static int REC_INVOCATION_COUNT = 1;
-    public final static int AS_INVOCATION_COUNT = 2000;
+    public final static int AS_INVOCATION_COUNT = 600;
 
     /**Emailer Config */
     public static int EMAILER_ENABLED = 0; // 0 disabled 1 enabled

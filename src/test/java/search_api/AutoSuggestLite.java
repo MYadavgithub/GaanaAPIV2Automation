@@ -250,13 +250,33 @@ public class AutoSuggestLite extends BaseUrls {
                     JSONObject prod_gd_object = prod_gds.getJSONObject(i);
                     String object_type_title = prod_gd_object.optString("ty").toString().trim();
                     if(object_type_title.equals(type_title) || isMix == true){
-                        System.out.println("Debug => "+prod_gd_object.toString());
-                        // System.exit(1);
-                        prodUniqueId = prod_gd_object.getString("iid").toString().trim()+"_"+object_type_title;
-                        String prod_gd_object_title = prod_gd_object.optString("ti").toString().trim();
-                        if(prodUniqueId.length() > 0){
-                            prod_res_obj.add(prod_gd_object_title);
-                            diff_key.add(prodUniqueId+"__"+prod_gd_object_title);
+                        List<Object> keys = helper.keys(prod_gd_object);
+                        if(!keys.contains("innerGdList")){
+                            prodUniqueId = prod_gd_object.getString("iid").toString().trim()+"_"+object_type_title;
+                            String prod_gd_object_title = prod_gd_object.optString("ti").toString().trim();
+                            if(prodUniqueId.length() > 0){
+                                prod_res_obj.add(prod_gd_object_title);
+                                diff_key.add(prodUniqueId+"__"+prod_gd_object_title);
+                            }
+                        }else{
+                            JSONArray prodInnerGdList = prod_gd_object.getJSONArray("innerGdList");
+                            if(prodInnerGdList.length() > 0){
+                                Iterator<Object> itr = prodInnerGdList.iterator();
+                                while(itr.hasNext()){
+                                    JSONObject prodInnerGdObject = (JSONObject) itr.next();
+                                    if(prodInnerGdObject.length() > 0){
+                                        for(int g = 0; g<prodInnerGdObject.length(); g++){
+                                            String o_type_title = prodInnerGdObject.optString("ty").toString().trim();
+                                            prodUniqueId = prodInnerGdObject.getString("iid").toString().trim()+"_"+o_type_title;
+                                            String prod_gd_object_title = prodInnerGdObject.optString("ti").toString().trim();
+                                            if(prodUniqueId.length() > 0){
+                                                prod_res_obj.add(prod_gd_object_title);
+                                                diff_key.add(prodUniqueId+"__"+prod_gd_object_title);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }else{
                         Assert.assertEquals(object_type_title, type_title, "Gr title should match with gr objects title but its not matching!");
