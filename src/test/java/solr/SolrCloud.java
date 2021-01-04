@@ -98,7 +98,6 @@ public class SolrCloud {
         if(counter == Constants.ZOOKEEPER_INVOCATION_COUNT){
             int count = 1;
             for(String ids : RESPONSE_IDS){
-                System.out.println(testdatainputs.size());
                 if((Constants.ZOOKEEPER_INVOCATION_COUNT-1) == TIME_TAKEN.size() && TIME_TAKEN.size() == RESPONSE_IDS.size()){
                     String result_val [] = {String.valueOf(count), testdatainputs.get(count), String.valueOf(TIME_TAKEN.get(count-1)), ids.replaceAll("[\\[\\]\\(\\)]", " ")};
                     result.put(count-1, result_val);

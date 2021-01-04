@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import config.Constants;
 
 public class CommonUtils {
     
@@ -59,8 +60,10 @@ public class CommonUtils {
     }
 
     public static void processMailer(Map<String, String> mail_data){
-        Mailer mail = new Mailer();
-        mail.sendEmail(mail_data.get("task_name"), mail_data.get("file_name"), mail_data.get("scope"));
+        if(Constants.EMAILER_ENABLED == 1){
+            Mailer mail = new Mailer();
+            mail.sendEmail(mail_data.get("task_name"), mail_data.get("file_name"), mail_data.get("scope"));
+        }
     }
 
     public static String generateRandomDeviceId(){

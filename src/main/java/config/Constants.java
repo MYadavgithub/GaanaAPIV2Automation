@@ -43,7 +43,7 @@ public class Constants{
 
     /* Recomended Track Constants */
     public final static int REC_INVOCATION_COUNT = 1;
-    public final static int AS_INVOCATION_COUNT = 2500;
+    public final static int AS_INVOCATION_COUNT = 2001;
 
     /**Emailer Config */
     public static int EMAILER_ENABLED = 0; // 0 disabled 1 enabled
@@ -58,7 +58,7 @@ public class Constants{
     /**
      * Solr Cloud Constants
      */
-    public static final int ZOOKEEPER_INVOCATION_COUNT = 10;
+    public static final int ZOOKEEPER_INVOCATION_COUNT = 2001;
     public static List<String> zookeeperServers(){
         // {"172.26.11.216:2181", "172.26.11.217:2181", "172.26.11.218:2181"} old servers
         String arr [] = {"172.26.69.113:2181", "172.26.69.114:2181", "172.26.69.226:2181"};
