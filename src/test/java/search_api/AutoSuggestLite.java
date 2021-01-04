@@ -249,7 +249,7 @@ public class AutoSuggestLite extends BaseUrls {
                 for(int i = 0; i <prod_gds.length(); i++){
                     JSONObject prod_gd_object = prod_gds.getJSONObject(i);
                     String object_type_title = prod_gd_object.optString("ty").toString().trim();
-                    if(object_type_title.equals(type_title)){
+                    if(object_type_title.equals(type_title) || isMix == true){
                         prodUniqueId = prod_gd_object.getString("iid").toString().trim()+"_"+object_type_title;
                         String prod_gd_object_title = prod_gd_object.optString("ti").toString().trim();
                         if(prodUniqueId.length() > 0){
