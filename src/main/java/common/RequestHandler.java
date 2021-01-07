@@ -1,10 +1,15 @@
 package common;
 import java.util.Map;
+
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import config.Constants;
 import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
+
 import java.util.concurrent.TimeUnit;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -71,6 +76,37 @@ public class RequestHandler {
         return response;
     }
     
+    /**
+     * Post Request with Json Object
+     * @param url
+     * @param headers2
+     * @param post_data
+     * @return
+     */
+    public Response postRequest(String url, Map<String, String> headers, JSONObject post_data) {
+        EncoderConfig encoderconfig = new EncoderConfig();
+        Response response = RestAssured.given()
+            .config(RestAssured.config().encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+            .accept(ContentType.JSON)
+            .header("Accept", "*/*")
+            .header("Connection", "keep-alive")
+            .header("Content-Type", "application/json")
+            .headers(headers)
+            .body(post_data.toString())
+            // .log().all()
+            .post(url).then()
+            .extract().response();
+
+        if(response.getStatusCode() == 200 && response != null){
+            if(response.getTimeIn(TimeUnit.SECONDS) <= 2){
+                return response;
+            }else{
+                log.error("Response time is too high for api : "+url);
+            }
+        }
+        return null;
+    }
+
     /**
      * validate status code and response time
      * @param response

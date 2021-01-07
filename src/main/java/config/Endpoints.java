@@ -8,6 +8,7 @@ public class Endpoints {
     public static String moodMix = "/for-you/moodmix";
     public static String madeForYou = "/madeforyou";
     public static String deviceConsumedLanguage = "/recommendation/deviceConsumedLanguage?deviceId=";
+    public static String recoTrackPost = "/recommendation/recommendedTracksPost/";
 
     /**Search Auto Suggest Endpoints */
     public static String autoSuggestStageEndpoint(String query_params) {
