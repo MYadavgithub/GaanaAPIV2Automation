@@ -43,9 +43,9 @@ public class AutoSuggestLite extends BaseUrls {
 
     @BeforeClass
     public void prepareTestEnv(){
-        // System.setProperty("env", "prod");
-        // System.setProperty("type", "Search");
-        // System.setProperty("device_type", "android");
+        System.setProperty("env", "local");
+        System.setProperty("type", "Search");
+        System.setProperty("device_type", "android");
         getTestData();
         if(testdatainputs.size() > 0)
             EX_EXE_COUNT = testdatainputs.size();
