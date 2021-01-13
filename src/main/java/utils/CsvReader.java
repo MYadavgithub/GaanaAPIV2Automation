@@ -57,7 +57,7 @@ public class CsvReader {
                 int count = 0;
                 ArrayList<String> col_data = new ArrayList<>();
                 for (String cell : row) {
-                    String value = cell;
+                    String value = cell.trim();
                     col_data.add(value);
                     count++;
                 }

@@ -1,4 +1,5 @@
 package utils;
+import common.CommonPath;
 import java.io.FileReader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -6,7 +7,7 @@ import org.json.simple.parser.JSONParser;
 public class JosnReader {
 
     public static JSONObject ReadJSONFile(String filename) {
-        String file_path = "./src/test/resources/data/jsonfiles/"+filename;
+        String file_path = CommonPath.AUTO_QUEUE_NEW_SEED_LOGIC_JSON_FILE_PATH+filename;
 
         JSONParser parser = new JSONParser();
 

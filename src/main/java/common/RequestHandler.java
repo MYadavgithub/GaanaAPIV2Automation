@@ -102,6 +102,7 @@ public class RequestHandler {
                 return response;
             }else{
                 log.error("Response time is too high for api : "+url);
+                return response;
             }
         }
         return null;

@@ -1,4 +1,5 @@
 package config;
+import java.util.ArrayList;
 
 public class Constants{
 
@@ -50,4 +51,24 @@ public class Constants{
     public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
     public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, c-abhishek.gupta@gaana.com, umesh.shukla@gaana.com";
     public static String EMAIL_BCC_LIST = "";
+
+    /** Autoqueue New Seed Song Logic Constants */
+    public static int SEED_ID = 11;
+    public static String ALL_SEED_TRACKS_CSV = "AllSeeds.csv";
+    public static String FIVE_SEED_TRACKS_CSV = "FiveSeeds.csv";
+    public static final int AUTO_LOGIC_INVOCATION_COUNT = 1;
+
+    public static String[] experiments() {
+        String ex[] = { "Experiment_1", "Experiment_2", "Experiment_3", "Default" };
+        return ex;
+    }
+
+    public static ArrayList<String> testDevicesAutoQueue() {
+        ArrayList<String> setOfDevice = new ArrayList<>();
+        setOfDevice.add("GM1901_d8f4420a8ba7849e75");
+        setOfDevice.add("GM1901_d8f4420a8ba7849e76");
+        setOfDevice.add("GM1901_d8f4420a8ba7849e96");
+        setOfDevice.add("GM1901_d8f4420a8ba7849e80"); // default logic
+        return setOfDevice;
+    }
 }
