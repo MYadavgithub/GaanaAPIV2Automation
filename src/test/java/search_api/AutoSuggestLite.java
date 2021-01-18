@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import common.RequestHandler;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Link;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Step;
@@ -41,6 +41,7 @@ public class AutoSuggestLite extends BaseUrls {
     ArrayList<String> testdatainputs = null;
     Helper helper = new Helper();
     RequestHandler req = new RequestHandler();
+    final static String REPROTING_FEATURE = "Auto-suggest api comparision with production response to stage response.";
     private static Logger log = LoggerFactory.getLogger(AutoSuggestLite.class);
     Map<Integer, Response> stage_responses = new HashMap<>();
     Map<Integer, Response> solr_responses = new HashMap<>();
@@ -69,12 +70,12 @@ public class AutoSuggestLite extends BaseUrls {
     }
 
     @Test(priority = 1, dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
-    @Severity(SeverityLevel.NORMAL)
-    @Description("VErify Search")
-    @Story("https://timesgroup.jira.com/browse/GAANA-40068")
-    @Step("Hit APi and get response")
-    @Attachment("{0}")
-    @Feature("This is uniue")
+    @Link(name = "Jira Id", url = "https://timesgroup.jira.com/browse/GAANA-40938")
+    @Feature(REPROTING_FEATURE)
+    @Story("Validate response time, status code.")
+    @Description("Genrate url and call api using get method to get complete response for further validations.")
+    @Step("We are saving each call response in the map.")
+    @Severity(SeverityLevel.BLOCKER)
     public void prepareUrl(String key) {
         ArrayList<String> url = new ArrayList<>();
         key = key.replaceAll("\\s", "%20");
@@ -103,6 +104,10 @@ public class AutoSuggestLite extends BaseUrls {
     }
 
     @Test(priority = 2, invocationCount = Constants.AS_INVOCATION_COUNT)
+    @Link(name = "Jira Id", url = "https://timesgroup.jira.com/browse/GAANA-40938")
+    @Feature(REPROTING_FEATURE)
+    @Story("Validate common nodes present in both staging and production api response.")
+    @Severity(SeverityLevel.MINOR)
     public void validateCommonResponseObjects(){
 
         if(EX_COUNT != 0){
@@ -136,6 +141,11 @@ public class AutoSuggestLite extends BaseUrls {
     }
 
     @Test(priority = 3, invocationCount = Constants.AS_INVOCATION_COUNT)
+    @Link(name = "Jira Id", url = "https://timesgroup.jira.com/browse/GAANA-40938")
+    @Feature(REPROTING_FEATURE)
+    @Story("Match both production and stage api data for difference validation.")
+    @Description("Production response will be freezed and created a nested loop against stage response.")
+    @Severity(SeverityLevel.CRITICAL)
     public void matchStageAndProdResponses() {
         StringBuilder STAGE_VALUE = new StringBuilder();
         StringBuilder PROD_VALUE = new StringBuilder();
@@ -226,6 +236,10 @@ public class AutoSuggestLite extends BaseUrls {
     }
 
     @Test(priority = 4)
+    @Link(name = "Jira Id", url = "https://timesgroup.jira.com/browse/GAANA-40938")
+    @Feature(REPROTING_FEATURE)
+    @Story("This test will push custom mailer to the defined recipients.")
+    @Severity(SeverityLevel.TRIVIAL)
     public void sendEmail(){
         if(Constants.EMAILER_ENABLED == 1){
             String file_name = "AutoSuggestLite.csv";
@@ -235,6 +249,7 @@ public class AutoSuggestLite extends BaseUrls {
         }
     }
 
+    @Step("Perform csv write on basis of got results.")
     private void processCsvWrite(Map<Integer, String[]> result) {
         String file_name = "AutoSuggestLite.csv";
         String head[] = { "Keyword", "ErSolr", "Staging Response", "Live Response", "Difference", "Title(Algo)" };
