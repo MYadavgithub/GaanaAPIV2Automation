@@ -91,6 +91,7 @@ pipeline {
 
         stage ('Build') {
             steps {
+                sh 'rm -rf allure-re*'
                 sh "${mvnHome}/bin/mvn -version"
                 sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
                 sh "chmod 777 -R ${env.WORKSPACE}/pom.xml"
