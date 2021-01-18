@@ -103,12 +103,12 @@ public class AutoSuggestLite extends BaseUrls {
         setAndRestCounter();
     }
 
-    @Test(priority = 2, invocationCount = Constants.AS_INVOCATION_COUNT)
+    @Test(priority = 2, dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
     @Link(name = "Jira Id", url = "https://timesgroup.jira.com/browse/GAANA-40938")
     @Feature(REPROTING_FEATURE)
     @Story("Validate common nodes present in both staging and production api response.")
     @Severity(SeverityLevel.MINOR)
-    public void validateCommonResponseObjects(){
+    public void validateCommonResponseObjects(String key){
 
         if(EX_COUNT != 0){
 
@@ -140,13 +140,13 @@ public class AutoSuggestLite extends BaseUrls {
         setAndRestCounter();
     }
 
-    @Test(priority = 3, invocationCount = Constants.AS_INVOCATION_COUNT)
+    @Test(priority = 3, dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
     @Link(name = "Jira Id", url = "https://timesgroup.jira.com/browse/GAANA-40938")
     @Feature(REPROTING_FEATURE)
     @Story("Match both production and stage api data for difference validation.")
     @Description("Production response will be freezed and created a nested loop against stage response.")
     @Severity(SeverityLevel.CRITICAL)
-    public void matchStageAndProdResponses() {
+    public void matchStageAndProdResponses(String key) {
         StringBuilder STAGE_VALUE = new StringBuilder();
         StringBuilder PROD_VALUE = new StringBuilder();
         StringBuilder DIFF_VALUE = new StringBuilder();
