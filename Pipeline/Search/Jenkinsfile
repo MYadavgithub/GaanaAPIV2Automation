@@ -18,7 +18,7 @@ pipeline {
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
-        def emailTo = "manish.pandey@gaana.com, umesh.shukla@gaana.com"
+        def emailTo = "umesh.shukla@gaana.com"
         def abortedTo = "umesh.shukla@gaana.com"
         def replyTo = "umesh.shukla@gaana.com"
         def emailSub = "TIP | Search | Daily Regression Test Suite | "
@@ -96,6 +96,18 @@ pipeline {
                 /* groovylint-disable-next-line LineLength */
                 /* groovylint-disable-next-line ConsecutiveStringConcatenation, GStringExpressionWithinString, LineLength */
                 sh "mvn -B -f ${env.WORKSPACE}/pom.xml clean install " + '-Denv=${env} -Dtype=${type} -Ddevice_type=${device_type} -DsuiteXmlFile=${suiteXmlFile}'
+            }
+        }
+
+        stage ('Genrate Report'){
+            steps{
+                allure includeProperties: false,
+                jdk: '',
+                results: [
+                    [
+                        path: 'allure-results'
+                    ]
+                ]
             }
         }
     }
