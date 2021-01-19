@@ -51,8 +51,8 @@ public class Constants{
     public static String EMAILER_PWD = "pswagczcaoiybomw";
     // public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
     // public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, c-abhishek.gupta@gaana.com, umesh.shukla@gaana.com";
-    public static String EMAIL_TO_LIST = "ritvik.sharma@gaana.com";
-    public static String EMAIL_CC_LIST = "c-abhishek.gupta@gaana.com";
+    public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com, ritvik.sharma@gaana.com";
+    public static String EMAIL_CC_LIST = "manish.pandey@gaana.com";
     public static String EMAIL_BCC_LIST = "";
 
     /**
