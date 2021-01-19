@@ -57,7 +57,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                sh 'git stash'
+                // sh 'git stash'
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: '$branch']],
