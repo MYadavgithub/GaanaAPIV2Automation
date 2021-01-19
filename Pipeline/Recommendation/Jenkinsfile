@@ -7,12 +7,12 @@ pipeline {
     options {
         timeout(time: 1, unit: 'HOURS')
         timestamps()
-        retry(2)
+        // retry(2)
     }
 
-    triggers {
-        cron('30 11 * * *')
-    }
+    // triggers {
+    //     cron('30 11 * * *')
+    // }
 
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
