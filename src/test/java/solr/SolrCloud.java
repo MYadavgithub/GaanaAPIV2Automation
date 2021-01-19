@@ -25,7 +25,6 @@ public class SolrCloud {
     CloudSolrClient solrClient;
     String OUT_PUT_FILE = "SolrCloud.csv";
     ArrayList<String> testdatainputs = null;
-    public String COLLECTION = "solrcollection";
     ArrayList<Long> TIME_TAKEN = new ArrayList<>();
     ArrayList<String> RESPONSE_IDS = new ArrayList<>();
     Map<Integer, String[]> result = new HashMap<>();
@@ -34,7 +33,7 @@ public class SolrCloud {
     public CloudSolrClient createConnection() {
         List<String> zkServers = Constants.zookeeperServers();
         solrClient = new CloudSolrClient.Builder(zkServers, Optional.of("/gaana-solr")).build();
-        solrClient.setDefaultCollection(COLLECTION);
+        solrClient.setDefaultCollection(Constants.COLLECTION);
         return solrClient;
     }
 
@@ -64,7 +63,7 @@ public class SolrCloud {
             SolrQuery solrQuery = new SolrQuery();
             solrQuery.setQuery("title:" + keyword);
             solrQuery.setRows(50);
-            solrQuery.set("collection", COLLECTION);
+            solrQuery.set("collection", Constants.COLLECTION);
             solrQuery.set("wt", "json");
             // solrQuery.setFilterQueries(keyword);
             long start = System.currentTimeMillis();

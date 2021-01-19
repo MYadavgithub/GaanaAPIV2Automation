@@ -46,7 +46,7 @@ public class Constants{
     public final static int AS_INVOCATION_COUNT = 2001;
 
     /**Emailer Config */
-    public static int EMAILER_ENABLED = 0; // 0 disabled 1 enabled
+    public static int EMAILER_ENABLED = 1; // 0 disabled 1 enabled
     public static String EMAILER_EMAIL = "umesh.shukla@gaana.com";
     public static String EMAILER_PWD = "pswagczcaoiybomw";
     // public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
@@ -58,7 +58,8 @@ public class Constants{
     /**
      * Solr Cloud Constants
      */
-    public static final int ZOOKEEPER_INVOCATION_COUNT = 2001;
+    public static String COLLECTION = "solrcollection";
+    public static final int ZOOKEEPER_INVOCATION_COUNT = 4001;
     public static List<String> zookeeperServers(){
         // {"172.26.11.216:2181", "172.26.11.217:2181", "172.26.11.218:2181"} old servers
         String arr [] = {"172.26.69.113:2181", "172.26.69.114:2181", "172.26.69.226:2181"};
