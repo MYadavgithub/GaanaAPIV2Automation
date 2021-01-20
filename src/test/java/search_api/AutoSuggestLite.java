@@ -43,6 +43,8 @@ public class AutoSuggestLite extends BaseUrls {
     RequestHandler req = new RequestHandler();
     final static String REPROTING_FEATURE = "Auto-suggest api comparision with production response to stage response.";
     private static Logger log = LoggerFactory.getLogger(AutoSuggestLite.class);
+    ArrayList<String> stage_algo_list = new ArrayList<>();
+    ArrayList<String> prod_algo_list = new ArrayList<>();
     Map<Integer, Response> stage_responses = new HashMap<>();
     Map<Integer, Response> solr_responses = new HashMap<>();
     Map<Integer, Response> prod_responses = new HashMap<>();
@@ -124,6 +126,16 @@ public class AutoSuggestLite extends BaseUrls {
         
             String stage_q = getOptionalJSONObject(stage_response_object, "q");
             String prod_q = getOptionalJSONObject(prod_response_object, "q");
+
+            String stage_algo = getOptionalJSONObject(stage_response_object, "algo");
+            String prod_algo = getOptionalJSONObject(prod_response_object, "algo");
+            if(stage_algo.length() > 0 && prod_algo.length() > 0){
+                stage_algo_list.add(stage_algo);
+                prod_algo_list.add(prod_algo);
+            }else{
+                stage_algo_list.add("N/A");
+                prod_algo_list.add("N/A");
+            }
 
             if(stage_srId.length() <= 0 && prod_srId.length() <= 0){
                 boolean srIdValid = false;
@@ -227,7 +239,16 @@ public class AutoSuggestLite extends BaseUrls {
 
             String diff_keys = DIFF_KEY_VALUE.toString();
 
-            String result_val [] = {keyword, solr_val, stage, prod, diff_found, diff_keys};
+            String algo = "N/A";
+            if(stage_algo_list.size() == prod_algo_list.size()){
+                String prodAlgoName = prod_algo_list.get(EX_COUNT-1).trim();
+                String stageAlgoName = stage_algo_list.get(EX_COUNT-1).trim();
+                if(!prodAlgoName.equals("N/A") && !prodAlgoName.equalsIgnoreCase(stageAlgoName)){
+                    algo = stageAlgoName +" | "+ prodAlgoName;
+                }
+            }
+
+            String result_val [] = {keyword, solr_val, stage, prod, diff_found, diff_keys, algo};
             result.put(EX_COUNT, result_val);
         }
         setAndRestCounter();
@@ -252,7 +273,7 @@ public class AutoSuggestLite extends BaseUrls {
     @Step("Perform csv write on basis of got results.")
     private void processCsvWrite(Map<Integer, String[]> result) {
         String file_name = "AutoSuggestLite.csv";
-        String head[] = { "Keyword", "ErSolr", "Staging Response", "Live Response", "Difference", "Title(Algo)" };
+        String head[] = { "Keyword", "ErSolr", "Staging Response", "Live Response", "Difference", "Title", "Algo (Stage | Production)" };
         WriteCsv.writeCsvWithHeader(file_name, head, result);
     }
 
