@@ -18,6 +18,14 @@
 
 	</test>
 
+	<test name="Search Feed" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.reco_tracks.SearchFeed" />
+		</classes>
+
+	</test>
+
 	<test name="Recommended MoodMix" annotations="JDK" preserve-order="true">
 
 		<classes>

@@ -10,6 +10,7 @@ public class Endpoints {
     public static String deviceConsumedLanguage = "/recommendation/deviceConsumedLanguage?deviceId=";
 
     /**Search Auto Suggest Endpoints */
+    public static String searchFeed = "/searchfeed/fetch";
     public static String autoSuggestStageEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
         endpoint.append("/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
