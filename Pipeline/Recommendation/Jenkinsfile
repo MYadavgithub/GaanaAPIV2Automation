@@ -28,7 +28,7 @@ pipeline {
     parameters
     {
         string(
-            defaultValue: 'release/sprint_13th_Jan_2021',
+            defaultValue: 'release/sprint_27th_Jan_2021',
             description: 'Provide branch for execution',
             name: 'branch',
             trim: true
