@@ -210,11 +210,6 @@ public class AutoSuggestLiteController {
             }
         }
 
-        // System.out.println("Stage : "+stage_res_data.toString());
-        // System.out.println("Prod : "+prod_res_data.toString());
-        // System.out.println("Diff : "+diff_data.toString());
-        // System.out.println("Stage num ;"+stage_gd_validated.toString());
-
         if(prodGdList != null){
             addMissedDataWhichPresentOnProd(prodGdList, prod_gd_validated);
         }
@@ -223,29 +218,28 @@ public class AutoSuggestLiteController {
             addExtraDataFoundOnStageInList(stageGdList, stage_gd_validated);
         } 
 
-        ArrayList<String> result_set = new ArrayList<>();
         if(artworks.size() > 0){
             boolean isArtworkValid = helper.validateActiveLinks(artworks);
             artworks.clear();
+            if(!isArtworkValid){
+                log.error("Keyword => "+"\""+KEYWORD+"\""+ " artworks not active please check manually.");
+            }
+        }
             // System.out.println("Stage : "+stage_res_data.toString());
             // System.out.println("Prod : "+prod_res_data.toString());
             // System.out.println("Diff : "+diff_data.toString());
             // System.out.println("Only stage : "+stage_ext_data.toString());
 
-            if(isArtworkValid){
-                result_set.add(prod_res_data.toString());
-                prod_res_data.clear();
-                result_set.add(stage_res_data.toString());
-                stage_res_data.clear();
-                result_set.add(diff_data.toString());
-                diff_data.clear();
-                result_set.add(stage_ext_data.toString());
-                stage_ext_data.clear();
-            }else{
-                log.error("Artworks not active failing this test.");
-                Assert.assertEquals(isArtworkValid, true);
-            }
-        }
+        ArrayList<String> result_set = new ArrayList<>();
+        result_set.add(prod_res_data.toString());
+        prod_res_data.clear();
+        result_set.add(stage_res_data.toString());
+        stage_res_data.clear();
+        result_set.add(diff_data.toString());
+        diff_data.clear();
+        result_set.add(stage_ext_data.toString());
+        stage_ext_data.clear();
+
         prod_gd_validated.clear();
         stage_gd_validated.clear();
         return result_set;
@@ -253,7 +247,6 @@ public class AutoSuggestLiteController {
 
     /**
      * Validate InnerGd
-     * 
      * @param gr_type
      * @param isMix
      * @param prodGdObject
@@ -296,9 +289,6 @@ public class AutoSuggestLiteController {
             prodCounter++;
         }
 
-        // System.out.println(prod_InnerGd_validated.toString());
-        // System.out.println(stage_InnerGd_validated.toString());
-        
         addMissedDataWhichPresentOnProd(prodGdList, prod_InnerGd_validated);
         addExtraDataFoundOnStageInList(stageGdList, stage_InnerGd_validated);
 
