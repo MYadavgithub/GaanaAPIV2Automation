@@ -241,7 +241,11 @@ public class AutoSuggestLite extends BaseUrls {
 
         String prod = PRODUCTION_DATA.toString().trim();
         String stage = STAGING_DATA.toString().trim();
-        String onlyStage = ONLY_SATGING_DATA.toString().trim();
+
+        String onlyStage = "N/A";
+        if(ONLY_SATGING_DATA.toString().trim().length() > 0){
+            onlyStage = ONLY_SATGING_DATA.toString().trim();
+        }
 
         String diff_found = "N/A";
         if(DIFF_DATA.toString().trim().length() > 0){
