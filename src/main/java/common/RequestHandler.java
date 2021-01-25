@@ -46,7 +46,7 @@ public class RequestHandler {
     public Response createGetRequest(String url){
         Map<String, String> headers = Headers.getHeaders(0);
         Response response = RestAssured.given()
-            .urlEncodingEnabled(false)
+            .urlEncodingEnabled(true)
             .headers(headers)
             // .log().all()
             .when().get(url);
