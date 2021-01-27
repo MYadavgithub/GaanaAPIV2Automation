@@ -67,7 +67,7 @@ pipeline {
                     userRemoteConfigs: [
                         [
                             credentialsId: 'b48d7528-2319-416d-b08b-ce5001fad3d8',
-                            url: 'git@bitbucket.org:umesh_qa/gaana_qa_search_reco.git'
+                            url: 'git@bitbucket.org:times_internet/gaana_qa_search_reco.git'
                         ]
                     ],
                     extensions: [
