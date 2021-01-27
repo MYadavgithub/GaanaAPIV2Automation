@@ -32,4 +32,11 @@ public class Endpoints {
         endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1");
         return endpoint.toString();
     }
+
+    /** Auto Suggest Mobile Endpoints */
+    public static String autoSuggestMobileV2Endpoint(String keyword){
+        StringBuilder endpoints = new StringBuilder();
+        endpoints.append("/mobile/autocomplete-v2?query="+keyword+"&content_filter=2&geoLocation=IN&include=allItems&isRegSrch=0");
+        return endpoints.toString().trim();
+    }
 }

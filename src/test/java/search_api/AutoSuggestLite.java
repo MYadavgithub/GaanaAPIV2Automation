@@ -266,8 +266,11 @@ public class AutoSuggestLite extends BaseUrls {
         String result_val [] = {keyword, solr_val, onlyStage, stage, prod, diff_found, diff_keys, algo};
         FINAL_DATA.put(API_CALL, result_val);
 
-        if(API_CALL == Constants.AS_INVOCATION_COUNT && FINAL_DATA.size() > 0)
-            controller.processCsvWrite(FINAL_DATA);
+        if(API_CALL == Constants.AS_INVOCATION_COUNT && FINAL_DATA.size() > 0){
+            String file_name = "AutoSuggestLite.csv";
+            String head[] = { "Keyword", "ErSolr", "Staging Extra Response", "Staging Response", "Live Response", "Difference(Prod vs Stage)", "Gr-Title", "Algo (Stage | Production)" };
+            controller.processCsvWrite(file_name, head, FINAL_DATA);
+        }
         API_CALL = handler.invocationCounter(API_CALL, MAX_COUNT);
     }
 

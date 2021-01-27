@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import common.CommonPath;
 import common.FileActions;
 import common.Helper;
@@ -409,10 +408,8 @@ public class AutoSuggestLiteController {
         return STAGE_NOT_VALIDATED;
     }
 
-    @Step("Perform csv write on basis of got results.")
-    public void processCsvWrite(Map<Integer, String[]> result) {
-        String file_name = "AutoSuggestLite.csv";
-        String head[] = { "Keyword", "ErSolr", "Staging Extra Response", "Staging Response", "Live Response", "Difference(Prod vs Stage)", "Gr-Title", "Algo (Stage | Production)" };
-        WriteCsv.writeCsvWithHeader(file_name, head, result);
+    @Step("Perform csv write on basis of got results, fileName : {0}, header : {1}")
+    public void processCsvWrite(String filename, String head[], Map<Integer, String[]> result) {
+        WriteCsv.writeCsvWithHeader(filename, head, result);
     }
 }
