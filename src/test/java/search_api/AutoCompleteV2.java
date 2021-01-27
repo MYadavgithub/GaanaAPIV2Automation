@@ -24,6 +24,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import logic_controller.AutoSuggestLiteController;
 import logic_controller.AutoSuggestV2Controller;
+import utils.Mailer;
 
 public class AutoCompleteV2 extends BaseUrls{
     
@@ -144,6 +145,20 @@ public class AutoCompleteV2 extends BaseUrls{
         }
 
         API_CALL = handler.invocationCounter(API_CALL, MAX_COUNT);
+    }
+
+    @Test(priority = 3)
+    @Link(name = "Jira Id", url = JIRA_ID)
+    @Feature(REPROTING_FEATURE)
+    @Story("This test will push custom mailer to the defined recipients.")
+    @Severity(SeverityLevel.TRIVIAL)
+    public void sendEmail(){
+        if(Constants.EMAILER_ENABLED == 1){
+            String file_name = API_NAME+".csv";
+            String scope = "Scope : This test compares stage response with production response.";
+            Mailer mail = new Mailer();
+            mail.sendEmail("AutoCompleteV2", file_name, scope);
+        }
     }
 
     @DataProvider(name = "key_provider")
