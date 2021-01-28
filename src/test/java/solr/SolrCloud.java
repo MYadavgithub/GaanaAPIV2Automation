@@ -57,9 +57,6 @@ public class SolrCloud {
         }
 
         getTestData();
-        if(counter == 8010){
-            counter = 0;
-        }
         String keyword = testdatainputs.get(counter);
 
         if (!keyword.equals("Keyword")) {
@@ -108,7 +105,7 @@ public class SolrCloud {
             }
 
             processCsvWrite(result);
-            sendEmail();
+            // sendEmail();
             /*ArrayList<String> values = new ArrayList<>();
             for(Long t_ms : time_taken){
                 if(t_ms > 200){
