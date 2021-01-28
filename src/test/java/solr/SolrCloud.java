@@ -57,6 +57,9 @@ public class SolrCloud {
         }
 
         getTestData();
+        if(counter == 8010){
+            counter = 0;
+        }
         String keyword = testdatainputs.get(counter);
 
         if (!keyword.equals("Keyword")) {
