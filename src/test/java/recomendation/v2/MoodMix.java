@@ -43,9 +43,9 @@ public class MoodMix extends BaseUrls{
 
     @BeforeClass
     public void prepareEnv() {
-        System.setProperty("env", "prod");
-        System.setProperty("type", "reco");
-        System.setProperty("device_type", "android");
+        // System.setProperty("env", "prod");
+        // System.setProperty("type", "reco");
+        // System.setProperty("device_type", "android");
         baseurl();
         BASEURL = prop.getProperty("prec_baseurl").toString().trim();
         prepareUrls();
