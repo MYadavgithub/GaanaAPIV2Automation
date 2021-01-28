@@ -103,7 +103,7 @@ public class SolrCloud {
             }
         }else{
             response_ids.add("N/A");
-            log.info("Error! for keyword : "+"\""+keyword+"\"" +" no response reverted from solr!");
+            log.info("Error! At count : "+counter+", for keyword : "+"\""+keyword+"\"" +" no response reverted from solr!");
             //Assert.assertEquals(documentList.size() > 0, true, "Document list is empty!");
         }
 
