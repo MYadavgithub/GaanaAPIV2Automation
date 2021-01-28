@@ -225,7 +225,7 @@ public class AutoSuggestLite extends BaseUrls {
     private void processCsvWrite(Map<Integer, String[]> result) {
         String file_name = "AutoSuggestLite.csv";
         String head[] = { "Keyword", "ErSolr", "Staging Response", "Live Response", "Difference", "Title(Algo)" };
-        WriteCsv.writeCsvWithHeader(file_name, head, result);
+        WriteCsv.writeCsvWithHeader(file_name, head, result, false);
     }
 
     private ArrayList<String> validateGdData(String type_title, JSONArray prod_gds, JSONArray stage_gds) {
