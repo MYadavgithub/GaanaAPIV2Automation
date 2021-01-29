@@ -106,7 +106,7 @@ public class Vibes extends BaseUrls {
         if(!all_entitys_ids.isEmpty() && EXEC_CONTEXT == 0){
             String file_name = API_NAME+".csv";
             String head[] = { "Entities" };
-            WriteCsv.writeCsvWithHeader(file_name, head, all_entitys_ids);
+            WriteCsv.writeCsvWithHeader(file_name, head, all_entitys_ids, false);
         }else if(EXEC_CONTEXT == 1){
             Map<Integer, ArrayList<String>> previous_entities = readPrevData();
             Assert.assertEquals((previous_entities.size() == all_entitys_ids.size()), true, "Previous and new response size should be same!");

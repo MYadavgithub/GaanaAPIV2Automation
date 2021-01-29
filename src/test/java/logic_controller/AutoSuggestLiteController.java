@@ -410,6 +410,6 @@ public class AutoSuggestLiteController {
 
     @Step("Perform csv write on basis of got results, fileName : {0}, header : {1}")
     public void processCsvWrite(String filename, String head[], Map<Integer, String[]> result) {
-        WriteCsv.writeCsvWithHeader(filename, head, result);
+        WriteCsv.writeCsvWithHeader(filename, head, result, true);
     }
 }

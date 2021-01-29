@@ -41,7 +41,6 @@ public class AutoSuggestLite extends BaseUrls {
     Map<Integer, Response> SOLR_RESPONSES = new HashMap<>();
     ArrayList<String> PROD_ALGO_LIST = new ArrayList<>();
     ArrayList<String> STAGE_ALGO_LIST = new ArrayList<>();
-    Map<Integer, String[]> FINAL_DATA = new HashMap<>();
     AutoSuggestLiteController controller = new AutoSuggestLiteController();
     private static Logger log = LoggerFactory.getLogger(AutoSuggestLite.class);
     final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-40938";
@@ -146,6 +145,7 @@ public class AutoSuggestLite extends BaseUrls {
     @Description("Production response will be freezed and created a nested loop against stage response.")
     @Severity(SeverityLevel.CRITICAL)
     public void matchProdWithStage(String keyword){
+        Map<Integer, String[]> FINAL_DATA = new HashMap<>();
         StringBuilder STAGING_DATA = new StringBuilder();
         StringBuilder PRODUCTION_DATA = new StringBuilder();
         StringBuilder ONLY_SATGING_DATA = new StringBuilder();
@@ -266,10 +266,15 @@ public class AutoSuggestLite extends BaseUrls {
         String result_val [] = {keyword, solr_val, onlyStage, stage, prod, diff_found, diff_keys, algo};
         FINAL_DATA.put(API_CALL, result_val);
 
-        if(API_CALL == Constants.AS_INVOCATION_COUNT && FINAL_DATA.size() > 0){
+        if(FINAL_DATA.size() > 0){
             String file_name = "AutoSuggestLite.csv";
-            String head[] = { "Keyword", "ErSolr", "Staging Extra Response", "Staging Response", "Live Response", "Difference(Prod vs Stage)", "Gr-Title", "Algo (Stage | Production)" };
-            controller.processCsvWrite(file_name, head, FINAL_DATA);
+            if(API_CALL == 1){
+                String head[] = { "Keyword", "ErSolr", "Staging Extra Response", "Staging Response", "Live Response", "Difference(Prod vs Stage)", "Gr-Title", "Algo (Stage | Production)" };
+                controller.processCsvWrite(file_name, head, FINAL_DATA);
+            }else{
+                controller.processCsvWrite(file_name, null, FINAL_DATA);
+            }
+            FINAL_DATA.clear();
         }
         API_CALL = handler.invocationCounter(API_CALL, MAX_COUNT);
     }

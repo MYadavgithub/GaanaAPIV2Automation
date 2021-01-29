@@ -60,13 +60,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script{
-                    def buildNum = "${currentBuild.number}"
-                    if(buildNum != 9) {
-                        sh 'git stash'
-                    }
-                }
-
+                // script{
+                //     def buildNum = "${currentBuild.number}"
+                //     if(buildNum != 0) {
+                //         sh 'git stash'
+                //     }
+                // }
+                sh 'git stash'
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: '$branch']],

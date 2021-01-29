@@ -7,17 +7,15 @@ import com.opencsv.CSVWriter;
 import org.json.JSONObject;
 import common.FileActions;
 import config.Constants;
-import io.qameta.allure.Step;
 
 public class WriteCsv {
     String folder_name = "savedResponse";
     FileActions fa = new FileActions();
     CsvReader cr = new CsvReader();
-    String file_path = Constants.WRITE_TD_CSV_FROM;
 
-    @Step("Wrting csv with file name {0}, and data : {1}")
     public void writeCsv(String filename, Map<Integer, JSONObject> data) {
-        deleteExisting(filename);
+        String file_path = Constants.WRITE_TD_CSV_FROM;
+        deleteExisting(file_path, filename);
         CSVWriter writer;
         try {
             String file = file_path + filename;
@@ -44,17 +42,27 @@ public class WriteCsv {
         }
     }
 
-    private void deleteExisting(String filename) {
-        FileActions.fileOperation(0, file_path, filename);
+    private static void deleteExisting(String filepath, String filename) {
+        FileActions.fileOperation(0, filepath, filename);
     }
 
-    public static void writeCsvWithHeader(String file_name, String[] head, Map<Integer, String[]> values) {
-        String path = "."+Constants.CUSTOM_REPORT_FOLDER+"/Runtime/"+file_name;
-        FileActions.checkFolderExists("."+Constants.CUSTOM_REPORT_FOLDER+"/Runtime/");
+    /**
+     * @param file_name
+     * @param head
+     * @param values
+     * @param isOverride send true for writing line by line else false
+     */
+    public static void writeCsvWithHeader(String file_name, String[] head, Map<Integer, String[]> values, boolean isOverride) {
+        String path = "."+Constants.CUSTOM_REPORT_FOLDER+"/Runtime/";
+        if(head != null){
+            deleteExisting(path, file_name);
+            FileActions.checkFolderExists("."+Constants.CUSTOM_REPORT_FOLDER+"/Runtime/");
+        }
+
         CSVWriter writer;
         try {
-            String file = path;
-            writer = new CSVWriter(new FileWriter(file));
+            String file = path+file_name;;
+            writer = new CSVWriter(new FileWriter(file, isOverride));
             writer.writeNext(head);
 
             for(Entry<Integer, String[]> val : values.entrySet()){
