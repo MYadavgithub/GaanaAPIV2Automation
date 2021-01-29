@@ -2,8 +2,7 @@ package config;
 
 public class Constants{
 
-    /**Commonly Used COnstants */
-
+    /**Commonly Used Constants */
     public static int RESPONSE_TIME = 2;
     public static String CUSTOM_REPORT_FOLDER = "/Reports";
 

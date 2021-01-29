@@ -1,4 +1,6 @@
 package logic_controller;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -6,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 import common.Helper;
 import config.Endpoints;
@@ -363,6 +366,17 @@ public class SearchFeedController {
                             return isObValidated;
                         }
                     break;
+
+                    case "subtitle":
+                        if(value.length() > 0){
+                            isObValidated = true;
+                            // log.info(key_name+ " is : "+value);
+                        }else{
+                            isObValidated = false;
+                            log.error(key_name+" can't be null, manual check required!");
+                            return isObValidated;
+                        }
+                    break;
                                 
                     default:
                         System.out.println("Key : "+key_name+" ==> "+responseOb.optString(key_name) +" not in validation list.");
@@ -377,5 +391,37 @@ public class SearchFeedController {
             isObValidated = helper.validateActiveLinks(artistAtw);
         }
         return isObValidated;
+    }
+
+    /**
+     * Validate Subtitles in response objects
+     * @param tab_name
+     * @param response
+     */
+    public void validateSubTitle(String tab_name, JSONArray response){
+        String specialSubtitleTab = SearchFeedTd.tabsName("-4"); //podcast
+        Iterator<Object> response_itr = response.iterator();
+        while(response_itr.hasNext()){
+            JSONObject resObj = (JSONObject) response_itr.next();
+            String iid = resObj.getString("iid").toString().trim();
+            String ti = resObj.optString("ti").toString().trim();
+            String ty = resObj.optString("ty").toString().trim();
+            String language = resObj.optString("language").toString().trim();
+            String subtitle = resObj.optString("subtitle").toString().trim();
+            String exSubTitle = "";
+            if(tab_name.equals(specialSubtitleTab) || (language.length() > 0 && ty.equals("Show"))){
+                exSubTitle = language;
+                if(!subtitle.equals(exSubTitle)){
+                    log.error("\""+tab_name+"\""+ " and Id : "+iid+ "and title : " +ti+ " subTitle validation not working!");
+                }
+                Assert.assertEquals(subtitle, exSubTitle);
+            }else {
+                exSubTitle = ty;
+                if(!subtitle.equals(exSubTitle)){
+                    log.error("\""+tab_name+"\""+ " and Id : "+iid+ " and title : " +ti+ " subTitle validation not working!");
+                }
+                Assert.assertEquals(subtitle, exSubTitle);
+            }
+        }
     }
 }

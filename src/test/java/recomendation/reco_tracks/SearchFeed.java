@@ -47,9 +47,7 @@ public class SearchFeed extends BaseUrls{
     
     @BeforeClass
     public void prepareEnv(){
-        // System.setProperty("env", "prod");
-        // System.setProperty("type", "Reco");
-        // System.setProperty("device_type", "android");
+        GlobalConfigHandler.setLocalProps();
         baseurl();
         BASEURL = prop.getProperty("prec_baseurl").toString().trim();
         MAX_CALL = SearchFeedTd.INVOCATION_COUNT;
@@ -200,6 +198,27 @@ public class SearchFeed extends BaseUrls{
             }
         }else{
             log.error("For "+tab_name+ " api has given null as response body in test case validateResponseBody() Url : \n"+URLS.get(API_CALL));
+        }
+        API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
+    }
+
+    @Test(priority = 6, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = JIRA_ID)
+    @Feature(REPROTING_FEATURE)
+    @Step("Validate Subtitle Accroding to logic defined by dev team")
+    @Severity(SeverityLevel.NORMAL)
+    public void validateSubTitleInResponseBody(String tab_id, String tab_name){
+        Response response = RESPONSES.get(API_CALL);
+        if(!response.asString().equals("null")){
+            JSONObject res_object = new JSONObject(response.asString());
+            JSONArray response_array = res_object.getJSONArray("response");
+            if(response_array.length() > 0){
+                controller.validateSubTitle(tab_name, response_array);
+            }else{
+                log.error("Response array can't be null or empty");
+                Assert.assertEquals(response_array.length() > 0, true);
+            }
+
         }
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
