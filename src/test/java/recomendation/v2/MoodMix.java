@@ -26,6 +26,7 @@ import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class MoodMix extends BaseUrls{
 
@@ -90,40 +91,50 @@ public class MoodMix extends BaseUrls{
         boolean isEntitiesValid = false;
         JSONObject response = new JSONObject(responses.get(api_call_count).asString());
 
-        String title = response.optString("title").trim();
-        String subTitle = response.optString("subTitle").trim();
-        String userType = response.optString("userType").trim();
-        JSONArray entityMixObjects = response.getJSONArray("entityMixObjects");
+        try{
+            String title = response.optString("title").trim();
+            String subTitle = response.optString("subTitle").trim();
+            String userType = response.optString("userType").trim();
+            JSONArray entityMixObjects = response.getJSONArray("entityMixObjects");
 
-        if(subTitle.length() > 0 && userType.length() > 0){
-            log.info("SubTitle and userType available in response body.");
-        }
-
-        if(title.length() > 0 && entityMixObjects.getJSONObject(0).length() == 2){
-            flag = 1; // to validate entity type & id
-            if(entityMixObjects.length() > 0){
-                isEntitiesValid = entityMixObjects(flag, entityMixObjects);
-            }else{
-                isEntitiesValid = true;
-                log.info("Entity objects are empty for below given url : \n"+urls.get(api_call_count));
+            if(subTitle.length() > 0 && userType.length() > 0){
+                log.info("SubTitle and userType available in response body.");
             }
-        }else if(title.length() > 0 && entityMixObjects.getJSONObject(0).length() > 2){
-            flag = 2; // others
-            if(entityMixObjects.length() > 0){
-                isEntitiesValid = entityMixObjects(flag, entityMixObjects);
-            }else{
-                isEntitiesValid = true;
-                log.info("Entity objects are empty for below given url : \n"+urls.get(api_call_count));
-            }    
-        }
 
-        String failed_url = "";
-        if(!isEntitiesValid){
-            failed_url = urls.get(api_call_count);
-        }
+            if(title.length() > 0 && entityMixObjects.getJSONObject(0).length() == 2){
+                flag = 1; // to validate entity type & id
+                if(entityMixObjects.length() > 0){
+                    isEntitiesValid = entityMixObjects(flag, entityMixObjects);
+                }else{
+                    isEntitiesValid = true;
+                    log.info("Entity objects are empty for below given url : \n"+urls.get(api_call_count));
+                }
+            }else if(title.length() > 0 && entityMixObjects.getJSONObject(0).length() > 2){
+                flag = 2; // others
+                if(entityMixObjects.length() > 0){
+                    isEntitiesValid = entityMixObjects(flag, entityMixObjects);
+                }else{
+                    isEntitiesValid = true;
+                    log.info("Entity objects are empty for below given url : \n"+urls.get(api_call_count));
+                }
+            }
 
-        api_call_count = gHandler.invocationCounter(api_call_count, max_call);
-        Assert.assertEquals(isEntitiesValid, true, "In below given url, validation got failed : \n "+failed_url);  
+            String failed_url = "";
+            if(!isEntitiesValid){
+                failed_url = urls.get(api_call_count);
+            }
+
+            api_call_count = gHandler.invocationCounter(api_call_count, max_call);
+            Assert.assertEquals(isEntitiesValid, true, "In below given url, validation got failed : \n "+failed_url);
+        }catch(Exception e){
+            SoftAssert softAssert = new SoftAssert();
+            if(response.isEmpty()){
+                log.info("For current request response is empty, valiadate manually Url was : "+urls.get(api_call_count));
+                softAssert.assertEquals(!response.isEmpty(), true);
+            }
+            assertAll();
+            e.printStackTrace();
+        }
     }
 
     @Step("Validating each entityMixObject, got in api response")
