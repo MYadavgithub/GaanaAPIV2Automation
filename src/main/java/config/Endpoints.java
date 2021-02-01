@@ -3,6 +3,7 @@ package config;
 public class Endpoints {
 
     public static String recoTracks = "/recommendation/recommendedTracks/";
+    public static String trendingShortTrack = "/recommendation/trendingShortTrack?viewAll=";
     public static String recoTracksPartner = "/recommendation/partnership/";
     public static String vibes = "/recommendation/vibes";
     public static String moodMix = "/for-you/moodmix";
@@ -30,5 +31,12 @@ public class Endpoints {
         endpoint.append("/mobilesuggest/getErSolr?query=" + query_params);
         endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1");
         return endpoint.toString();
+    }
+
+    /** Auto Suggest Mobile Endpoints */
+    public static String autoSuggestMobileV2Endpoint(String keyword){
+        StringBuilder endpoints = new StringBuilder();
+        endpoints.append("/mobile/autocomplete-v2?query="+keyword+"&content_filter=2&geoLocation=IN&include=allItems&isRegSrch=0");
+        return endpoints.toString().trim();
     }
 }

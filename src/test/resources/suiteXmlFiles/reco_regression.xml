@@ -70,4 +70,12 @@
 
 	</test>
 
+	<test name="Recommended TrendingShortTrack" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.reco_tracks.TrendingShortTrack" />
+		</classes>
+
+	</test>
+
 </suite>

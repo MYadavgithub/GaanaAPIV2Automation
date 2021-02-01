@@ -7,6 +7,16 @@ import config.Constants;
 import java.text.SimpleDateFormat;
 
 public class GlobalConfigHandler {
+
+    /**
+     * Only for Local debugging
+     */
+    public static void setLocalProps(){
+        // System.setProperty("env", "prod");
+        // System.setProperty("type", "Reco");
+        // System.setProperty("device_type", "android");
+    }
+
     /**
      * Get Execution Environment
      * @return

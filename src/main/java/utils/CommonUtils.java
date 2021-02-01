@@ -8,6 +8,8 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.json.JSONObject;
+import io.restassured.response.Response;
 
 public class CommonUtils {
     
@@ -15,7 +17,12 @@ public class CommonUtils {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy:HH.mm.ss");
 		return formatter.format(currentDate.getTime());
-	}
+    }
+
+    public JSONObject converResponseToJSONObject(Response response){
+        JSONObject obj = new JSONObject(response.asString());
+        return obj;
+    }
 
 	public String removeQoutesForCsvData(String val){
         String updated = null;

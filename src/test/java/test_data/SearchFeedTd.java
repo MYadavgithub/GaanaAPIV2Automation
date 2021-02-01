@@ -43,7 +43,7 @@ public class SearchFeedTd {
      * Expected all response keys in Search Feed api
      */
     public static String expectedResponseKeys[] = { "iid", "ti", "ty", "aw", "play_ct", "sti", "fty", "vty", "lang", "seo", "artistATW",
-        "artistTitle", "tags", "oty", "clip_url", "vurl", "scoreF", "psl", "language" };
+        "artistTitle", "tags", "oty", "clip_url", "vurl", "scoreF", "psl", "language", "subtitle"};
 
     /**
      * Add or change language in api url params from here.
