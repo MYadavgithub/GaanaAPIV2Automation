@@ -43,9 +43,7 @@ public class MoodMix extends BaseUrls{
 
     @BeforeClass
     public void prepareEnv() {
-        System.setProperty("env", "prod");
-        System.setProperty("type", "reco");
-        System.setProperty("device_type", "android");
+        GlobalConfigHandler.setLocalProps();
         baseurl();
         BASEURL = prop.getProperty("prec_baseurl").toString().trim();
         prepareUrls();
@@ -89,41 +87,49 @@ public class MoodMix extends BaseUrls{
         int flag = 0;
         boolean isEntitiesValid = false;
         JSONObject response = new JSONObject(responses.get(api_call_count).asString());
+        if(!response.isEmpty()){
+            String title = response.optString("title").trim();
+            String subTitle = response.optString("subTitle").trim();
+            String userType = response.optString("userType").trim();
+            JSONArray entityMixObjects = response.getJSONArray("entityMixObjects");
 
-        String title = response.optString("title").trim();
-        String subTitle = response.optString("subTitle").trim();
-        String userType = response.optString("userType").trim();
-        JSONArray entityMixObjects = response.getJSONArray("entityMixObjects");
-
-        if(subTitle.length() > 0 && userType.length() > 0){
-            log.info("SubTitle and userType available in response body.");
-        }
-
-        if(title.length() > 0 && entityMixObjects.getJSONObject(0).length() == 2){
-            flag = 1; // to validate entity type & id
-            if(entityMixObjects.length() > 0){
-                isEntitiesValid = entityMixObjects(flag, entityMixObjects);
-            }else{
-                isEntitiesValid = true;
-                log.info("Entity objects are empty for below given url : \n"+urls.get(api_call_count));
+            if(subTitle.length() > 0 && userType.length() > 0){
+                log.info("SubTitle and userType available in response body.");
             }
-        }else if(title.length() > 0 && entityMixObjects.getJSONObject(0).length() > 2){
-            flag = 2; // others
-            if(entityMixObjects.length() > 0){
-                isEntitiesValid = entityMixObjects(flag, entityMixObjects);
-            }else{
+
+            if(title.length() > 0 && (entityMixObjects.length() > 0 && entityMixObjects.getJSONObject(0).length() == 2)){
+                flag = 1; // to validate entity type & id
+                if(entityMixObjects.length() > 0){
+                    isEntitiesValid = entityMixObjects(flag, entityMixObjects);
+                }else{
+                    isEntitiesValid = true;
+                    log.info("Entity objects are empty for below given url : \n"+urls.get(api_call_count));
+                }
+            }else if(title.length() > 0 && (entityMixObjects.length() > 0 && entityMixObjects.getJSONObject(0).length() > 2)){
+                flag = 2; // others
+                if(entityMixObjects.length() > 0){
+                    isEntitiesValid = entityMixObjects(flag, entityMixObjects);
+                }else{
+                    isEntitiesValid = true;
+                    log.info("Entity objects are empty for below given url : \n"+urls.get(api_call_count));
+                }
+            }
+
+            String failed_url = "";
+            if(!isEntitiesValid && entityMixObjects.length() > 0){
+                failed_url = urls.get(api_call_count);
+            }
+
+            if(entityMixObjects.length() <= 0)
                 isEntitiesValid = true;
-                log.info("Entity objects are empty for below given url : \n"+urls.get(api_call_count));
-            }    
-        }
 
-        String failed_url = "";
-        if(!isEntitiesValid){
-            failed_url = urls.get(api_call_count);
+            api_call_count = gHandler.invocationCounter(api_call_count, max_call);
+            Assert.assertEquals(isEntitiesValid, true, "In below given url, validation got failed : \n "+failed_url);
+        }else{
+            Assert.assertEquals(response.isEmpty(), true);
+            log.warn("Api doesn't having any response body, No deatailed validation performed! \nUrl was :"+url);
+            api_call_count = gHandler.invocationCounter(api_call_count, max_call);
         }
-
-        api_call_count = gHandler.invocationCounter(api_call_count, max_call);
-        Assert.assertEquals(isEntitiesValid, true, "In below given url, validation got failed : \n "+failed_url);  
     }
 
     @Step("Validating each entityMixObject, got in api response")

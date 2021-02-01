@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.asserts.SoftAssert;
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import utils.CommonUtils;
 
@@ -16,6 +17,7 @@ public class TrendingTrackController {
     CommonUtils utils = new CommonUtils();
     private static Logger log = LoggerFactory.getLogger(TrendingTrackController.class);
 
+    @Step("Getting possible search keys from default response which is {1}")
 	public ArrayList<String> getSpecificSearchKeywords(ArrayList<String> types, Response response) {
         JSONObject responseObj = utils.converResponseToJSONObject(response);
         JSONArray data = responseObj.getJSONArray("data");
@@ -33,16 +35,17 @@ public class TrendingTrackController {
     }
 
     /**
-     * Flag 0 = banner data, Flag 1 = playlist data
+     * Flag 0 = banner data, Flag 1 = playlist data and Flag 2 = Data
      * @param flag
      * @param type_key
      * @param dataList
      * @return
      */
+    @Step("All detailed entity will be validated here. values are {0}, {1}, {2}")
 	public boolean validateData(int flag, String type_key, JSONArray dataList) {
         boolean isDataAvl = dataList.length() > 0;
         if(!isDataAvl){
-            log.info("Banner data not available for request type : "+type_key);
+            log.info("Data not available for request type : "+type_key);
             return true;
         }
 
@@ -120,11 +123,11 @@ public class TrendingTrackController {
                     log.warn("Exception occurred in case of short track id "+shortTrackId);
                 }
                  
-                if(languageArray.length() > 0){
+                if(languageArray != null){
                     String lang = getValues(languageArray).toString().replaceAll("[\\[\\]\\(\\)]", "").trim();
                     softAssert.assertEquals(lang.length() > 0, true, "language list is not valid!");
                     // log.info("Languages for short track id "+shortTrackId+ " are : "+lang);
-                }else if(artistList.length() > 0){
+                }else if(artistList != null){
                     String artist = getValues(artistList).toString().replaceAll("[\\[\\]\\(\\)]", "").trim();
                     softAssert.assertEquals(artist.length() > 0, true, "artist list is not valid!");
                     // log.info("Artist for short track id "+shortTrackId+ " are : "+artist);
