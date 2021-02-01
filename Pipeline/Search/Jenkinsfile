@@ -28,7 +28,7 @@ pipeline {
     parameters
     {
         string(
-            defaultValue: 'master',
+            defaultValue: 'release/sprint_27th_Jan_2021',
             description: 'Provide branch for execution',
             name: 'branch',
             trim: true
@@ -85,6 +85,7 @@ pipeline {
 
         stage ('Build') {
             steps {
+                sh 'rm -rf allure-re*'
                 sh "${mvnHome}/bin/mvn -version"
                 sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
                 sh "chmod a+x ${env.WORKSPACE}/pom.xml"
@@ -98,12 +99,25 @@ pipeline {
                 sh "mvn -B -f ${env.WORKSPACE}/pom.xml clean install " + '-Denv=${env} -Dtype=${type} -Ddevice_type=${device_type} -DsuiteXmlFile=${suiteXmlFile}'
             }
         }
+
+        stage ('Genrate Report'){
+            steps{
+                allure includeProperties: false,
+                jdk: '',
+                results: [
+                    [
+                        path: 'allure-results'
+                    ]
+                ]
+            }
+        }
     }
 
     post {
         always {
             script {
                def buildStatus = "${currentBuild.currentResult}"
+<<<<<<< HEAD
                 // if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
                 //     echo "Bulid was : ${buildStatus}"
                 //     emailext attachLog: true,

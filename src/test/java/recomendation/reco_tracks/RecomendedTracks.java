@@ -24,6 +24,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import common.GlobalConfigHandler;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Link;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import test_data.RecomendedTrackTd;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +51,7 @@ public class RecomendedTracks extends BaseUrls {
     SoftAssert softAssert = new SoftAssert();
     Map<Integer, JSONObject> responses = new HashMap<>();
     private static Logger log = LoggerFactory.getLogger(RecomendedTracks.class);
+    final static String REPROTING_FEATURE = "Recommended Track autoque response validation.";
 
     public static String prepareUrl(String baseurl, String track_id) {
         String end_points = Endpoints.recoTracks + track_id;
@@ -58,7 +66,7 @@ public class RecomendedTracks extends BaseUrls {
 
     @BeforeClass
     public void generateAllRecoUrls() {
-        // System.setProperty("env", "prod");
+        // System.setProperty("env", "local");
         // System.setProperty("type", "reco");
         // System.setProperty("device_type", "android");
         url_list = new ArrayList<>();
@@ -88,6 +96,12 @@ public class RecomendedTracks extends BaseUrls {
     }
 
     @Test(priority = 1, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Story("Create Automation test suit for Autoqueue, In this story compare two hits simultaneously and compare the response body.")
+    @Feature(REPROTING_FEATURE)
+    @Description("Once response got we will store results in to map for further validations")
+    @Step("If one or more than one keyword then put all value till last call in map, after that dump into csv file.")
+    @Severity(SeverityLevel.BLOCKER)
     public void callRecoTrack(String url) {
         Response response = req.createGetRequest(url);
         if (response != null) {
@@ -105,8 +119,13 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-    @Test(priority = 2, dependsOnMethods = { "callRecoTrack" }, invocationCount = Constants.REC_INVOCATION_COUNT)
-    private void validateCommonResponseData() {
+    @Test(priority = 2, dependsOnMethods = { "callRecoTrack" }, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("Validate global date in api response like count and status.")
+    @Step("Perform boolean comparision till last call, assertion mandatory.")
+    @Severity(SeverityLevel.BLOCKER)
+    private void validateCommonResponseData(String url) {
         String response_count = responses.get(api_hit_count).optString("count").toString().trim();
         boolean response_status = responses.get(api_hit_count).getBoolean("status");
         boolean isJsonObjectCountValidated = Integer.parseInt(response_count) <= RECOMENDED_TRACK_COUNT;
@@ -131,8 +150,13 @@ public class RecomendedTracks extends BaseUrls {
      * @param track_list
      * @return
      */
-    @Test(priority = 3, dependsOnMethods = {"validateCommonResponseData" }, invocationCount = Constants.REC_INVOCATION_COUNT)
-    public void validateTrackListKeysParams() {
+    @Test(priority = 3, dependsOnMethods = {"validateCommonResponseData" }, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("Validation of expected and got keys in track object.")
+    @Step("Get track json array for each api call and validate expected keys.")
+    @Severity(SeverityLevel.MINOR)
+    public void validateTrackListKeysParams(String url) {
         boolean isTrackListExpectedColsValidated = false;
         JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
         if (track_list.length() > 0) {
@@ -156,8 +180,12 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-    @Test(priority = 4, dependsOnMethods = {"validateCommonResponseData" }, invocationCount = Constants.REC_INVOCATION_COUNT)
-    public void validateEachTrackKeyValueData() {
+    @Test(priority = 4, dependsOnMethods = {"validateCommonResponseData" }, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("To validate each track expected keys performing this test.")
+    @Severity(SeverityLevel.NORMAL)
+    public void validateEachTrackKeyValueData(String url) {
         boolean isKeyValueOfTrackValidated = false;
         JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
         if (!track_list.isEmpty()) {
@@ -186,8 +214,12 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-    @Test(priority = 5, dependsOnMethods = {"validateEachTrackKeyValueData" }, invocationCount = Constants.REC_INVOCATION_COUNT)
-    public void validateEachTrackArtistData() {
+    @Test(priority = 5, dependsOnMethods = {"validateEachTrackKeyValueData" }, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("Validate artist data in each tracks.")
+    @Severity(SeverityLevel.CRITICAL)
+    public void validateEachTrackArtistData(String url) {
         boolean isArtistValidated = false;
         JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
         if (!track_list.isEmpty()) {
@@ -211,8 +243,12 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-    @Test(priority = 6, dependsOnMethods = { "callRecoTrack" }, invocationCount = Constants.REC_INVOCATION_COUNT)
-    public void validateIsPremiumKeyPresent() {
+    @Test(priority = 6, dependsOnMethods = { "callRecoTrack" }, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("Validate track having premium content or not.")
+    @Severity(SeverityLevel.NORMAL)
+    public void validateIsPremiumKeyPresent(String url) {
         boolean isPrimiumValidated = false;
         JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
         if (!track_list.isEmpty()) {
@@ -243,8 +279,12 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-    @Test(priority = 7, invocationCount = Constants.REC_INVOCATION_COUNT)
-    public void validateTrackReleaseDates(){
+    @Test(priority = 7, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("Validate release date should be in form of 10 < track > 10.")
+    @Severity(SeverityLevel.NORMAL)
+    public void validateTrackReleaseDates(String url){
         boolean isReleaseYearValidated = false;
         JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
         isReleaseYearValidated = specificKeyValueValidate(track_list, "release_date", 0, url_list.get(api_hit_count));
@@ -258,8 +298,12 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-    @Test(priority = 8, invocationCount = Constants.REC_INVOCATION_COUNT)
-    public void validateLanguageAndLanguageId(){
+    @Test(priority = 8, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("Validate language and language id should be same in over all response tracks.")
+    @Severity(SeverityLevel.MINOR)
+    public void validateLanguageAndLanguageId(String url){
         int flag = 0;
         JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");
         boolean isLanguageValidated = specificKeyValueValidate(track_list, "language", 1, url_list.get(api_hit_count));
@@ -276,8 +320,12 @@ public class RecomendedTracks extends BaseUrls {
         }
     }
 
-    @Test(priority = 9, invocationCount = Constants.REC_INVOCATION_COUNT)
-    public void validateGener(){
+    @Test(priority = 9, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("Validate geners should be same in over all response tracks.")
+    @Severity(SeverityLevel.CRITICAL)
+    public void validateGener(String url){
         int flag = 0;
         int first_gener_id = 0;
         String first_gener_name = null;
@@ -332,8 +380,13 @@ public class RecomendedTracks extends BaseUrls {
     /**
      * Compare Track Results from previous to new executed record.
      */
-    @Test(priority = 10, dependsOnMethods = { "callRecoTrack" }, invocationCount = Constants.REC_INVOCATION_COUNT)
-    public void comparePreviosRunTracksWithNewRun() {
+    @Test(priority = 10, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("Compare current result with last executed result set.")
+    @Step("Read data from previous execution saved data and compare with new result set")
+    @Severity(SeverityLevel.CRITICAL)
+    public void comparePreviosRunTracksWithNewRun(String curr_url) {
         boolean result = false;
         String url = url_list.get(api_hit_count);
 
@@ -366,8 +419,13 @@ public class RecomendedTracks extends BaseUrls {
     /**
      * TO validate Artist, gener, track_id, language_id, language, release_date, album id with self queried data to response data
      */
-    @Test(priority = 11, invocationCount = Constants.REC_INVOCATION_COUNT)
-    public void validateResponseDataWithActiveDbRecords(){
+    @Test(priority = 11, dataProvider = "urlProvider", invocationCount = Constants.REC_INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-39546")
+    @Feature(REPROTING_FEATURE)
+    @Description("Validate resultant track whether its present in database or not.")
+    @Step("Get data from db of tracks and compare with current result set, this test only performed in stage environment.")
+    @Severity(SeverityLevel.TRIVIAL)
+    public void validateResponseDataWithActiveDbRecords(String url){
         if(!GlobalConfigHandler.getEnv().equals(Constants.PROD_ENV)){
             ArrayList<String> track_ids = new ArrayList<>();
             JSONArray track_list = responses.get(api_hit_count).getJSONArray("tracks");

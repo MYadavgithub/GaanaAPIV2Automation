@@ -20,13 +20,14 @@ pipeline {
         def emailTo = "umesh.shukla@gaana.com"
         def abortedTo = "umesh.shukla@gaana.com"
         def replyTo = "umesh.shukla@gaana.com"
-        def emailSub = "TIP | Recommendation | Daily Test Suite Report | "
+        def emailSub = "TIP | Recommendation | Daily Regression Test Suite | "
+        def dateTime = new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
     }
 
     parameters
     {
         string(
-            defaultValue: 'master',
+            defaultValue: 'release/sprint_27th_Jan_2021',
             description: 'Provide branch for execution',
             name: 'branch',
             trim: true
@@ -42,10 +43,11 @@ pipeline {
             description: 'Select environment according to your execution requirement.',
             name: 'env'
         )
-        choice(
-            choices: ['Reco'],
-            description: 'Select whether you want to execute on Recommendation module or Search.',
-            name: 'type'
+        string(
+            defaultValue: 'Reco',
+            description: 'Execution module Recommendation is default value.',
+            name: 'type',
+            trim: true
         )
         choice(
             choices: ['Android', 'Ios', 'Web'],
@@ -57,6 +59,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                // script{
+                //     def buildNum = "${currentBuild.number}"
+                //     if(buildNum != 0) {
+                //         sh 'git stash'
+                //     }
+                // }
                 sh 'git stash'
                 checkout([
                     $class: 'GitSCM',
@@ -82,6 +90,7 @@ pipeline {
 
         stage ('Build') {
             steps {
+                sh 'rm -rf allure-re*'
                 sh "${mvnHome}/bin/mvn -version"
                 sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
                 sh "chmod 777 -R ${env.WORKSPACE}/pom.xml"
@@ -95,35 +104,57 @@ pipeline {
                 sh "mvn -B -f ${env.WORKSPACE}/pom.xml clean install " + '-Denv=${env} -Dtype=${type} -Ddevice_type=${device_type} -DsuiteXmlFile=${suiteXmlFile}'
             }
         }
+
+        stage ('Genrate Report'){
+            steps{
+                allure includeProperties: false,
+                jdk: '',
+                results: [
+                    [
+                        path: 'allure-results'
+                    ]
+                ]
+            }
+        }
     }
 
     post {
         always {
             script {
                def buildStatus = "${currentBuild.currentResult}"
-               if(buildStatus.equalsIgnoreCase('ABORTED')){
+                if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
                     echo "Bulid was : ${buildStatus}"
                     emailext attachLog: true,
                     to: "${abortedTo}",
                     replyTo: "${replyTo}",
-                    subject: "${emailSub}"+'$DEFAULT_SUBJECT',
-                    body: ''' ${SCRIPT, template="groovy-html.template"}''',
+                    subject: "${emailSub}"+"${dateTime}",
+                    body: ''' ${SCRIPT, template="groovy-html.template"}<br>
+                    <b>Best Regards,</b><br>
+                    <i>Umesh Shukla<br>
+                    QA GGM Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true
-               }else{
+                }else{
                     emailext attachLog: true,
                     to: "${emailTo}",
                     replyTo: "${replyTo}",
-                    subject: "${emailSub}"+'$DEFAULT_SUBJECT',
+                    subject: "${emailSub}"+"${dateTime}",
                     /* groovylint-disable-next-line GStringExpressionWithinString */
                     body: '''
-                    ${FILE, path = "/var/lib/jenkins/workspace/Recommendation_Regression/Reports/EmailerReport.html"}<br>
-                    ${SCRIPT, template="groovy-html.template"}
-                    <b><i>For Detailed information please download extent report from attachement.</i></b><br>''',
+                    ${FILE, path = "/data/jenkins/workspace/Recommendation_Regression/Reports/EmailerReport.html"}<br><br>
+                    <b><i>To see detailed information either click and login with help of provided url & credential : <br>
+                    ${BUILD_URL}allure/<br>
+                    User Name : report<br>
+                    Password : 123456<br>
+                    Or Download attached Extent Report.</i></b><br><br>
+                    ${SCRIPT, template="groovy-html.template"}<br>
+                    <b>Best Regards,</b><br>
+                    <i>Umesh Shukla<br>
+                    QA GGM Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true,
                     attachmentsPattern: '**/Reports/*ExtentReport.html'
-               }
+                }
             }
         }
     }

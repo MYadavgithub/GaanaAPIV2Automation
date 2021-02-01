@@ -4,8 +4,7 @@ import java.util.List;
 
 public class Constants{
 
-    /**Commonly Used COnstants */
-
+    /**Commonly Used Constants */
     public static int RESPONSE_TIME = 2;
     public static String CUSTOM_REPORT_FOLDER = "/Reports";
 
@@ -43,10 +42,12 @@ public class Constants{
 
     /* Recomended Track Constants */
     public final static int REC_INVOCATION_COUNT = 1;
-    public final static int AS_INVOCATION_COUNT = 2001;
+    public final static int AS_INVOCATION_COUNT = 25;
+    public static int IS_STAGE_LIVE = 0;
+    public final static int ASV2_INVOCATION_COUNT = 18;
 
     /**Emailer Config */
-    public static int EMAILER_ENABLED = 1; // 0 disabled 1 enabled
+    public static int EMAILER_ENABLED = 0; // 0 disabled 1 enabled
     public static String EMAILER_EMAIL = "umesh.shukla@gaana.com";
     public static String EMAILER_PWD = "pswagczcaoiybomw";
     // public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";

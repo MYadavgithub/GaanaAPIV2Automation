@@ -8,6 +8,7 @@ import config.Endpoints;
 import org.slf4j.Logger;
 import java.util.HashMap;
 import org.testng.Assert;
+import org.testng.ITestContext;
 import org.testng.Reporter;
 import java.util.Iterator;
 import common.FileActions;
@@ -18,15 +19,15 @@ import org.json.JSONObject;
 import common.RequestHandler;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
-import org.testng.annotations.Optional;
 import io.restassured.response.Response;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 
 public class Vibes extends BaseUrls {
 
     String id = "1";
     String baseurl = "";
+    int EXEC_CONTEXT = 0;
     int DEVICE_ID_COUNT = 1;
     static int RES_OBJ = 10;
     String API_NAME = "Vibes";
@@ -41,21 +42,29 @@ public class Vibes extends BaseUrls {
     private static Logger log = LoggerFactory.getLogger(Vibes.class);
 
     @BeforeClass
-    public void prepareRequestData() {
+    public void prepareRequestData(ITestContext context) {
         // System.setProperty("env", "prod");
         // System.setProperty("type", "Reco");
         // System.setProperty("device_type", "android");
+        EXEC_CONTEXT = Integer.parseInt(context.getCurrentXmlTest().getParameter("id"));
         baseurl();
         baseurl = prop.getProperty("reco_baseurl").toString().trim();
-        // baseurl = "http://172.26.60.171:7079";
         device_ids = CsvReader.readCsv("./src/test/resources/data/deviceid.csv");
     }
 
-    @Test(priority = 1, invocationCount = CASE_COUNT)
-    @Parameters("id")
-    public void validateStatusAndDataType(@Optional("1") String id) {
+    @DataProvider(name = "device_id")
+    public Object[][] DataProvider() {
+        return new Object[][] {
+            {
+                device_ids.get(DEVICE_ID_COUNT)
+            }
+        };
+    }
+
+    @Test(priority = 1, dataProvider = "device_id", invocationCount = CASE_COUNT)
+    public void validateStatusAndDataType(String device_id) {
         String url = baseurl + Endpoints.vibes;
-        prop.setProperty("deviceId", device_ids.get(DEVICE_ID_COUNT));
+        prop.setProperty("deviceId", device_id);
         urls.add(url);
         Response response = rq.createGetRequest(url);
         Assert.assertEquals(response != null, true, "Response time or code is not valid!");
@@ -63,9 +72,8 @@ public class Vibes extends BaseUrls {
         deviceIdCounter();
     }
 
-    @Test(priority = 2, invocationCount = CASE_COUNT)
-    @Parameters ({"id"})
-    public void getEntityIds(@Optional("1") String id) {
+    @Test(priority = 2, dataProvider = "device_id", invocationCount = CASE_COUNT)
+    public void getEntityIds(String device_id) {
         if(DEVICE_ID_COUNT == 1) {
             Assert.assertEquals(!responses.isEmpty(), true, "Response is empty can't process further!");
             Assert.assertEquals(responses.size() == CASE_COUNT, true,"Responses list is not equal to number of cases.");
@@ -94,13 +102,12 @@ public class Vibes extends BaseUrls {
     }
 
     @Test(priority = 3)
-    @Parameters ({"id"})
-    public void processCsvWrite(@Optional("1") String id) {
-        if(!all_entitys_ids.isEmpty() && id.equals("0")){
+    public void processCsvWrite() {
+        if(!all_entitys_ids.isEmpty() && EXEC_CONTEXT == 0){
             String file_name = API_NAME+".csv";
             String head[] = { "Entities" };
             WriteCsv.writeCsvWithHeader(file_name, head, all_entitys_ids, false);
-        }else if(id.equals("1")){
+        }else if(EXEC_CONTEXT == 1){
             Map<Integer, ArrayList<String>> previous_entities = readPrevData();
             Assert.assertEquals((previous_entities.size() == all_entitys_ids.size()), true, "Previous and new response size should be same!");
             boolean result = validatedata(previous_entities, all_entitys_ids);
