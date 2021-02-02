@@ -113,7 +113,7 @@ public class ArtistController {
 
         String artist_geners = geners.toString().replaceAll("[\\[\\]\\(\\)]", "").trim();
         if(artist_geners.contains(notAvl)){
-            log.info("Url is : "+url);
+            // log.info("Url is : "+url);
             log.info(artist_name+ " having geners are : "+artist_geners);
         }
 
