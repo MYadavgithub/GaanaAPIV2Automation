@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.asserts.SoftAssert;
 import common.Helper;
 import config.Endpoints;
+import io.qameta.allure.Step;
 
 /**
  * @author Umesh Shukla
@@ -24,26 +25,31 @@ public class ArtistController {
      * @param artist_id
      * @return
      */
-    public String prepareUrl(String baseurl, int artist_id) {
-        return baseurl+Endpoints.similarArtist+artist_id;
+    public String prepareUrl(int flag, String baseurl, int artist_id) {
+        if(flag == 0){
+            return baseurl+Endpoints.similarArtist+artist_id;
+        }else{
+            return baseurl+Endpoints.similarArtistInfo+artist_id;
+        }
     }
 
     /** 
      * @param url
      * @param artist
      */
+    @Step("Detailed verification of url : {0}, artist : {1}")
 	public boolean validateArtistData(String url, JSONArray artistList) {
         SoftAssert softAssert = new SoftAssert();
         ArrayList<String> atw = new ArrayList<>();
         ArrayList<String> artworks = new ArrayList<>();
         ArrayList<String> artwork_175x175 = new ArrayList<>();
-        Iterator<Object> artistItr = artistList.iterator();
 
         if(artistList.length() <= 0){
             log.warn("Artist List is empty in response!");
             return true;
         }
 
+        Iterator<Object> artistItr = artistList.iterator();
         while(artistItr.hasNext()){
             JSONObject artist = (JSONObject) artistItr.next();
 
@@ -119,4 +125,93 @@ public class ArtistController {
 
         return isGenerValid;
     }
+
+    /**
+     * SimilarArtistEntityInfo
+     * @param url
+     * @param entities
+     */
+	public boolean validateCommonEntityDetails(String url, JSONArray entities) {
+        SoftAssert softAssert = new SoftAssert();
+        ArrayList<String> atw = new ArrayList<>();
+        ArrayList<String> artworks = new ArrayList<>();
+
+        if(entities.length() <= 0){
+            log.warn("Entity List is empty in response!");
+            return true;
+        }
+
+        Iterator<Object> entityItr = entities.iterator();
+        while(entityItr.hasNext()){
+            JSONObject entity = (JSONObject) entityItr.next();
+
+            long entity_id = Long.parseLong(entity.getString("entity_id").toString().trim());
+            String entity_type = entity.optString("entity_type").toString().trim();
+            String name = entity.optString("name").toString().trim();
+            String seokey = entity.optString("seokey").toString().trim();
+
+            softAssert.assertEquals(entity_id > 0, true, "Entity id is not numeric value!");
+            softAssert.assertEquals(!entity_type.isEmpty(), true, "Entity type Key can't be empty value!");
+            softAssert.assertEquals(name.length() > 0, true, "Artist name is not valid!");
+            softAssert.assertEquals(!seokey.isEmpty(), true, "Seo Key can't be empty value!");
+
+            atw.add(entity.optString("atw").toString().trim());
+            artworks.add(entity.optString("artwork").toString().trim());
+            softAssert.assertAll();
+        }
+
+        boolean isAtwValidated = helper.validateActiveLinks(atw);
+        boolean isArtworksValidated = helper.validateActiveLinks(artworks);
+        if(isAtwValidated && isArtworksValidated){
+            return true;
+        }else{
+            softAssert.assertEquals(isAtwValidated, true, "Atw validation failed!");
+            softAssert.assertEquals(isArtworksValidated, true, "Artwork validation failed!");
+            softAssert.assertAll();
+        }
+
+        return false;
+    }
+
+    /**
+     * @param url
+     * @param entities
+     * @return
+     */
+	public boolean validateEntityInfo(String url, JSONArray entities) {
+        SoftAssert softAssert = new SoftAssert();
+        if(entities.length() <= 0){
+            log.warn("Entity List is empty in response!");
+            return true;
+        }
+
+        Iterator<Object> entityItr = entities.iterator();
+        while(entityItr.hasNext()){
+            JSONObject entity = (JSONObject) entityItr.next();
+            long entity_id = Long.parseLong(entity.getString("entity_id").toString().trim());
+            String name = entity.optString("name").toString().trim();
+            JSONArray entityInfo = entity.getJSONArray("entity_info");
+            if(entityInfo.length() > 0){
+                for(int i = 0; i<entityInfo.length(); i++){
+                    JSONObject info =  (JSONObject) entityInfo.get(i);
+                    String key = info.optString("key").toString().trim();
+                    softAssert.assertEquals(key.length() > 0, true, "Entity Info Key can't be empty!");
+                    if(i == 0){
+                        JSONArray generValues = info.getJSONArray("value");
+                        boolean isGenerValidated = validateGener(url, entity_id, name, generValues);
+                        softAssert.assertEquals(isGenerValidated, true, "Gener validation failed!");
+                    }else{
+                        long value = Long.parseLong(info.optString("value").toString().trim());
+                        softAssert.assertEquals(value > 0, true, "Entity Info value can't be less than 0!");
+                    }
+                }
+            }else{
+                log.error("Entity info is empty for url : "+url);
+                softAssert.assertEquals(entityInfo.length() > 0, true);
+            }
+            softAssert.assertAll();
+            return true;
+        }
+		return false;
+	}
 }
