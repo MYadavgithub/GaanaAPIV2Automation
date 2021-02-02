@@ -74,6 +74,8 @@ public class TrendingShortTrack extends BaseUrls {
     }
 
     @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = TrendingTrackTd.INVOCATION)
+    @Feature(REPROTING_FEATURE)
+    @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Step("Validating Data Array for key {0}")
     @Severity(SeverityLevel.NORMAL)
     public void validateData(String type_key){
@@ -85,6 +87,8 @@ public class TrendingShortTrack extends BaseUrls {
     }
 
     @Test(enabled = true, priority = 3, dataProvider = "dp", invocationCount = TrendingTrackTd.INVOCATION)
+    @Feature(REPROTING_FEATURE)
+    @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Step("Validating Banner Data Array for key {0}")
     @Severity(SeverityLevel.NORMAL)
     public void validateBannerData(String type_key){
@@ -96,6 +100,8 @@ public class TrendingShortTrack extends BaseUrls {
     }
 
     @Test(enabled = true, priority = 4, dataProvider = "dp", invocationCount = TrendingTrackTd.INVOCATION)
+    @Feature(REPROTING_FEATURE)
+    @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Step("Validating Playlist Data Array for key {0}")
     @Severity(SeverityLevel.NORMAL)
     public void validatePlayListData(String type_key){

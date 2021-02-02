@@ -10,6 +10,7 @@ public class Endpoints {
     public static String madeForYou = "/madeforyou";
     public static String deviceConsumedLanguage = "/recommendation/deviceConsumedLanguage?deviceId=";
     public static String similarArtist = "/recommendation/similarArtist/";
+    public static String similarArtistInfo = "/recommendation/similarArtistEntityInfo/";
 
     /**Search Auto Suggest Endpoints */
     public static String searchFeed = "/searchfeed/fetch";
