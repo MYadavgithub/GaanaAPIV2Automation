@@ -9,6 +9,7 @@ public class Endpoints {
     public static String moodMix = "/for-you/moodmix";
     public static String madeForYou = "/madeforyou";
     public static String deviceConsumedLanguage = "/recommendation/deviceConsumedLanguage?deviceId=";
+    public static String similarArtist = "/recommendation/similarArtist/";
 
     /**Search Auto Suggest Endpoints */
     public static String searchFeed = "/searchfeed/fetch";
