@@ -7,11 +7,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.json.JSONArray;
+import io.qameta.allure.Step;
 
 public class ExecuteQuery {
 
     DbConnection dc = new DbConnection();
-
+    @Step("Executing db query : {1}")
     public JSONArray executeQuery(Connection conn, String query) {
         // Connection conn = null;
         Statement stmt = null;
@@ -43,7 +44,7 @@ public class ExecuteQuery {
                 }
                 return dataArray;
             }catch(SQLException e) {
-                throw new Error("Not able to execute query!", e);
+                throw new Error("Not able to execute query! "+query);
             }finally{
                 if (stmt != null){ 
                     stmt.close();

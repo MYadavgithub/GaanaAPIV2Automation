@@ -19,7 +19,7 @@ pipeline {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
         def emailTo = "manish.pandey@gaana.com, umesh.shukla@gaana.com"
-        def abortedTo = "umesh.shukla@gaana.com"
+        def abortedTo = "manish.pandey@gaana.com, umesh.shukla@gaana.com"
         def replyTo = "umesh.shukla@gaana.com"
         def emailSub = "TIP | Search | Daily Regression Test Suite | "
         def dateTime = new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
@@ -28,7 +28,7 @@ pipeline {
     parameters
     {
         string(
-            defaultValue: 'master',
+            defaultValue: 'release/sprint_27th_Jan_2021',
             description: 'Provide branch for execution',
             name: 'branch',
             trim: true
@@ -70,7 +70,7 @@ pipeline {
                     userRemoteConfigs: [
                         [
                             credentialsId: 'b48d7528-2319-416d-b08b-ce5001fad3d8',
-                            url: 'git@bitbucket.org:umesh_qa/gaana_qa_search_reco.git'
+                            url: 'git@bitbucket.org:times_internet/gaana_qa_search_reco.git'
                         ]
                     ],
                     extensions: [
@@ -85,6 +85,7 @@ pipeline {
 
         stage ('Build') {
             steps {
+                sh 'rm -rf allure-re*'
                 sh "${mvnHome}/bin/mvn -version"
                 sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
                 sh "chmod a+x ${env.WORKSPACE}/pom.xml"
@@ -96,6 +97,18 @@ pipeline {
                 /* groovylint-disable-next-line LineLength */
                 /* groovylint-disable-next-line ConsecutiveStringConcatenation, GStringExpressionWithinString, LineLength */
                 sh "mvn -B -f ${env.WORKSPACE}/pom.xml clean install " + '-Denv=${env} -Dtype=${type} -Ddevice_type=${device_type} -DsuiteXmlFile=${suiteXmlFile}'
+            }
+        }
+
+        stage ('Genrate Report'){
+            steps{
+                allure includeProperties: false,
+                jdk: '',
+                results: [
+                    [
+                        path: 'allure-results'
+                    ]
+                ]
             }
         }
     }
@@ -110,7 +123,10 @@ pipeline {
                     to: "${abortedTo}",
                     replyTo: "${replyTo}",
                     subject: "${emailSub}"+"${dateTime}",
-                    body: ''' ${SCRIPT, template="groovy-html.template"}''',
+                    body: ''' ${SCRIPT, template="groovy-html.template"}<br>
+                    <b>Best Regards,</b><br>
+                    <i>Umesh Shukla<br>
+                    QA GGM Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true
                 }else{
@@ -120,9 +136,16 @@ pipeline {
                     subject: "${emailSub}"+"${dateTime}",
                     /* groovylint-disable-next-line GStringExpressionWithinString */
                     body: '''
-                    ${FILE, path = "/data/jenkins/workspace/Search_Regression/Reports/EmailerReport.html"}<br>
-                    ${SCRIPT, template="groovy-html.template"}
-                    <b><i>For Detailed information please download extent report from attachement.</i></b><br>''',
+                    ${FILE, path = "/data/jenkins/workspace/Search_Regression/Reports/EmailerReport.html"}<br><br>
+                    <b><i>To see detailed information either click and login with help of provided url & credential : <br>
+                    ${BUILD_URL}allure/<br>
+                    User Name : report<br>
+                    Password : 123456<br>
+                    Or Download attached Extent Report.</i></b><br><br>
+                    ${SCRIPT, template="groovy-html.template"}<br>
+                    <b>Best Regards,</b><br>
+                    <i>Umesh Shukla<br>
+                    QA GGM Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true,
                     attachmentsPattern: '**/Reports/*ExtentReport.html'
