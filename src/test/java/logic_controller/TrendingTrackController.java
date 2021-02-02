@@ -106,7 +106,7 @@ public class TrendingTrackController {
                 int total_like = Integer.parseInt(entity.optString("total_like").toString().trim());
                 int hotshotCount = Integer.parseInt(entity.optString("hotshotCount").toString().trim());
 
-                if(shortTrackId.length() > 0 && title.length() > 0 && trackId.length() > 0 && total_like > 0 && hotshotCount > 0){
+                if(shortTrackId.length() > 0 && title.length() > 0 && trackId.length() > 0 && total_like >= 0 && hotshotCount >= 0){
                     aw.add(entity.optString("artwork").toString().trim());
                 }else{
                     softAssert.assertEquals(shortTrackId, shortTrackId.length() > 0, "shortTrackId is not valid!");
