@@ -37,7 +37,7 @@ public class RevmaPt {
     }
 
     public void processCsvWrite(Map<Integer, String[]> result) {
-        String head[] = { "Sr. No", "url", "status code", "Response Time (Ms)" };
+        String head[] = { "Sr. No", "Url", "Status Code", "Response Time (Ms)" };
         if(API_CALL == 1){
             WriteCsv.writeCsvWithHeader(file_name, head, result, true);
         }else{
