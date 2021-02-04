@@ -45,10 +45,10 @@ public class Constants{
     public final static int ASV2_INVOCATION_COUNT = 18;
 
     /**Emailer Config */
-    public static int EMAILER_ENABLED = 0; // 0 disabled 1 enabled
+    public static int EMAILER_ENABLED = 1; // 0 disabled 1 enabled
     public static String EMAILER_EMAIL = "umesh.shukla@gaana.com";
     public static String EMAILER_PWD = "pswagczcaoiybomw";
-    public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
-    public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, c-abhishek.gupta@gaana.com, umesh.shukla@gaana.com";
+    public static String EMAIL_TO_LIST = "manish.pandey@gaana.com";
+    public static String EMAIL_CC_LIST = "";
     public static String EMAIL_BCC_LIST = "";
 }
