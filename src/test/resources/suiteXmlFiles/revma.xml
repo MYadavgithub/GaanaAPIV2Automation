@@ -14,7 +14,7 @@
 		<parameter name = "id" value= "2"/>
 
 		<classes>
-			<class name="recomendation.reco_tracks.RevmaPt" />
+			<class name="third_party.RevmaPt" />
 		</classes>
 
 	</test> -->
@@ -24,7 +24,7 @@
 		<parameter name = "id" value= "0"/>
 
 		<classes>
-			<class name="recomendation.reco_tracks.RevmaPt" />
+			<class name="third_party.RevmaPt" />
 		</classes>
 
 	</test>
@@ -34,7 +34,7 @@
 		<parameter name = "id" value= "1"/>
 
 		<classes>
-			<class name="recomendation.reco_tracks.RevmaPt" />
+			<class name="third_party.RevmaPt" />
 		</classes>
 
 	</test>
