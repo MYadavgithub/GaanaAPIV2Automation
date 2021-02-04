@@ -9,7 +9,29 @@
 		<listener class-name="utils.RetryTransformListener" />
     </listeners>
 
-	<test name="REVMA Api Test" annotations="JDK" preserve-order="true">
+	<!-- <test name="REVMA Api Test" annotations="JDK" preserve-order="true">
+
+		<parameter name = "id" value= "2"/>
+
+		<classes>
+			<class name="recomendation.reco_tracks.RevmaPt" />
+		</classes>
+
+	</test> -->
+
+	<test name="REVMA Api Test with Auth Url" annotations="JDK" preserve-order="true">
+
+		<parameter name = "id" value= "0"/>
+
+		<classes>
+			<class name="recomendation.reco_tracks.RevmaPt" />
+		</classes>
+
+	</test>
+
+	<test name="REVMA Api Test without Auth Url" annotations="JDK" preserve-order="true">
+
+		<parameter name = "id" value= "1"/>
 
 		<classes>
 			<class name="recomendation.reco_tracks.RevmaPt" />
