@@ -78,4 +78,20 @@
 
 	</test>
 
+	<test name="Recommended SimilarArtists" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.artist.SimilarArtists" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended SimilarArtistEntityInfo" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.artist.SimilarArtistEntityInfo" />
+		</classes>
+
+	</test>
+
 </suite>
