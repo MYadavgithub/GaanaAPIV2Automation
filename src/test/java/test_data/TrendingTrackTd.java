@@ -9,6 +9,6 @@ public class TrendingTrackTd {
      * Vibes Releated Test Data
      */
     public static final int HV_INVOCATION = 5;
-    public static String [] HASHTAGS = {"foryou", "romance", "filmy", "GaanaHotShots", "HotShotsBlockbuster"};
+    public static String [] HASHTAGS = {"foryou", "romance", "filmy", "GaanaHotShots", "punjabi"};
 
 }
