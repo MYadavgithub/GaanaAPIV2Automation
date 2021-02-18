@@ -60,10 +60,11 @@ public class Constants{
      * Solr Cloud Constants
      */
     public static String COLLECTION = "solrcollection";
-    public static final int ZOOKEEPER_INVOCATION_COUNT = 20001;
+    public static final int ZOOKEEPER_INVOCATION_COUNT = 6000;
     public static List<String> zookeeperServers(){
         // {"172.26.11.216:2181", "172.26.11.217:2181", "172.26.11.218:2181"} old servers
-        String arr [] = {"172.26.69.113:2181", "172.26.69.114:2181", "172.26.69.226:2181"};
+        // String arr [] = {"172.26.69.113:2181", "172.26.69.114:2181", "172.26.69.226:2181"}; //stage
+        String arr [] = {"172.26.11.136:2181", "172.26.11.141:2181", "172.26.11.237:2181"};
         return Arrays.asList(arr);
     }
 }
