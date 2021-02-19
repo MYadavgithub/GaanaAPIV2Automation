@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="REVMA" verbose="1" parallel="tests" thread-count="1" configfailurepolicy="continue">
+
+    <listeners>
+		<listener class-name="utils.ExtentManagerListener" />
+		<listener class-name="utils.EmailableReportListener" />
+		<listener class-name="utils.RetryTransformListener" />
+    </listeners>
+
+	<!-- <test name="REVMA Api Test" annotations="JDK" preserve-order="true">
+
+		<parameter name = "id" value= "2"/>
+
+		<classes>
+			<class name="third_party.RevmaPt" />
+		</classes>
+
+	</test> -->
+
+	<test name="REVMA Api Test with Auth Url" annotations="JDK" preserve-order="true">
+
+		<parameter name = "id" value= "0"/>
+
+		<classes>
+			<class name="third_party.RevmaPt" />
+		</classes>
+
+	</test>
+
+	<test name="REVMA Api Test without Auth Url" annotations="JDK" preserve-order="true">
+
+		<parameter name = "id" value= "1"/>
+
+		<classes>
+			<class name="third_party.RevmaPt" />
+		</classes>
+
+	</test>
+
+</suite>

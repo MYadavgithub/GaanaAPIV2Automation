@@ -66,9 +66,7 @@ public class RecomendedTracks extends BaseUrls {
 
     @BeforeClass
     public void generateAllRecoUrls() {
-        // System.setProperty("env", "local");
-        // System.setProperty("type", "reco");
-        // System.setProperty("device_type", "android");
+        GlobalConfigHandler.setLocalProps();
         url_list = new ArrayList<>();
         String baseurl = BaseUrls.baseurl();
         String input_file = System.getProperty("user.dir") + "/src/test/resources/data/"+ prop.getProperty("tracks_td");
