@@ -48,9 +48,7 @@ public class AutoSuggestLite extends BaseUrls {
 
     @BeforeClass
     public void prepareTestEnv(){
-        // System.setProperty("env", "prod");
-        // System.setProperty("type", "Search");
-        // System.setProperty("device_type", "android");
+        GlobalConfigHandler.setLocalProps();
         baseurl();
         KEY_INPUTS = AutoSuggestLiteController.getTestData(API_NAME+".csv");
         if(KEY_INPUTS.size() > 0)

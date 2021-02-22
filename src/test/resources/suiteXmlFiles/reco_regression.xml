@@ -78,4 +78,28 @@
 
 	</test>
 
+	<test name="Recommended SimilarArtists" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.artist.SimilarArtists" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended SimilarArtistEntityInfo" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.artist.SimilarArtistEntityInfo" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended HashTagVibes" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.vibes.HashTagVibes" />
+		</classes>
+
+	</test>
+
 </suite>
