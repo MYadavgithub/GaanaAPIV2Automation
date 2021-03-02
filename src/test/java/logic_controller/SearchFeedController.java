@@ -96,7 +96,7 @@ public class SearchFeedController {
             boolean keyValidated = validateKeys(keys);
             softAssert.assertEquals(keyValidated, true, "Keys not validated for tab id "+tab_id+" response body object : \n"+responseOb);
 
-            isResBodyValid = validateKeyValueRequired(keys, responseOb);
+            isResBodyValid = validateKeyValueRequired(tab_id, keys, responseOb);
             softAssert.assertEquals(isResBodyValid, true, "tab id"+tab_id+"\nResponse object validation failed object value : "+responseOb);
         }
         return isResBodyValid;
@@ -121,7 +121,7 @@ public class SearchFeedController {
         return isKeyValidated;
     }
 
-    private boolean validateKeyValueRequired(List<Object> keys, JSONObject responseOb) {
+    private boolean validateKeyValueRequired(String tab_id, List<Object> keys, JSONObject responseOb) {
         boolean isObValidated = false;
         ArrayList<String> artworks = new ArrayList<>();
         ArrayList<String> artistAtw = new ArrayList<>();
@@ -188,24 +188,28 @@ public class SearchFeedController {
                     break;
 
                     case "sti":
-                        if(value.length() > 0){
-                            isObValidated = true;
-                            // log.info(key_name+ " is : "+value);
-                        }else{
-                            isObValidated = false;
-                            log.error(key_name+" can't be null, manual check required!");
-                            return isObValidated;
+                        if(tab_id != "-5"){
+                            if(value.length() > 0){
+                                isObValidated = true;
+                                // log.info(key_name+ " is : "+value);
+                            }else{
+                                isObValidated = false;
+                                log.error(key_name+" can't be null, manual check required!");
+                                return isObValidated;
+                            }
                         }
                     break;
 
                     case "fty":
-                        if(value.length() > 0){
-                            isObValidated = true;
-                            // log.info(key_name+ " is : "+value);
-                        }else{
-                            isObValidated = false;
-                            log.error(key_name+" can't be null, manual check required!");
-                            return isObValidated;
+                        if(tab_id != "-5"){
+                            if(value.length() > 0){
+                                isObValidated = true;
+                                // log.info(key_name+ " is : "+value);
+                            }else{
+                                isObValidated = false;
+                                log.error(key_name+" can't be null, manual check required!");
+                                return isObValidated;
+                            }
                         }
                     break;
 
@@ -321,13 +325,15 @@ public class SearchFeedController {
 
                     case "scoreF":
                         double scoref = Double.parseDouble(value);
-                        if(scoref > 0.00){
-                            isObValidated = true;
-                            // log.info(key_name+ " is : "+value);
-                        }else{
-                            isObValidated = false;
-                            log.error(key_name+" can't be null or less than 100 character, manual check required!");
-                            return isObValidated;
+                        if(tab_id != "-6"){
+                            if(scoref > 0.00){
+                                isObValidated = true;
+                                // log.info(key_name+ " is : "+value);
+                            }else{
+                                isObValidated = false;
+                                log.error(key_name+" can't be null or less than 0, manual check required!");
+                                return isObValidated;
+                            }
                         }
                     break;
 
@@ -366,7 +372,31 @@ public class SearchFeedController {
                     break;
 
                     case "subtitle":
-                        if(value.length() > 0){
+                        if(tab_id != "-5"){
+                            if(value.length() > 0){
+                                isObValidated = true;
+                                // log.info(key_name+ " is : "+value);
+                            }else{
+                                isObValidated = false;
+                                log.error(key_name+" can't be null, manual check required!");
+                                return isObValidated;
+                            }
+                        }
+                    break;
+
+                    case "tile_type":
+                        if(value.length() > 0 && value.equals("radio_sq")){
+                            isObValidated = true;
+                            // log.info(key_name+ " is : "+value);
+                        }else{
+                            isObValidated = false;
+                            log.error(key_name+" can't be null, manual check required!");
+                            return isObValidated;
+                        }
+                    break;
+
+                    case "sty":
+                        if(value.length() > 0 && (value.equals("RM") || value.equals("RL"))){
                             isObValidated = true;
                             // log.info(key_name+ " is : "+value);
                         }else{
@@ -398,6 +428,7 @@ public class SearchFeedController {
      */
     public void validateSubTitle(String tab_name, JSONArray response){
         String specialSubtitleTab = SearchFeedTd.tabsName("-4"); //podcast
+        String specialSubtitleTabRadio = SearchFeedTd.tabsName("-5");
         Iterator<Object> response_itr = response.iterator();
         while(response_itr.hasNext()){
             JSONObject resObj = (JSONObject) response_itr.next();
@@ -413,7 +444,12 @@ public class SearchFeedController {
                     log.error("\""+tab_name+"\""+ " and Id : "+iid+ "and title : " +ti+ " subTitle validation not working!");
                 }
                 Assert.assertEquals(subtitle, exSubTitle);
-            }else {
+            }else if(tab_name.equals(specialSubtitleTabRadio) && (language.length() > 0 && ty.equals("Radio"))){
+                exSubTitle = "";
+                if(!subtitle.equals(exSubTitle)){
+                    log.error("\""+tab_name+"\""+ " and Id : "+iid+ "and title : " +ti+ " subTitle validation not working!");
+                }
+            }else{
                 exSubTitle = ty;
                 if(!subtitle.equals(exSubTitle)){
                     log.error("\""+tab_name+"\""+ " and Id : "+iid+ " and title : " +ti+ " subTitle validation not working!");

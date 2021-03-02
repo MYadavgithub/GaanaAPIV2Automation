@@ -12,6 +12,7 @@ public class Endpoints {
     public static String similarArtist = "/recommendation/similarArtist/";
     public static String similarArtistInfo = "/recommendation/similarArtistEntityInfo/";
     public static String vibesHashTag = "/recommendation/hashtag/vibes?hashtag=";
+    public static String podcastForYou = "/for-you/podcasts?deviceId=";
 
     /**Search Auto Suggest Endpoints */
     public static String searchFeed = "/searchfeed/fetch";

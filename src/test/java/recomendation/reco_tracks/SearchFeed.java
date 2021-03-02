@@ -87,7 +87,7 @@ public class SearchFeed extends BaseUrls{
         if(!response.asString().equals("null")){
             JSONObject res_object = new JSONObject(response.asString());
             JSONArray tabs = res_object.getJSONArray("tabs");
-            if(tabs != null && tabs.length() == (SearchFeedTd.tabs.length-3)){
+            if(tabs != null && tabs.length() == (SearchFeedTd.tabs.length-5)){
                 boolean result = controller.validateExTabs(tabs);
                 Assert.assertEquals(result, true, "for api \n"+URLS.get(API_CALL)+"\nexpected tabs not validated.");
             }else{
@@ -183,6 +183,16 @@ public class SearchFeed extends BaseUrls{
                 break;
 
                 case "104":
+                    log.info("Going to validate : "+SearchFeedTd.tabs[API_CALL]);
+                    isResponseValidated = controller.validateSearchFeedRecommendedResponse(tab_id, responseBody);
+                break;
+
+                case "-5":
+                    log.info("Going to validate : "+SearchFeedTd.tabs[API_CALL]);
+                    isResponseValidated = controller.validateSearchFeedRecommendedResponse(tab_id, responseBody);
+                break;
+
+                case "-6":
                     log.info("Going to validate : "+SearchFeedTd.tabs[API_CALL]);
                     isResponseValidated = controller.validateSearchFeedRecommendedResponse(tab_id, responseBody);
                 break;
