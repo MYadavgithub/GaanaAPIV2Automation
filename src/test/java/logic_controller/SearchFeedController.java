@@ -188,7 +188,7 @@ public class SearchFeedController {
                     break;
 
                     case "sti":
-                        if(tab_id != "-5"){
+                        if(!tab_id.equals("-5") && !tab_id.equals("-6")){
                             if(value.length() > 0){
                                 isObValidated = true;
                                 // log.info(key_name+ " is : "+value);
@@ -201,7 +201,7 @@ public class SearchFeedController {
                     break;
 
                     case "fty":
-                        if(tab_id != "-5"){
+                        if(!tab_id.equals("-5")){
                             if(value.length() > 0){
                                 isObValidated = true;
                                 // log.info(key_name+ " is : "+value);
@@ -325,7 +325,7 @@ public class SearchFeedController {
 
                     case "scoreF":
                         double scoref = Double.parseDouble(value);
-                        if(tab_id != "-6"){
+                        if(!tab_id.equals("-6")){
                             if(scoref > 0.00){
                                 isObValidated = true;
                                 // log.info(key_name+ " is : "+value);
@@ -372,7 +372,7 @@ public class SearchFeedController {
                     break;
 
                     case "subtitle":
-                        if(tab_id != "-5"){
+                        if(!tab_id.equals("-5") && !tab_id.equals("-6")){
                             if(value.length() > 0){
                                 isObValidated = true;
                                 // log.info(key_name+ " is : "+value);
@@ -405,9 +405,9 @@ public class SearchFeedController {
                             return isObValidated;
                         }
                     break;
-                                
+
                     default:
-                        System.out.println("Key : "+key_name+" ==> "+responseOb.optString(key_name) +" not in validation list.");
+                        log.info("Key : "+key_name+" ==> "+responseOb.optString(key_name) +" not in validation list.");
                     break;
                 }
             }
@@ -451,6 +451,10 @@ public class SearchFeedController {
                 }
             }else{
                 exSubTitle = ty;
+                if(subtitle.length() <= 0){
+                    subtitle = ty;
+                }
+
                 if(!subtitle.equals(exSubTitle)){
                     log.error("\""+tab_name+"\""+ " and Id : "+iid+ " and title : " +ti+ " subTitle validation not working!");
                 }
