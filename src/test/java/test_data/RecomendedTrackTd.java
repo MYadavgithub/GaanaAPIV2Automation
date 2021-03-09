@@ -31,4 +31,10 @@ public class RecomendedTrackTd {
         return Arrays.asList(ex_value);
     }
 
+    /**
+     * RecommendedTrackIds Test Data
+     */
+
+    public static String track_ids [] = {"722863", "722878"};
+    public final static int T_IDS_INVOCATION = 2; // based on length of track_ids
 }
