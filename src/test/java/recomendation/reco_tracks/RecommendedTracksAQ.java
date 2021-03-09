@@ -1,4 +1,16 @@
 package recomendation.reco_tracks;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+import common.GlobalConfigHandler;
+import common.RequestHandler;
 import config.BaseUrls;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -9,23 +21,9 @@ import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import logic_controller.RecoTrackController;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import org.json.JSONArray;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
-import common.GlobalConfigHandler;
-import common.RequestHandler;
 import test_data.RecomendedTrackTd;
 
-public class RecommendedTrackIds extends BaseUrls{
+public class RecommendedTracksAQ extends BaseUrls{
     
     int API_CALL = 0;
     int MAX_CALL = 0;
@@ -36,8 +34,8 @@ public class RecommendedTrackIds extends BaseUrls{
     GlobalConfigHandler handler = new GlobalConfigHandler();
     RecoTrackController controller = new RecoTrackController();
     private static Logger log = LoggerFactory.getLogger(RecomendedTracks.class);
-    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-42282";
-    final static String REPROTING_FEATURE = "RecommendedTrackIds validation.";
+    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-42284";
+    final static String REPROTING_FEATURE = "RecommendedTracksAQ validation.";
 
     @BeforeTest
     public void prepEnv(){
@@ -55,7 +53,7 @@ public class RecommendedTrackIds extends BaseUrls{
     @Severity(SeverityLevel.NORMAL)
 
     public void createRecommendedTrackIdsCall(String track_id){
-        String url = controller.prepRecoTrackIdsUrl(BASEURL, track_id);
+        String url = controller.prepRecoTracksAqUrl(BASEURL, track_id);
         URLS.add(url);
         Response response = request.createGetRequest(url);
         RESPONSES.put(API_CALL, response);
@@ -73,17 +71,12 @@ public class RecommendedTrackIds extends BaseUrls{
     @Severity(SeverityLevel.NORMAL)
     public void validateRecommendedTrackResponseData(String track_id){
         SoftAssert softAssert = new SoftAssert();
-        Response response = RESPONSES.get(API_CALL);
-        JSONArray response_arr =  new JSONArray(response.asString());
-        softAssert.assertEquals(response_arr.length() > 0, true, "Track ids not found for given request! Url was : "+URLS.get(API_CALL));
+        String response = RESPONSES.get(API_CALL).asString();
 
-        if(response_arr.length() > 0){
-            Iterator<Object> tracks = response_arr.iterator();
-            while(tracks.hasNext()){
-                Object track = tracks.next();
-                int trackId = Integer.parseInt(track.toString().trim());
-                softAssert.assertEquals(trackId > 0, true, "Track ids must be numeric value!");
-            }
+        String[] tracks = response.split(",");
+        for(String track : tracks){
+            int trackId = Integer.parseInt(track.toString().trim());
+            softAssert.assertEquals(trackId > 0, true, "Track ids must be numeric value!");
         }
 
         softAssert.assertAll();

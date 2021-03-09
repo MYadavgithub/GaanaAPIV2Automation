@@ -110,10 +110,18 @@
 
 	</test>
 
-	<test name="Recommended Track Ids" annotations="JDK" preserve-order="true">
+	<test name="Recommended RecommendedTrackIds" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.reco_tracks.RecommendedTrackIds" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended RecommendedTracksAQ" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.reco_tracks.RecommendedTracksAQ" />
 		</classes>
 
 	</test>

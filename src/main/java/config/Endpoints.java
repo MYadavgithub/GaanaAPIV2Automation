@@ -14,6 +14,7 @@ public class Endpoints {
     public static String vibesHashTag = "/recommendation/hashtag/vibes?hashtag=";
     public static String podcastForYou = "/for-you/podcasts?deviceId=";
     public static String recommendedTrackIds = "/recommendation/recommendedTrackIds/";
+    public static String recommendedTracksAq = "/recommendation/recommendedTracksAQ/";
 
 
     /**Search Auto Suggest Endpoints */
