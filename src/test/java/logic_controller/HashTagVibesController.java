@@ -134,7 +134,7 @@ public class HashTagVibesController {
         ArrayList<String> atw_gifs = new ArrayList<>();
 
         String atw_gif = entity_map.optString("atw_gif").toString().trim();
-        softAssert.assertEquals(atw_gif.length() > 0, true, entity_id+"_"+hashtag_name+" : artwork should not be empty!");
+        // softAssert.assertEquals(atw_gif.length() > 0, true, entity_id+"_"+hashtag_name+" : artwork should not be empty!");
         atw_gifs.add(atw_gif);
 
         int like_count = Integer.parseInt(entity_map.optString("like_count").toString().trim());
@@ -160,6 +160,10 @@ public class HashTagVibesController {
 
         softAssert.assertAll();
         isEntityMapInfoValidated = true;
+
+        if(atw_gifs.size() > 0){
+            isEntityMapInfoValidated = helper.validateActiveLinks(atw_gifs);
+        }
 
         return isEntityMapInfoValidated;
     }
