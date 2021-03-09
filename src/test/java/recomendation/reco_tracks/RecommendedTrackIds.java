@@ -1,5 +1,12 @@
 package recomendation.reco_tracks;
 import config.BaseUrls;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Link;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import logic_controller.RecoTrackController;
 import java.util.ArrayList;
@@ -29,6 +36,8 @@ public class RecommendedTrackIds extends BaseUrls{
     GlobalConfigHandler handler = new GlobalConfigHandler();
     RecoTrackController controller = new RecoTrackController();
     private static Logger log = LoggerFactory.getLogger(RecomendedTracks.class);
+    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-42282";
+    final static String REPROTING_FEATURE = "RecommendedTrackIds validation.";
 
     @BeforeTest
     public void prepEnv(){
@@ -38,6 +47,13 @@ public class RecommendedTrackIds extends BaseUrls{
     }
 
     @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = RecomendedTrackTd.T_IDS_INVOCATION)
+    @Link(name =  "Jira Task Id", value = JIRA_ID)
+    @Story("Need to validate over-all API response Like, Status code,Response Time, Response Body Validation, Artworks, Expected Tab Lists, eof etc.")
+    @Feature(REPROTING_FEATURE)
+    @Step("Prepare Urls for all requests which listed in RecomendedTrackTd file, and get response.")
+    @Description("Save all the response in runtime memory for further validations.")
+    @Severity(SeverityLevel.NORMAL)
+
     public void createRecommendedTrackIdsCall(String track_id){
         String url = controller.prepRecoTrackIdsUrl(BASEURL, track_id);
         URLS.add(url);
@@ -51,6 +67,10 @@ public class RecommendedTrackIds extends BaseUrls{
     }
 
     @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = RecomendedTrackTd.T_IDS_INVOCATION)
+    @Link(name =  "Jira Task Id", value = JIRA_ID)
+    @Feature(REPROTING_FEATURE)
+    @Step("Validate response should not be null as well as track ids must be integer format.")
+    @Severity(SeverityLevel.NORMAL)
     public void validateRecommendedTrackResponseData(String track_id){
         SoftAssert softAssert = new SoftAssert();
         Response response = RESPONSES.get(API_CALL);
