@@ -33,7 +33,7 @@ public class GetUrlV1 extends BaseUrls{
 
     @BeforeClass
     public void prepEnv(){
-        // GlobalConfigHandler.setLocalProps();
+        GlobalConfigHandler.setLocalProps();
         baseurl();
         BASEURL = prop.getProperty("pstream-baseurl").toString().trim();
         MAX_CALL = PstreamTd.track_ids.length;
@@ -41,7 +41,6 @@ public class GetUrlV1 extends BaseUrls{
 
     @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = PstreamTd.PST_INVOCATION)
     public void getHashcodes(String track_id, String device_type){
-        System.out.println(track_id +" : "+device_type);
         Map<String, String> headers = controller.generateHeaders(device_type);
         String hashcode = hash.createHash(BASEURL, track_id, headers);
         HASHCODES.add(hashcode);

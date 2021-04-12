@@ -60,7 +60,7 @@ public class PodcatForYou extends BaseUrls{
         String baseurl = prop.getProperty("reco_baseurl");
         String url = controller.prepareUrlPFY(baseurl, device_id);
         urls.add(url);        
-        Map<String, String> headers = Headers.getHeaders(0);
+        Map<String, String> headers = Headers.getHeaders(0, null);
         headers.replace("deviceId", device_id);
         Response response = handler.createGetRequestWithCustomHeaders(url, headers);
         RESPONSES.put(API_CALL, response);

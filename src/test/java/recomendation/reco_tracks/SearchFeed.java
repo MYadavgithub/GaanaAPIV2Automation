@@ -53,7 +53,7 @@ public class SearchFeed extends BaseUrls{
         MAX_CALL = SearchFeedTd.INVOCATION_COUNT;
     }
 
-    @Test(priority = 1, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
+    @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Story("Need to validate over-all API response Like, Status code,Response Time, Response Body Validation, Artworks, Expected Tab Lists, eof etc.")
     @Feature(REPROTING_FEATURE)
@@ -64,8 +64,8 @@ public class SearchFeed extends BaseUrls{
         Response response;
         String url = BASEURL+SearchFeedController.generateSearchFeedUrl(API_CALL,tab_id);
         URLS.add(url);
-        if(API_CALL == 4 || tab_name.equals(SearchFeedTd.podcast)){
-            Map<String, String> headers = Headers.getHeaders(0);
+        if(tab_id.equals(SearchFeedTd.podcast)){
+            Map<String, String> headers = Headers.getHeaders(0, null);
             headers.replace("gaanaAppVersion", prop.getProperty("podcast_app_version").toString().trim());
             response = request.createGetRequestWithCustomHeaders(url, headers);
         }else{
@@ -77,7 +77,7 @@ public class SearchFeed extends BaseUrls{
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(priority = 2, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
+    @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Step("Validate all five mandatory tab present or not.")
@@ -87,7 +87,7 @@ public class SearchFeed extends BaseUrls{
         if(!response.asString().equals("null")){
             JSONObject res_object = new JSONObject(response.asString());
             JSONArray tabs = res_object.getJSONArray("tabs");
-            if(tabs != null && tabs.length() == (SearchFeedTd.tabs.length-5)){
+            if(tabs != null && tabs.length() == (SearchFeedTd.tabs.length-1)){
                 boolean result = controller.validateExTabs(tabs);
                 Assert.assertEquals(result, true, "for api \n"+URLS.get(API_CALL)+"\nexpected tabs not validated.");
             }else{
@@ -100,7 +100,7 @@ public class SearchFeed extends BaseUrls{
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(priority = 3, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
+    @Test(enabled = true, priority = 3, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Step("Validate which tab is selected and value are correct or not!")
@@ -120,7 +120,7 @@ public class SearchFeed extends BaseUrls{
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(priority = 4, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
+    @Test(enabled = true, priority = 4, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Step("Validate eof present or not and value of eof should be 0")
@@ -135,7 +135,7 @@ public class SearchFeed extends BaseUrls{
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(priority = 5, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
+    @Test(enabled = true, priority = 5, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Step("Validate each object in response JSON object.")
@@ -196,6 +196,11 @@ public class SearchFeed extends BaseUrls{
                     log.info("Going to validate : "+SearchFeedTd.tabs[API_CALL]);
                     isResponseValidated = controller.validateSearchFeedRecommendedResponse(tab_id, responseBody);
                 break;
+
+                case "1389":
+                    log.info("Going to validate : "+SearchFeedTd.tabs[API_CALL]);
+                    isResponseValidated = controller.validateSearchFeedRecommendedResponse(tab_id, responseBody);
+                break;
             
                 default:
                     log.info("Response not able to validate due to no expected behaviour found !");
@@ -212,7 +217,7 @@ public class SearchFeed extends BaseUrls{
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(priority = 6, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
+    @Test(enabled = true, priority = 6, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Step("Validate Subtitle Accroding to logic defined by dev team")

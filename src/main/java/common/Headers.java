@@ -16,10 +16,16 @@ public class Headers {
      * @param country 0 for country name and 1 for x-forwarded-for
      * @return
      */
-    public static Map<String, String> getHeaders(int country) {
+    public static Map<String, String> getHeaders(int country, String device_type_val) {
         getPropFileName();
+        int device_type = 0;
         Map<String, String> headers = new HashMap<String, String>();
-        int device_type = GlobalConfigHandler.getDeviceType();
+
+        if(device_type_val == null){
+            device_type = GlobalConfigHandler.getDeviceType();
+        }else{
+            device_type = Integer.parseInt(device_type_val.trim());
+        }
 
         log.info("Requesting headers for app name : "+GlobalConfigHandler.getAppName(device_type));
 
