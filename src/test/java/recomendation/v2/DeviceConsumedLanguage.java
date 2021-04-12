@@ -119,7 +119,7 @@ public class DeviceConsumedLanguage extends BaseUrls {
                 String url = BASEURL+Endpoints.deviceConsumedLanguage+device_id;
                 urls.add(url);
             }else {
-                customHeaders = Headers.getHeaders(0);
+                customHeaders = Headers.getHeaders(0, null);
                 String new_device_id = CommonUtils.generateRandomDeviceId();
                 customHeaders.replace("deviceId", new_device_id);
                 String url = BASEURL+Endpoints.deviceConsumedLanguage+new_device_id;

@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class SearchFeedTd {
 
-    public static String podcast = "PODCAST"; // to segregate podcast call in TC-> 1
+    public static String podcast = "-4"; // to segregate podcast call in TC-> 1
     public static String default_tab_id = "-1";
-    public static String tabs[] = { "default", "-1", "-2", "-3", "-4", "-5", "-6", "100", "103", "104"}; // do not change order else manage TC-> 1
+public static String tabs[] = { "default", "-1", "-2", "-3", "-4", "-5", "-6", "100", "103", "104"/*, "1389"*/}; // do not change order else manage TC-> 1
     public static final int INVOCATION_COUNT = 10; // increate is according to tabs length
     private static String query_params = "?geoLocation=IN&usrLang=";
 
@@ -32,6 +32,7 @@ public class SearchFeedTd {
         tabNames.put("100", "Party");
         tabNames.put("103", "Romance");
         tabNames.put("104", "Sad");
+        tabNames.put("1389", "90s");
 
         for (String name : tabNames.keySet()) {
             if (name.equals(val)) {
