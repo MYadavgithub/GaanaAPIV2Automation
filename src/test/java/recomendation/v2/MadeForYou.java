@@ -3,6 +3,7 @@ import config.BaseUrls;
 import config.Endpoints;
 import java.util.List;
 import java.util.Map;
+import common.GlobalConfigHandler;
 import common.Headers;
 import common.Helper;
 import org.slf4j.Logger;
@@ -44,9 +45,7 @@ public class MadeForYou extends BaseUrls {
 
     @BeforeClass
     public void prepeareEnv() {
-        System.setProperty("env", "prod");
-        System.setProperty("type", "reco");
-        System.setProperty("device_type", "android");
+        GlobalConfigHandler.setLocalProps();
         baseurl();
         BASEURL = prop.getProperty("prec_baseurl").toString().trim();
         URL = BASEURL + Endpoints.madeForYou;
@@ -74,7 +73,7 @@ public class MadeForYou extends BaseUrls {
             responses.put(counter, response);
             counter++;
         }else if(counter == 1){
-            Map<String, String> headers = Headers.getHeaders(0);
+            Map<String, String> headers = Headers.getHeaders(0, null);
             headers.replace("deviceId", NEW_DEVICE_ID);
             response = handler.createGetRequestWithCustomHeaders(url, headers);
                 if (response != null)
@@ -160,8 +159,8 @@ public class MadeForYou extends BaseUrls {
     @Step("Validating received keys along-with expected keys respectivey data are : {0} {1}")
     public static boolean validatekeys(List<String> expectedKeys, List<Object> keys) {
         boolean isKeyValidated = false;
-        if(expectedKeys.size() == keys.size()){
-            for(Object key : keys) {
+        for(Object key : keys) {
+            if(!key.equals("url")){
                 if(!expectedKeys.contains(key.toString().trim())){
                     isKeyValidated = false;
                     log.error("Key value is unexpected : "+key);

@@ -269,7 +269,7 @@ public class SearchFeedController {
                         }catch(Exception e){
                             log.info("Tags are not as array!");
                         }
-                        if(tags.length() > 0){
+                        if(tags.length() > 0 || tags.length() == 0){
                             isObValidated = true;
                             // log.info(key_name+ " is : "+value);
                         }else{
@@ -326,7 +326,9 @@ public class SearchFeedController {
                     case "scoreF":
                         double scoref = Double.parseDouble(value);
                         if(!tab_id.equals("-6")){
-                            if(scoref > 0.00){
+                            if(tab_id.equals("default") || tab_id.equals("-1") || tab_id.equals("-2") || tab_id.equals("100") || tab_id.equals("103") || tab_id.equals("104")){
+                                isObValidated = true;
+                            }else if(scoref > 0.00){
                                 isObValidated = true;
                                 // log.info(key_name+ " is : "+value);
                             }else{
@@ -427,7 +429,9 @@ public class SearchFeedController {
      * @param response
      */
     public void validateSubTitle(String tab_name, JSONArray response){
-        String specialSubtitleTab = SearchFeedTd.tabsName("-4"); //podcast
+        String specialSubtitleTabRecommended = SearchFeedTd.tabsName("-1");
+        String specialSubtitleTabPopular = SearchFeedTd.tabsName("-2");
+        String specialSubtitleTabPodcast = SearchFeedTd.tabsName("-4"); //podcast
         String specialSubtitleTabRadio = SearchFeedTd.tabsName("-5");
         Iterator<Object> response_itr = response.iterator();
         while(response_itr.hasNext()){
@@ -438,28 +442,23 @@ public class SearchFeedController {
             String language = resObj.optString("language").toString().trim();
             String subtitle = resObj.optString("subtitle").toString().trim();
             String exSubTitle = "";
-            if(tab_name.equals(specialSubtitleTab) || (language.length() > 0 && ty.equals("Show"))){
+            if((tab_name.equals(specialSubtitleTabPodcast) || tab_name.equals(specialSubtitleTabPopular)) && (language.length() > 0 && ty.equals("Show"))){
                 exSubTitle = language;
-                if(!subtitle.equals(exSubTitle)){
-                    log.error("\""+tab_name+"\""+ " and Id : "+iid+ "and title : " +ti+ " subTitle validation not working!");
-                }
-                Assert.assertEquals(subtitle, exSubTitle);
             }else if(tab_name.equals(specialSubtitleTabRadio) && (language.length() > 0 && ty.equals("Radio"))){
                 exSubTitle = "";
-                if(!subtitle.equals(exSubTitle)){
-                    log.error("\""+tab_name+"\""+ " and Id : "+iid+ "and title : " +ti+ " subTitle validation not working!");
-                }
+            }else if(tab_name.equals(specialSubtitleTabRecommended) && (language.length() > 0 && ty.equals("Show"))){
+                exSubTitle = ty+" | "+language;
             }else{
                 exSubTitle = ty;
                 if(subtitle.length() <= 0){
                     subtitle = ty;
                 }
-
-                if(!subtitle.equals(exSubTitle)){
-                    log.error("\""+tab_name+"\""+ " and Id : "+iid+ " and title : " +ti+ " subTitle validation not working!");
-                }
-                Assert.assertEquals(subtitle, exSubTitle);
             }
+
+            if(!subtitle.equals(exSubTitle)){
+                log.error("\""+tab_name+"\""+ " and Id : "+iid+ " and title : " +ti+ " subTitle validation not working!");
+            }
+            Assert.assertEquals(subtitle, exSubTitle);
         }
     }
 }

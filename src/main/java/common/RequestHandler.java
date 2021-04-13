@@ -21,7 +21,7 @@ public class RequestHandler {
      */
     public Response createGetRequestHttp(String url) {
         RestAssured.baseURI = url;
-        Map<String, String> headers = Headers.getHeaders(0);
+        Map<String, String> headers = Headers.getHeaders(0, null);
         RequestSpecification httpRequest = RestAssured.given();
         Response response = httpRequest
             .urlEncodingEnabled(false)
@@ -44,7 +44,7 @@ public class RequestHandler {
      */
     @Step("Creating get request to api : {0} ")
     public Response createGetRequest(String url){
-        Map<String, String> headers = Headers.getHeaders(0);
+        Map<String, String> headers = Headers.getHeaders(0, null);
         Response response = RestAssured.given()
             .urlEncodingEnabled(true)
             .headers(headers)

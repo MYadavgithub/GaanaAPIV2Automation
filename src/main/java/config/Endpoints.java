@@ -16,6 +16,10 @@ public class Endpoints {
     public static String recommendedTrackIds = "/recommendation/recommendedTrackIds/";
     public static String recommendedTracksAq = "/recommendation/recommendedTracksAQ/";
 
+    /** Stream Info apis */
+    public static String streamInfoEndpoint(String track_ids, String hashkey){
+        return "/stream/info?ids="+track_ids+"&hash="+hashkey;
+    }
 
     /**Search Auto Suggest Endpoints */
     public static String searchFeed = "/searchfeed/fetch";
