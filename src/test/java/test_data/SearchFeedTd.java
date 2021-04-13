@@ -11,8 +11,8 @@ public class SearchFeedTd {
 
     public static String podcast = "PODCAST"; // to segregate podcast call in TC-> 1
     public static String default_tab_id = "-1";
-    public static String tabs[] = { "default", "-1", "-2", "-3", "-4", "100", "103", "104"}; // do not change order else manage TC-> 1
-    public static final int INVOCATION_COUNT = 8; // increate is according to tabs length
+    public static String tabs[] = { "default", "-1", "-2", "-3", "-4", "-5", "-6", "100", "103", "104"}; // do not change order else manage TC-> 1
+    public static final int INVOCATION_COUNT = 10; // increate is according to tabs length
     private static String query_params = "?geoLocation=IN&usrLang=";
 
     /**
@@ -27,6 +27,8 @@ public class SearchFeedTd {
         tabNames.put("-2", "Popular");
         tabNames.put("-3", "HotShots");
         tabNames.put("-4", "Podcasts");
+        tabNames.put("-5", "Radio");
+        tabNames.put("-6", "Trending");
         tabNames.put("100", "Party");
         tabNames.put("103", "Romance");
         tabNames.put("104", "Sad");
@@ -42,8 +44,8 @@ public class SearchFeedTd {
     /**
      * Expected all response keys in Search Feed api
      */
-    public static String expectedResponseKeys[] = { "iid", "ti", "ty", "aw", "play_ct", "sti", "fty", "vty", "lang", "seo", "artistATW",
-        "artistTitle", "tags", "oty", "clip_url", "vurl", "scoreF", "psl", "language", "subtitle"};
+    public static String expectedResponseKeys[] = { "iid", "ti", "ty", "aw", "play_ct", "sti", "fty", "sty", "vty", "lang", "seo", "artistATW",
+        "artistTitle", "tags", "oty", "clip_url", "vurl", "scoreF", "psl", "language", "subtitle", "tile_type"};
 
     /**
      * Add or change language in api url params from here.

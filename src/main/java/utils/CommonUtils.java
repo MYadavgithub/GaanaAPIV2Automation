@@ -68,4 +68,16 @@ public class CommonUtils {
         UUID randomId = UUID.randomUUID();
         return "GM"+randomId.toString().toUpperCase().replaceAll("-", "").substring(0, 12);
     }
+
+    public String createUrlEncodedStr(String val){
+        String encoded_str = "";
+        Pattern pattern = Pattern.compile("\\s");
+        Matcher matcher = pattern.matcher(val);
+        if(matcher.find()){
+            encoded_str = val.replaceAll("\\s", "%20");
+        }else{
+            encoded_str = val;
+        }
+        return encoded_str;
+    }
 }
