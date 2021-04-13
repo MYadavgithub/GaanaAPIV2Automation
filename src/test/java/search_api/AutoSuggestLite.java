@@ -1,4 +1,5 @@
 package search_api;
+import utils.Mailer;
 import java.util.Map;
 import config.BaseUrls;
 import config.Constants;
@@ -21,10 +22,9 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import logic_controller.AutoSuggestLiteController;
-import utils.Mailer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import logic_controller.AutoSuggestLiteController;
 
 public class AutoSuggestLite extends BaseUrls {
 
