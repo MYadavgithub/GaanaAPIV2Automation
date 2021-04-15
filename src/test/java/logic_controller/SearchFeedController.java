@@ -442,11 +442,11 @@ public class SearchFeedController {
             String language = resObj.optString("language").toString().trim();
             String subtitle = resObj.optString("subtitle").toString().trim();
             String exSubTitle = "";
-            if((tab_name.equals(specialSubtitleTabPodcast) || tab_name.equals(specialSubtitleTabPopular)) && (language.length() > 0 && ty.equals("Show"))){
+            if(tab_name.equals(specialSubtitleTabPodcast) && (language.length() > 0 && ty.equals("Show"))){
                 exSubTitle = language;
             }else if(tab_name.equals(specialSubtitleTabRadio) && (language.length() > 0 && ty.equals("Radio"))){
                 exSubTitle = "";
-            }else if(tab_name.equals(specialSubtitleTabRecommended) && (language.length() > 0 && ty.equals("Show"))){
+            }else if((tab_name.equals(specialSubtitleTabRecommended) || tab_name.equals(specialSubtitleTabPopular)) && (language.length() > 0 && ty.equals("Show"))){
                 exSubTitle = ty+" | "+language;
             }else{
                 exSubTitle = ty;
