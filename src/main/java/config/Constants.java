@@ -44,7 +44,7 @@ public class Constants{
     public final static int REC_INVOCATION_COUNT = 1;
     public final static int AS_INVOCATION_COUNT = 1000;
     public static int IS_STAGE_LIVE = 0;
-    public final static int ASV2_INVOCATION_COUNT = 18;
+    public final static int ASV2_INVOCATION_COUNT = 55;
 
     /**Emailer Config */
     public static int EMAILER_ENABLED = 0; // 0 disabled 1 enabled
