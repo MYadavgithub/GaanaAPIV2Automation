@@ -24,7 +24,7 @@ public class Endpoints {
 
     public static String autoSuggestProdEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
-        endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
+        endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vi1?query="+query_params);
         endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1");
         return endpoint.toString();
     }
