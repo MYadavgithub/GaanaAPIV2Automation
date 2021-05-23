@@ -11,8 +11,8 @@ public class SearchFeedTd {
 
     public static String podcast = "-4"; // to segregate podcast call in TC-> 1
     public static String default_tab_id = "-1";
-public static String tabs[] = { "default", "-1", "-2", "-3", "-4", "-5", "-6", "100", "103", "104"/*, "1389"*/}; // do not change order else manage TC-> 1
-    public static final int INVOCATION_COUNT = 10; // increate is according to tabs length
+public static String tabs[] = { "default", "-1", "-2", /*"-3",*/ "-4", "-5", "-6", "100", "103", "104"/*, "1389"*/}; // do not change order else manage TC-> 1
+    public static final int INVOCATION_COUNT = 9; // increate is according to tabs length
     private static String query_params = "?geoLocation=IN&usrLang=";
 
     /**
@@ -25,7 +25,7 @@ public static String tabs[] = { "default", "-1", "-2", "-3", "-4", "-5", "-6", "
         tabNames.put("default", "Recommended");
         tabNames.put("-1", "Recommended");
         tabNames.put("-2", "Popular");
-        tabNames.put("-3", "HotShots");
+        // tabNames.put("-3", "HotShots");
         tabNames.put("-4", "Podcasts");
         tabNames.put("-5", "Radio");
         tabNames.put("-6", "Trending");

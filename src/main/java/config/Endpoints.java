@@ -15,6 +15,7 @@ public class Endpoints {
     public static String podcastForYou = "/for-you/podcasts?deviceId=";
     public static String recommendedTrackIds = "/recommendation/recommendedTrackIds/";
     public static String recommendedTracksAq = "/recommendation/recommendedTracksAQ/";
+    public static String trendingHashTag = "/hashtag/trendingHashtags";
 
     /** Stream Info apis */
     public static String streamInfoEndpoint(String track_ids, String hashkey){
