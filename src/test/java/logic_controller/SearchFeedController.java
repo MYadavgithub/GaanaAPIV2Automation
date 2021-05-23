@@ -433,6 +433,7 @@ public class SearchFeedController {
         String specialSubtitleTabPopular = SearchFeedTd.tabsName("-2");
         String specialSubtitleTabPodcast = SearchFeedTd.tabsName("-4"); //podcast
         String specialSubtitleTabRadio = SearchFeedTd.tabsName("-5");
+        String specialSubtitleTabTrending = SearchFeedTd.tabsName("-6");
         Iterator<Object> response_itr = response.iterator();
         while(response_itr.hasNext()){
             JSONObject resObj = (JSONObject) response_itr.next();
@@ -446,7 +447,7 @@ public class SearchFeedController {
                 exSubTitle = language;
             }else if(tab_name.equals(specialSubtitleTabRadio) && (language.length() > 0 && ty.equals("Radio"))){
                 exSubTitle = "";
-            }else if((tab_name.equals(specialSubtitleTabRecommended) || tab_name.equals(specialSubtitleTabPopular)) && (language.length() > 0 && ty.equals("Show"))){
+            }else if((tab_name.equals(specialSubtitleTabRecommended) || tab_name.equals(specialSubtitleTabPopular) || tab_name.equals(specialSubtitleTabTrending)) && (language.length() > 0 && ty.equals("Show"))){
                 exSubTitle = ty+" | "+language;
             }else{
                 exSubTitle = ty;
