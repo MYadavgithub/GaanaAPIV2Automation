@@ -18,7 +18,7 @@ pipeline {
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
-        def emailTo = "manish.pandey@gaana.com, rohit.ranjan@gaana.com, qa.gaana@timesinternet.in"
+        def emailTo = "manish.pandey@gaana.com, qa.gaana@timesinternet.in"
         def abortedTo = "manish.pandey@gaana.com, umesh.shukla@gaana.com"
         def replyTo = "umesh.shukla@gaana.com"
         def emailSub = "TIP | Recommendation | Daily Regression Test Suite | "
@@ -28,7 +28,7 @@ pipeline {
     parameters
     {
         string(
-            defaultValue: 'release/sprint_24th_March_2021',
+            defaultValue: 'release/sprint_28th_April_2021',
             description: 'Provide branch for execution',
             name: 'branch',
             trim: true
