@@ -126,4 +126,12 @@
 
 	</test>
 
+	<test name="Recommended TrendingHastag" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.hashtags.TrendingHashtags" />
+		</classes>
+
+	</test>
+
 </suite>
