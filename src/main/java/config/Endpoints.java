@@ -16,6 +16,7 @@ public class Endpoints {
     public static String recommendedTrackIds = "/recommendation/recommendedTrackIds/";
     public static String recommendedTracksAq = "/recommendation/recommendedTracksAQ/";
     public static String trendingHashTag = "/hashtag/trendingHashtags";
+    public static String similarAlbums = "/recommendation/similarAlbums/";
 
     /** Stream Info apis */
     public static String streamInfoEndpoint(String track_ids, String hashkey){
