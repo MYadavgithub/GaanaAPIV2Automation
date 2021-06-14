@@ -12,6 +12,7 @@ import org.testng.ITestContext;
 import org.testng.Reporter;
 import java.util.Iterator;
 import common.FileActions;
+import common.GlobalConfigHandler;
 import common.Helper;
 import org.json.JSONArray;
 import java.util.ArrayList;
@@ -22,6 +23,12 @@ import org.testng.annotations.Test;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+
+/**
+ * @author Umesh Shukla
+ * @version 8.22.0 Support Disabled
+ * @deprecated https://timesgroup.jira.com/browse/GAANA-43257
+ */
 
 public class Vibes extends BaseUrls {
 
@@ -43,9 +50,7 @@ public class Vibes extends BaseUrls {
 
     @BeforeClass
     public void prepareRequestData(ITestContext context) {
-        // System.setProperty("env", "prod");
-        // System.setProperty("type", "Reco");
-        // System.setProperty("device_type", "android");
+        GlobalConfigHandler.setLocalProps();
         EXEC_CONTEXT = Integer.parseInt(context.getCurrentXmlTest().getParameter("id"));
         baseurl();
         baseurl = prop.getProperty("reco_baseurl").toString().trim();

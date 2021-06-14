@@ -23,6 +23,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+/**
+ * @author Umesh Shukla
+ * @version 8.22.0 Support Disabled
+ * @deprecated https://timesgroup.jira.com/browse/GAANA-43257
+ */
 public class TrendingHashtags extends BaseUrls{
     
     String BASEURL = "";

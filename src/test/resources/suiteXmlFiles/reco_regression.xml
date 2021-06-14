@@ -50,7 +50,7 @@
 
 	</test>
 
-	<test name="Vibes Api Initial" annotations="JDK" preserve-order="true">
+	<!-- <test name="Vibes Api Initial" annotations="JDK" preserve-order="true">
 
 		<parameter name = "id" value="0"/> 
 
@@ -58,9 +58,9 @@
 			<class name="recomendation.reco_tracks.Vibes" />
 		</classes>
 
-	</test>
+	</test> -->
 
-	<test name="Vibes Api Second" annotations="JDK" preserve-order="true">
+	<!-- <test name="Vibes Api Second" annotations="JDK" preserve-order="true">
 
 		<parameter name = "id" value= "1"/> 
 
@@ -68,15 +68,15 @@
 			<class name="recomendation.reco_tracks.Vibes" />
 		</classes>
 
-	</test>
+	</test> -->
 
-	<test name="Recommended TrendingShortTrack" annotations="JDK" preserve-order="true">
+	<!-- <test name="Recommended TrendingShortTrack" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.reco_tracks.TrendingShortTrack" />
 		</classes>
 
-	</test>
+	</test> -->
 
 	<test name="Recommended SimilarArtists" annotations="JDK" preserve-order="true">
 
@@ -94,13 +94,13 @@
 
 	</test>
 
-	<test name="Recommended HashTagVibes" annotations="JDK" preserve-order="true">
+	<!-- <test name="Recommended HashTagVibes" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.vibes.HashTagVibes" />
 		</classes>
 
-	</test>
+	</test> -->
 
 	<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
 
@@ -126,12 +126,12 @@
 
 	</test>
 
-	<test name="Recommended TrendingHastag" annotations="JDK" preserve-order="true">
+	<!-- <test name="Recommended TrendingHastag" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.hashtags.TrendingHashtags" />
 		</classes>
 
-	</test>
+	</test> -->
 
 </suite>

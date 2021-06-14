@@ -26,6 +26,8 @@ import test_data.TrendingTrackTd;
 
 /**
  * @author Umesh Shukla
+ * @version 8.22.0 Support Disabled
+ * @deprecated https://timesgroup.jira.com/browse/GAANA-43257
  */
 
 public class HashTagVibes extends BaseUrls{
