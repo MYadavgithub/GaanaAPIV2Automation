@@ -86,6 +86,14 @@
 
 	</test>
 
+	<test name="Recommended SimilarAlbums" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.album.SimilarAlbums" />
+		</classes>
+
+	</test>
+
 	<test name="Recommended SimilarArtistEntityInfo" annotations="JDK" preserve-order="true">
 
 		<classes>
