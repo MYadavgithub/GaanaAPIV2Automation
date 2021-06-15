@@ -27,6 +27,8 @@ import org.testng.annotations.DataProvider;
 
 /**
  * @author Umesh Shukla
+ * @version 8.22.0 Support Disabled
+ * @deprecated https://timesgroup.jira.com/browse/GAANA-43257
  */
 
 public class TrendingShortTrack extends BaseUrls {

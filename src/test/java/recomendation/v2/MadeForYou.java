@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
@@ -34,12 +33,12 @@ public class MadeForYou extends BaseUrls {
 
     int counter = 0;
     String URL = "";
-    String BASEURL = "";
     String NEW_DEVICE_ID = "";
+    String USER_TYPE = "";
     Helper helper = new Helper();
     ArrayList<String> urls = new ArrayList<>();
     RequestHandler handler = new RequestHandler();
-    Map<Integer, Response> responses = new HashMap<>();
+    Map<Integer, Response> RESPONSES = new HashMap<>();
     private static Logger log = LoggerFactory.getLogger(MadeForYou.class);
     final static String REPROTING_FEATURE = "Made For You api response validations";
 
@@ -47,61 +46,83 @@ public class MadeForYou extends BaseUrls {
     public void prepeareEnv() {
         GlobalConfigHandler.setLocalProps();
         baseurl();
-        BASEURL = prop.getProperty("prec_baseurl").toString().trim();
-        URL = BASEURL + Endpoints.madeForYou;
-        NEW_DEVICE_ID = CommonUtils.generateRandomDeviceId();
+        String baseUrl = prop.getProperty("reco_baseurl").toString().trim();
+        URL = baseUrl + Endpoints.madeForYou;
     }
 
-    @DataProvider(name = "urlProvider")
-    public Object[][] DataProvider() {
-        return new Object[][] {
-            { URL, counter }
-        };
-    }
-
-    @Test(priority = 1, dataProvider = "urlProvider", invocationCount = MoodMixTd.DEVICE_CONSUMED_INVOCATION_COUNT)
+    @Test(enabled = true, priority = 1, dataProvider = "urlProvider", invocationCount = MoodMixTd.MADE_FOR_YOU_INVOCATION)
     @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-41033")
     @Feature(REPROTING_FEATURE)
     @Story("Validate response time, status code, response body, track type, track-ids present or not, and artworks.")
     @Description("Once response got we will store results in to map for further validations")
     @Step("First call get registered device id and second call will hold new device id, save response for further validations.")
     @Severity(SeverityLevel.BLOCKER)
-    public void createCallToMadeForYou(String url, int count) {
+    public void createCallToMadeForYou(String url) {
         Response response;
-        if(counter == 0){
-            response = handler.createGetRequest(url);
-            responses.put(counter, response);
-            counter++;
-        }else if(counter == 1){
+        if(counter <= 1){
             Map<String, String> headers = Headers.getHeaders(0, null);
-            headers.replace("deviceId", NEW_DEVICE_ID);
+            headers.replace("deviceId", MoodMixTd.device_ids[counter]);
             response = handler.createGetRequestWithCustomHeaders(url, headers);
-                if (response != null)
-                    responses.put(counter, response);
+            RESPONSES.put(counter, response);
+        }else if(counter > 1){
+            Map<String, String> headers = Headers.getHeaders(0, null);
+            headers.replace("deviceId", MoodMixTd.device_ids[counter]);
+            if(counter == 3){
+                NEW_DEVICE_ID = CommonUtils.generateRandomDeviceId();
+                headers.replace("deviceId", NEW_DEVICE_ID);
+            }
 
-            if (responses.size() != 2 || responses == null) {
-                log.error("Two api call was expected but there is some error Manual check required!");
-                Assert.assertEquals(2, responses.size());
+            response = handler.createGetRequestWithCustomHeaders(url, headers);
+            RESPONSES.put(counter, response);
+        }
+
+        if(counter == 3){
+            if(RESPONSES.size() != 4 || RESPONSES == null) {
+                log.error("Responses not captured successfully, please check manually!");
+                Assert.assertEquals(2, RESPONSES.size());
             }
             counter = 0;
+        }else{
+            counter++;
         }
     }
 
-    @Test(priority = 2, dataProvider = "urlProvider", invocationCount = MoodMixTd.DEVICE_CONSUMED_INVOCATION_COUNT)
+    @Test(enabled = true, priority = 2, dataProvider = "urlProvider", invocationCount = MoodMixTd.MADE_FOR_YOU_INVOCATION)
+    @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-41033")
+    @Feature(REPROTING_FEATURE)
+    @Description("Validate user type values")
+    @Severity(SeverityLevel.NORMAL)
+    public void validateUsertype(String url){
+        JSONObject responseObject = new JSONObject(RESPONSES.get(counter).asString());
+        String user_type = responseObject.optString("userType").toString().trim();
+        if(counter <= 1 && user_type.equalsIgnoreCase(MoodMixTd.expectedUserType[0])){
+            log.info("Device id : "+MoodMixTd.device_ids[counter]+ " is registered user.");
+        }else if(counter > 1 && user_type.equalsIgnoreCase(MoodMixTd.expectedUserType[1])){
+            if(counter == 3){
+                log.info("Device id : "+NEW_DEVICE_ID+ " is new user.");
+            }else{
+                log.info("Device id : "+MoodMixTd.device_ids[counter]+ " is new user.");
+            }
+        }else{
+            log.error("User Type value unexpected in response body! Value got for user type is : "+user_type);
+        }
+
+        if(counter == 3){
+            counter = 0;
+        }else{
+            counter++;
+        }
+    }
+
+    @Test(enabled = true, priority = 3, dataProvider = "urlProvider", invocationCount = MoodMixTd.MADE_FOR_YOU_INVOCATION)
     @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-41033")
     @Feature(REPROTING_FEATURE)
     @Description("Validating response on basis of registred and not registred devices.")
     @Severity(SeverityLevel.NORMAL)
-    public void validateMadeForYouResponseBody(String url, int count){
+    public void validateMadeForYouResponseBody(String url){
         boolean isMadeForYouValidated = false;
-        SoftAssert softAssert = new SoftAssert();
-        List<String> expectedUsers = MoodMixTd.expectedUserType();
-        JSONObject responseObject = new JSONObject(responses.get(counter).asString());
-        String user_type = responseObject.optString("userType").toString().trim();
-        if(!expectedUsers.contains(user_type)){
-            log.error("User Type value unexpected in response body! Value got for user type is : "+user_type);
-            softAssert.assertEquals(true, expectedUsers.contains(user_type));
-        }
+        // SoftAssert softAssert = new SoftAssert();
+        JSONObject responseObject = new JSONObject(RESPONSES.get(counter).asString());
         JSONArray MadeForYouArr = responseObject.getJSONArray("vplMix");
         isMadeForYouValidated =  validateMadeForYouDetails(counter, MadeForYouArr);
 
@@ -171,5 +192,12 @@ public class MadeForYou extends BaseUrls {
             }
         }
         return isKeyValidated;
+    }
+
+    @DataProvider(name = "urlProvider")
+    public Object[][] DataProvider() {
+        return new Object[][] {
+            { URL }
+        };
     }
 }
