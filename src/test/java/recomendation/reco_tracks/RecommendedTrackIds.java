@@ -87,6 +87,7 @@ public class RecommendedTrackIds extends BaseUrls{
         }
 
         softAssert.assertAll();
+        API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
     @DataProvider(name = "dp")
