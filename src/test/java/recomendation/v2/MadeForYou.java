@@ -57,7 +57,7 @@ public class MadeForYou extends BaseUrls {
     @Description("Once response got we will store results in to map for further validations")
     @Step("First call get registered device id and second call will hold new device id, save response for further validations.")
     @Severity(SeverityLevel.BLOCKER)
-    public void createCallToMadeForYou(String url) {
+    public void createCallToMadeForYou(String url, int count) {
         Response response;
         if(counter <= 1){
             Map<String, String> headers = Headers.getHeaders(0, null);
@@ -92,7 +92,7 @@ public class MadeForYou extends BaseUrls {
     @Feature(REPROTING_FEATURE)
     @Description("Validate user type values")
     @Severity(SeverityLevel.NORMAL)
-    public void validateUsertype(String url){
+    public void validateUsertype(String url, int count){
         JSONObject responseObject = new JSONObject(RESPONSES.get(counter).asString());
         String user_type = responseObject.optString("userType").toString().trim();
         if(counter <= 1 && user_type.equalsIgnoreCase(MoodMixTd.expectedUserType[0])){
@@ -119,7 +119,7 @@ public class MadeForYou extends BaseUrls {
     @Feature(REPROTING_FEATURE)
     @Description("Validating response on basis of registred and not registred devices.")
     @Severity(SeverityLevel.NORMAL)
-    public void validateMadeForYouResponseBody(String url){
+    public void validateMadeForYouResponseBody(String url, int count){
         boolean isMadeForYouValidated = false;
         // SoftAssert softAssert = new SoftAssert();
         JSONObject responseObject = new JSONObject(RESPONSES.get(counter).asString());
@@ -197,7 +197,7 @@ public class MadeForYou extends BaseUrls {
     @DataProvider(name = "urlProvider")
     public Object[][] DataProvider() {
         return new Object[][] {
-            { URL }
+            { URL , counter }
         };
     }
 }
