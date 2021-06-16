@@ -16,7 +16,7 @@ public class MoodMixTd {
 
     /**Made for You Test Data  */
     public static List<String> expectedMadeForYouKeys(){
-        String str [] = {"backgroundArtworkUrl","mixType","trackIds","trackType","title","artworkTemplateId","textColorCode"};
+        String str [] = {"mixType","title","trackIds","trackType", "backgroundArtworkUrl","textColorCode","artworkTemplateId","vplType","sourceId"};
         return Arrays.asList(str);
     }
 
