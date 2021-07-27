@@ -242,23 +242,6 @@ public class MadeForYou extends BaseUrls {
             }
         }
         return isDatavalidated;
-    }
-
-    @Step("Validating received keys along-with expected keys respectivey data are : {0} {1}")
-    public static boolean validatekeys(List<String> expectedKeys, List<Object> keys) {
-        boolean isKeyValidated = false;
-        for(Object key : keys) {
-            if(!key.equals("url")){
-                if(!expectedKeys.contains(key.toString().trim())){
-                    isKeyValidated = false;
-                    log.error("Key value is unexpected : "+key);
-                    break;
-                }else{
-                    isKeyValidated = true;
-                }
-            }
-        }
-        return isKeyValidated;
     }*/
 
     @DataProvider(name = "urlProvider")

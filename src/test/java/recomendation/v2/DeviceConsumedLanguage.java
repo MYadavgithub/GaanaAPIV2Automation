@@ -7,6 +7,7 @@ import config.BaseUrls;
 import config.Endpoints;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import utils.CommonUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -85,7 +86,7 @@ public class DeviceConsumedLanguage extends BaseUrls {
             if(languageDetails.length() > 0){
                 for(int i = 0; i<languageDetails.length(); i++){
                     JSONObject language = languageDetails.getJSONObject(i);
-                    boolean isKeyValidated = MadeForYou.validatekeys(MoodMixTd.exKeysDeviceConsumedLanguage(), helper.keys(language));
+                    boolean isKeyValidated = validatekeys(MoodMixTd.exKeysDeviceConsumedLanguage(), helper.keys(language));
                     if(isKeyValidated){
                         int id = Integer.parseInt(language.optString("id").toString().trim());
                         String language_name = language.optString("language").toString().trim();
@@ -135,5 +136,22 @@ public class DeviceConsumedLanguage extends BaseUrls {
                 urls.get(counter)
             }
         };
+    }
+
+    @Step("Validating received keys along-with expected keys respectivey data are : {0} {1}")
+    public static boolean validatekeys(List<String> expectedKeys, List<Object> keys) {
+        boolean isKeyValidated = false;
+        for(Object key : keys) {
+            if(!key.equals("url")){
+                if(!expectedKeys.contains(key.toString().trim())){
+                    isKeyValidated = false;
+                    log.error("Key value is unexpected : "+key);
+                    break;
+                }else{
+                    isKeyValidated = true;
+                }
+            }
+        }
+        return isKeyValidated;
     }
 }

@@ -6,7 +6,6 @@ import java.util.Iterator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import io.qameta.allure.Step;
-import test_data.MoodMixTd;
 import org.slf4j.LoggerFactory;
 import org.testng.asserts.SoftAssert;
 
@@ -52,6 +51,8 @@ public class MadeForYouController {
                             result = false;
                             break;
                         }
+                    }else if(flag == 2){
+                        result = true;
                     }
                 break;
 
@@ -124,7 +125,10 @@ public class MadeForYouController {
         softAssert.assertEquals(textColorCode.contains("#"), true, "textColorCode validation got failed for device_id : "+device_id);
 
         int artworkTemplateId = Integer.parseInt(vplMix.optString("artworkTemplateId").toString().trim());
+        softAssert.assertEquals(artworkTemplateId == 3 , true, "artworkTemplateId validation got failed for device_id : "+device_id);
 
+        /* 
+        * accroding to jira comment code disabled (https://timesgroup.jira.com/browse/GAANA-43501) comment date 4th june
         if(user_type.equalsIgnoreCase(MoodMixTd.expectedUserType[0])){
             if(vplType.equals("TAG")){
                 softAssert.assertEquals(artworkTemplateId == 0, true, "artworkTemplateId validation got failed for device_id : "+device_id);
@@ -133,11 +137,11 @@ public class MadeForYouController {
             }
         }else if(user_type.equalsIgnoreCase(MoodMixTd.expectedUserType[1])){
             if(vplType.equals("ARTIST")){
-                softAssert.assertEquals(artworkTemplateId == 2, true, "artworkTemplateId validation got failed for device_id : "+device_id);
+                softAssert.assertEquals(artworkTemplateId == 3 , true, "artworkTemplateId validation got failed for device_id : "+device_id);
             }else{
                 softAssert.assertEquals(artworkTemplateId == 0, true, "artworkTemplateId validation got failed for device_id : "+device_id);
             }
-        }
+        }*/
 
         String backgroundArtworkUrl = vplMix.optString("backgroundArtworkUrl").toString().trim();
         artwork.add(backgroundArtworkUrl);
