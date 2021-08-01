@@ -73,6 +73,10 @@ public class SearchFeedController {
             tabName = tabSelected.optString("tabName").toString().trim();
         }
 
+        if(tabId.equals("default")){
+            ex_tab_name = SearchFeedTd.tabsName(SearchFeedTd.podcast);
+        }
+
         if (tabId.equals(tab_id) && tabName.equals(ex_tab_name)) {
             return true;
         }
@@ -326,12 +330,13 @@ public class SearchFeedController {
                     case "scoreF":
                         double scoref = Double.parseDouble(value);
                         if(!tab_id.equals("-6")){
-                            if(tab_id.equals("default") || tab_id.equals("-1") || tab_id.equals("-2") || tab_id.equals("100") || tab_id.equals("103") || tab_id.equals("104")){
+                            if(tab_id.equals("default") || tab_id.equals("-1") || tab_id.equals("-2") || tab_id.equals("100") || tab_id.equals("103") || tab_id.equals("104") || tab_id.equals("1389")){
                                 isObValidated = true;
                             }else if(scoref > 0.00){
                                 isObValidated = true;
                                 // log.info(key_name+ " is : "+value);
                             }else{
+                                System.out.println("Tab id : "+tab_id);
                                 isObValidated = false;
                                 log.error(key_name+" can't be null or less than 0, manual check required!");
                                 return isObValidated;
