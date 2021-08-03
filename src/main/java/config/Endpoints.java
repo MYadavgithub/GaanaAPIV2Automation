@@ -2,7 +2,10 @@ package config;
 
 public class Endpoints {
 
-    public static String recoTracks = "/recommendation/recommendedTracks/";
+    public static String RECO_TRACKS = "/recommendation/recommendedTracks/";
+    public static String RECOMMENDED_TRACK_POST = "/recommendation/recommendedTracksPost/";
+    public static String SIMILAR_TRACKS_RECENTY_PLAYED = "/recommendation/SimilarTracksRecentyPlayed/";
+    public static String RECOMMENDED_SONGS = "/recommendation/recommendedSongs/";
     public static String trendingShortTrack = "/recommendation/trendingShortTrack?viewAll=";
     public static String recoTracksPartner = "/recommendation/partnership/";
     public static String vibes = "/recommendation/vibes";
