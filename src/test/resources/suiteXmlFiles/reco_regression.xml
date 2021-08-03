@@ -10,10 +10,34 @@
 		<listener class-name="utils.AllureListener" />
 	</listeners>
 	
-	<test name="Recommended Track List" annotations="JDK" preserve-order="true">
+	<test name="Autoqueue Recommendation" annotations="JDK" preserve-order="true">
 
 		<classes>
-			<class name="recomendation.reco_tracks.RecomendedTracks" />
+			<class name="recomendation.autoqueue.RecommendedSongs" />
+		</classes>
+
+	</test>
+
+	<test name="Autoqueue Recommendation" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracks" />
+		</classes>
+
+	</test>
+
+	<test name="Autoqueue Recommendation" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracksPost" />
+		</classes>
+
+	</test>
+
+	<test name="Autoqueue Recommendation" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.SimilarTracksRecentyPlayed" />
 		</classes>
 
 	</test>

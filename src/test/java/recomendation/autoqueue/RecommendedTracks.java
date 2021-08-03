@@ -38,7 +38,7 @@ public class RecommendedTracks extends BaseUrls{
     Map<Integer, Response> RESPONSES = new HashMap<>();
     AutoQueueController aqController = new AutoQueueController();
     private static Logger log = LoggerFactory.getLogger(RecommendedTracks.class);
-    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-44751";
+    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-44799";
     final static String REPROTING_FEATURE = "Recommended Track Post api response validation.";
 
     @BeforeClass
