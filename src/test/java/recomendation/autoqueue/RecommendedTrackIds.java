@@ -67,7 +67,7 @@ public class RecommendedTrackIds extends BaseUrls{
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = RecomendedTrackTd.T_IDS_INVOCATION)
+    @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Step("Validate response should not be null as well as track ids must be integer format.")
