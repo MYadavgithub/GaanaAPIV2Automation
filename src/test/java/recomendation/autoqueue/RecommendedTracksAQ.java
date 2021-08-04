@@ -1,4 +1,4 @@
-package recomendation.reco_tracks;
+package recomendation.autoqueue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +12,7 @@ import org.testng.asserts.SoftAssert;
 import common.GlobalConfigHandler;
 import common.RequestHandler;
 import config.BaseUrls;
+import config.Endpoints;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
@@ -20,8 +21,8 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import logic_controller.RecoTrackController;
-import test_data.RecomendedTrackTd;
+import logic_controller.AutoQueueTrackController;
+import test_data.AutoQueueTd;
 
 public class RecommendedTracksAQ extends BaseUrls{
     
@@ -32,43 +33,43 @@ public class RecommendedTracksAQ extends BaseUrls{
     Map<Integer, Response> RESPONSES = new HashMap<>();
     RequestHandler request = new RequestHandler();
     GlobalConfigHandler handler = new GlobalConfigHandler();
-    RecoTrackController controller = new RecoTrackController();
-    private static Logger log = LoggerFactory.getLogger(RecomendedTracks.class);
+    AutoQueueTrackController aqTrackController = new AutoQueueTrackController();
+    private static Logger log = LoggerFactory.getLogger(RecommendedTracksAQ.class);
     final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-42284";
     final static String REPROTING_FEATURE = "RecommendedTracksAQ validation.";
 
     @BeforeTest
     public void prepEnv(){
         GlobalConfigHandler.setLocalProps();
-        BASEURL = baseurl();
-        MAX_CALL = RecomendedTrackTd.track_ids.length;
+        baseurl();
+        BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        MAX_CALL = AutoQueueTd.INVOCATION;
     }
 
-    @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = RecomendedTrackTd.T_IDS_INVOCATION)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Story("Need to validate over-all API response Like, Status code,Response Time, Response Body Validation.")
     @Feature(REPROTING_FEATURE)
     @Step("Prepare Urls for all requests which listed in RecomendedTrackTd file, and get response.")
     @Description("Save all the response in runtime memory for further validations.")
-    @Severity(SeverityLevel.NORMAL)
-
+    @Severity(SeverityLevel.BLOCKER)
+    @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
     public void createRecommendedTrackIdsCall(String track_id){
-        String url = controller.prepRecoTracksAqUrl(BASEURL, track_id);
+        String url = BASEURL+Endpoints.RECOMMENDED_TRACKS_AQ+track_id;
         URLS.add(url);
         Response response = request.createGetRequest(url);
         RESPONSES.put(API_CALL, response);
         if(API_CALL == MAX_CALL-1){
             Assert.assertEquals(RESPONSES.size(), MAX_CALL, "Response not captured properly for further validations!");
-            log.info("ALl response captured for further validations.");
+            log.info("All response captured for further validations.");
         }
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = RecomendedTrackTd.T_IDS_INVOCATION)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Step("Validate response should not be null as well as track ids must be integer format.")
     @Severity(SeverityLevel.NORMAL)
+    @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
     public void validateRecommendedTrackResponseData(String track_id){
         SoftAssert softAssert = new SoftAssert();
         String response = RESPONSES.get(API_CALL).asString();
@@ -88,7 +89,7 @@ public class RecommendedTracksAQ extends BaseUrls{
         return new Object[][]
         {
             {
-                RecomendedTrackTd.track_ids[API_CALL]
+                AutoQueueTd.TRACK_IDS[API_CALL]
             }
         };
     }
