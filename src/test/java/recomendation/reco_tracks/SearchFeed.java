@@ -49,7 +49,7 @@ public class SearchFeed extends BaseUrls{
     public void prepareEnv(){
         GlobalConfigHandler.setLocalProps();
         baseurl();
-        BASEURL = prop.getProperty("prec_baseurl").toString().trim();
+        BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
         MAX_CALL = SearchFeedTd.INVOCATION_COUNT;
     }
 

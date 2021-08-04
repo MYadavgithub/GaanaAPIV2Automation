@@ -18,4 +18,8 @@ public class AutoQueueTd {
     
     public static String RTP_REMOVE_FROM_VALUE_VALIDATION [] = {"artist", "track_format", "gener"};
     public static String ARTWORK_TYPES [] = {"atw", "artwork", "artwork_web", "artwork_large"};
+
+    /** SimilarTrackGeneric TD */
+    public static String EX_ENTITY_TYPE = "Track";
+
 }

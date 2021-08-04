@@ -6,6 +6,9 @@ public class Endpoints {
     public static String RECOMMENDED_TRACK_POST = "/recommendation/recommendedTracksPost/";
     public static String SIMILAR_TRACKS_RECENTY_PLAYED = "/recommendation/SimilarTracksRecentyPlayed/";
     public static String RECOMMENDED_SONGS = "/recommendation/recommendedSongs/";
+    public static String SIMILAR_TRACK_GENERIC = "/recommendation/similarTrackGeneric/";
+    public static String RECOMMENDED_TRACK_IDS = "/recommendation/recommendedTrackIds/";
+    public static String RECOMMENDED_TRACKS_AQ = "/recommendation/recommendedTracksAQ/";
     public static String trendingShortTrack = "/recommendation/trendingShortTrack?viewAll=";
     public static String recoTracksPartner = "/recommendation/partnership/";
     public static String vibes = "/recommendation/vibes";
@@ -16,8 +19,6 @@ public class Endpoints {
     public static String similarArtistInfo = "/recommendation/similarArtistEntityInfo/";
     public static String vibesHashTag = "/recommendation/hashtag/vibes?hashtag=";
     public static String podcastForYou = "/for-you/podcasts?deviceId=";
-    public static String recommendedTrackIds = "/recommendation/recommendedTrackIds/";
-    public static String recommendedTracksAq = "/recommendation/recommendedTracksAQ/";
     public static String trendingHashTag = "/hashtag/trendingHashtags";
     public static String similarAlbums = "/recommendation/similarAlbums/";
 
