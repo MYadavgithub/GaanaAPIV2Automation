@@ -2,7 +2,7 @@ package test_data;
 
 public class AutoQueueTd {
     
-    public final static int INVOCATION = 5;
+    public final static int INVOCATION = 3;
     public static String [] TRACK_IDS = {"1540383", "810", "1014", "1535815", "17444240"};
     public static String TD_FILE_NAME = "autoqueue.json";
     public static String [] VALIDATOR_KEYS ={"TRACK_KEY_VAL", "ARTWORKS", "PREMIUM_KEY", "RELEASE_DATE", "LANG_LANG_ID" , "GENER", "ARTIST",

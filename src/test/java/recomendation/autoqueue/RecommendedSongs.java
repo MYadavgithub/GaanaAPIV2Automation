@@ -46,7 +46,7 @@ public class RecommendedSongs extends BaseUrls{
         GlobalConfigHandler.setLocalProps();
         baseurl();
         BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
-        MAX_CALL = AutoQueueTd.TRACK_IDS.length;
+        MAX_CALL = AutoQueueTd.INVOCATION;
     }
 
     @Test(priority = 1, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
