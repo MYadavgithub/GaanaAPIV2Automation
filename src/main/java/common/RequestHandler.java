@@ -1,11 +1,14 @@
 package common;
 import java.util.Map;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import config.Constants;
 import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
 import java.util.concurrent.TimeUnit;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -97,6 +100,32 @@ public class RequestHandler {
             }
         }
         return validateBasics;
+    }
+
+    /**
+     * Post Request with Json Object
+     * @param url
+     * @param post_data
+     * @return
+     */
+    public Response postDataInRequest(String url, JSONObject post_data) {
+        Map<String, String> headers = Headers.getHeaders(0, null);
+        headers.put("Accept", "*/*");
+        headers.put("Connection", "keep-alive");
+        headers.put("Content-Type", "application/json");
+        EncoderConfig encoderconfig = new EncoderConfig();
+        Response response = RestAssured.given()
+            .config(RestAssured.config().encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+            .accept(ContentType.JSON)
+            .headers(headers)
+            .body(post_data.toString())//.log().all()
+            .post(url).then()
+            .extract().response();
+
+        if(validateStatusCodeAndResponseTime(response, url)){
+            return response;
+        }
+        return null;
     }
 
 

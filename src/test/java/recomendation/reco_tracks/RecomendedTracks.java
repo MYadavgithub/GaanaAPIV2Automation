@@ -54,7 +54,7 @@ public class RecomendedTracks extends BaseUrls {
     final static String REPROTING_FEATURE = "Recommended Track autoque response validation.";
 
     public static String prepareUrl(String baseurl, String track_id) {
-        String end_points = Endpoints.recoTracks + track_id;
+        String end_points = Endpoints.RECO_TRACKS + track_id;
         return baseurl + end_points;
     }
 
@@ -571,7 +571,7 @@ public class RecomendedTracks extends BaseUrls {
      */
     private boolean validateTrack(List<Object> keys, JSONObject track) {
         if(!track.isEmpty() && keys.size() > 0) {
-            return helper.validateEachObject(keys, track, RecomendedTrackTd.removeObjectValidationKeys());
+            return helper.validateJSONObjectValueBasedOnKeys(keys, track, RecomendedTrackTd.removeObjectValidationKeys());
         }else{
             log.error("Track List Object can't be null, please manually validate data for : "+ URL);
             Assert.assertEquals(track.isEmpty(), false);

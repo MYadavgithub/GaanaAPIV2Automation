@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import io.qameta.allure.Step;
+import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -40,6 +41,11 @@ public class Helper {
         return obj.getString(key).trim();
     }
 
+
+    public JSONObject responseJSONObject(Response response){
+        return new JSONObject(response.asString());
+    }
+
     /**
      * Compare two list are same or not
      * @param actual_list
@@ -63,55 +69,46 @@ public class Helper {
     }
 
     /**
-     * @param keys -> keyset
-     * @param data -> data to be validated JsonObject.
-     * @param list -> this is the list which have sub arrays so we need to skip those.
+     * @param keys
+     * @param data
+     * @param skipList
+     * @return
      */
-	public boolean validateEachObject(List<Object> keys, JSONObject data, List<String> list) {
+    public boolean validateJSONObjectValueBasedOnKeys(List<Object> keys, JSONObject data, List<String> skiplist){
         boolean isvalid = false;
         ArrayList<String> emptyKeys = new ArrayList<>();
-        if(list == null)
-            list = new ArrayList<>();
+        if(keys == null || data == null){
+            return false;
+        }
 
-        if(keys.size() > 0 && !data.isEmpty()){
-            for(Object key : keys){
-                String key_name = key.toString();
-                if(!list.contains(key_name)){
-                    Object key_value = "";
-                    try{
-                        key_value = data.get(key_name);
-                    }catch(Exception e){
-                        e.printStackTrace();
-                        log.info("Findings from here : "+data.keySet());
-                    }
-                    if(!key_value.toString().equals("null") && key_value.toString().length() != 0){
-                        //log.info("Integer Type : "+ key +" : "+key_value.toString());
-                        if(key_value instanceof String){
-                            if(key_value.toString().length() > 0){
-                                isvalid = true;
-                            }else{
-                                return false;
-                            }
-                        }else if(key_value instanceof Integer){
-                            if(Integer.parseInt(key_value.toString().trim()) >= 0){
-                                isvalid = true;
-                            }else{
-                                return false;
-                            }
-                            // log.info("Integer Type : "+ key +" : "+key_value.toString());
-                        }else if(key_value instanceof Boolean){
-                            // pass
-                            // log.info("Boolean Type : "+ key +" : "+key_value.toString());
-                        }else if(key_value instanceof Double){
-                            // pass
-                            // log.info("Double Type : "+ key +" : "+key_value.toString());
-                        }
+        for(Object _key : keys){
+            String key = _key.toString();
+            Object value = "";
+            if(!skiplist.contains(key)){
+                value = data.get(key);
+            }
+            if(value != null && !value.toString().equals("null") && value.toString().length() != 0){
+                if(value instanceof String){
+                    if(value.toString().length() > 0){
+                        isvalid = true;
                     }else{
-                        emptyKeys.add(key_name);
+                        return false;
                     }
                 }
+                else if(value instanceof Integer){
+                    if(Integer.parseInt(value.toString().trim()) >= 0){
+                        isvalid = true;
+                    }else{
+                        return false;
+                    }
+                }
+            }else if(value.toString().length() == 0 && !skiplist.contains(key)){
+                emptyKeys.add(key);
             }
         }
+        // if(emptyKeys.size() > 0){
+        //     log.info("Value missing for these keys : "+emptyKeys.toString());
+        // }
         return isvalid;
     }
 

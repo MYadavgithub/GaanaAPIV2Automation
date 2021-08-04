@@ -61,7 +61,7 @@ public class RecommendedTrackIds extends BaseUrls{
         RESPONSES.put(API_CALL, response);
         if(API_CALL == MAX_CALL-1){
             Assert.assertEquals(RESPONSES.size(), MAX_CALL, "Response not captured properly for further validations!");
-            log.info("ALl response captured for further validations.");
+            log.info("All response captured for further validations.");
         }
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
