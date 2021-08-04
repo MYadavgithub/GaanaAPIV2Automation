@@ -23,7 +23,6 @@ import org.testng.annotations.Test;
 import common.GlobalConfigHandler;
 import common.RequestHandler;
 import test_data.AutoQueueTd;
-import test_data.RecomendedTrackTd;
 
 public class RecommendedTrackIds extends BaseUrls{
     
