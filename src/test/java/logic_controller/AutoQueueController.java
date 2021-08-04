@@ -169,10 +169,10 @@ public class AutoQueueController {
                 isGenerValid = true;
             }else if(genre_id.length() == 0 && name.length() == 0){
                 isGenerValid = true;
-                log.error("For Url : "+url+ "\n track_id : "+track_id+"\nGener or gener id is not valid: "+!isGenerValid);
+                log.error("For Url : "+url+ "\ntrack_id : "+track_id+"\nGener or gener id is not valid: "+isGenerValid);
             }else{
                 isGenerValid = false;
-                log.error("For Url : "+url+ "\n track_id : "+track_id+"\nGener or gener id is not valid: "+!isGenerValid);
+                log.error("For Url : "+url+ "\ntrack_id : "+track_id+"\nGener or gener id is not valid: "+!isGenerValid);
                 return isGenerValid;
             }
         }

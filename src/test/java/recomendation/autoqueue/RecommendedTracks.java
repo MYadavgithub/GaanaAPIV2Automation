@@ -73,8 +73,8 @@ public class RecommendedTracks extends BaseUrls{
     @Description("Validate in api response like count and status.")
     @Step("Validating validateCountStatusUserToken.")
     @Severity(SeverityLevel.BLOCKER)
-    @Test(priority = 2, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateCountStatusUserToken(){
+    @Test(priority = 2, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateCountStatusUserToken(String track_id){
         boolean isCountStatusUserTokenValid = aqController.validateCountStatusUserToken(URLS.get(API_CALL), RESPONSES.get(API_CALL));
         Assert.assertEquals(isCountStatusUserTokenValid, true, "Error in CountStatusUserTokenValidation for Url : "+URLS.get(API_CALL));
         if(API_CALL == MAX_CALL-1 && isCountStatusUserTokenValid)
@@ -86,8 +86,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("Validate all keys expected in tracks response object.")
     @Severity(SeverityLevel.BLOCKER)
-    @Test(priority = 3, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateTracksKeys(){
+    @Test(priority = 3, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateTracksKeys(String track_id){
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
         boolean isKeysValid = aqController.validateTracksKeys(url, response, AutoQueueTd.EX_TRACKS_KEYS);
@@ -101,8 +101,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("To validate each track expected keys performing this test.")
     @Severity(SeverityLevel.NORMAL)
-    @Test(priority = 4, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateEachTrackKeyValue(){
+    @Test(priority = 4, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateEachTrackKeyValue(String track_id){
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[0];
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
@@ -117,8 +117,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("To validate each track's all type of artworks")
     @Severity(SeverityLevel.NORMAL)
-    @Test(priority = 5, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateEachArtworkForTracks(){
+    @Test(priority = 5, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateEachArtworkForTracks(String track_id){
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[1];
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
@@ -133,8 +133,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("Validate track having premium content or not.")
     @Severity(SeverityLevel.NORMAL)
-    @Test(priority = 6, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateIsPremiumKeyPresent() {
+    @Test(priority = 6, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateIsPremiumKeyPresent(String track_id) {
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[2];
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
@@ -149,8 +149,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("Validate release date should be in form of 10 < track > 10.")
     @Severity(SeverityLevel.NORMAL)
-    @Test(priority = 7, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateTrackReleaseDates(){
+    @Test(priority = 7, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateTrackReleaseDates(String track_id){
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[3];
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
@@ -165,8 +165,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("Validate language and language id should be same in over all response tracks.")
     @Severity(SeverityLevel.BLOCKER)
-    @Test(priority = 8, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateLanguageAndLanguageId(){
+    @Test(priority = 8, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateLanguageAndLanguageId(String track_id){
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[4];
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
@@ -181,8 +181,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("Validate geners should be same in over all response tracks.")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(priority = 9, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateGener(){
+    @Test(priority = 9, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateGener(String track_id){
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[5];
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
@@ -197,8 +197,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("Validate artist data in each tracks.")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(priority = 10, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateEachTrackArtistData() {
+    @Test(priority = 10, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateEachTrackArtistData(String track_id) {
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[6];
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
@@ -213,8 +213,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("Validate stream url for each track.")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(priority = 11, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateEachTrackStreamUrl() {
+    @Test(priority = 11, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateEachTrackStreamUrl(String track_id) {
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[7];
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
@@ -229,8 +229,8 @@ public class RecommendedTracks extends BaseUrls{
     @Feature(REPROTING_FEATURE)
     @Description("Validate track format for each track.")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(priority = 12, invocationCount = AutoQueueTd.INVOCATION)
-    public void validateEachTrackFormat() {
+    @Test(priority = 12, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
+    public void validateEachTrackFormat(String track_id) {
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[8];
         String url = URLS.get(API_CALL);
         Response response = RESPONSES.get(API_CALL);
