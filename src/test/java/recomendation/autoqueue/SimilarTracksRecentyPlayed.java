@@ -1,27 +1,14 @@
 package recomendation.autoqueue;
-import config.BaseUrls;
-import config.Endpoints;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import config.*;
+import java.util.*;
+import org.slf4j.*;
+import common.*;
+import org.testng.Assert;
+import io.qameta.allure.*;
+import org.testng.annotations.*;
 import io.restassured.response.Response;
 import logic_controller.AutoQueueController;
 import test_data.AutoQueueTd;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import common.GlobalConfigHandler;
-import common.RequestHandler;
-import org.testng.Assert;
-import org.testng.annotations.*;
 
 /**
  * @author umesh-shukla
