@@ -29,7 +29,7 @@ public class SimilarAlbumController {
     private static Logger log = LoggerFactory.getLogger(SimilarAlbumController.class);
     
     public String createUrl(String baseurl, int album_id){
-        return baseurl+Endpoints.similarAlbums+album_id;
+        return baseurl+Endpoints.SIMILAR_ALBUMS+album_id;
     }
 
     public boolean validateResponseHavingData(JSONObject response){

@@ -1,5 +1,4 @@
 package logic_controller;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -21,14 +20,6 @@ public class AutoQueueController {
     private String firstGenerDetails [] = null;
     Helper helper = new Helper();
     private static Logger log = LoggerFactory.getLogger(AutoQueueController.class);
-
-    private JSONArray tracksList(String url, Response response){
-        JSONArray tracks = helper.responseJSONObject(response).getJSONArray("tracks");
-        if(tracks == null || tracks.length() <= 0){
-            log.error("Tracks can't be null for url : "+url);
-        }
-        return tracks;
-    }
     
     public boolean validateCountStatusUserToken(String url, Response response) {
         JSONObject response_object = helper.responseJSONObject(response);
@@ -44,7 +35,7 @@ public class AutoQueueController {
     }
 
     public boolean validateTracksKeys(String url, Response response, String[] ex_tracks_key) {
-        JSONArray tracks = tracksList(url, response);
+        JSONArray tracks = helper.getJSONArray(url, "tracks", response);
         if(tracks.length() > 0){
             List<Object> current_keys = helper.keys(tracks.getJSONObject(0));
             boolean isExpectedKeysPresent = helper.compareList(current_keys, Arrays.asList(ex_tracks_key));
@@ -75,6 +66,7 @@ public class AutoQueueController {
         return isTrackValuesValid;
     }
 
+    /**
     private boolean validateEachTrackArtworks(String url, JSONObject track, String[] artwork_types) {
         boolean isArtworkValid = false;
         if(artwork_types.length <= 0){
@@ -94,6 +86,7 @@ public class AutoQueueController {
         artworks.clear();
         return isArtworkValid;
     }
+    */
 
     private boolean validatePremiumKeyPresent(String url, JSONObject track) {
         boolean isPrimiumValidated = false;
@@ -246,7 +239,7 @@ public class AutoQueueController {
         }
 
         int count = 0;
-        JSONArray tracks = tracksList(url, response);
+        JSONArray tracks = helper.getJSONArray(url, "tracks", response);
         Iterator<Object> tracks_itr = tracks.iterator();
         while(tracks_itr.hasNext()){
             JSONObject track = (JSONObject) tracks_itr.next();
@@ -259,7 +252,8 @@ public class AutoQueueController {
                 break;
 
                 case "ARTWORKS":
-                    isValidateTrackDetails = validateEachTrackArtworks(url, track, test_data);
+                    isValidateTrackDetails = helper.validateEachEntityArtworks(url, "track_id", track, test_data);
+                    // isValidateTrackDetails = validateEachTrackArtworks(url, track, test_data);
                     if(!isValidateTrackDetails){
                         return isValidateTrackDetails;
                     }

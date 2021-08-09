@@ -20,7 +20,8 @@ public class Endpoints {
     public static String vibesHashTag = "/recommendation/hashtag/vibes?hashtag=";
     public static String podcastForYou = "/for-you/podcasts?deviceId=";
     public static String trendingHashTag = "/hashtag/trendingHashtags";
-    public static String similarAlbums = "/recommendation/similarAlbums/";
+    public static String SIMILAR_ALBUMS = "/recommendation/similarAlbums/";
+    public static String SIMILAR_ALBUMS_ENTITY_INFO = "/recommendation/similarAlbumsEntityInfo/";
 
     /** Stream Info apis */
     public static String streamInfoEndpoint(String track_ids, String hashkey){

@@ -46,6 +46,14 @@ public class Helper {
         return new JSONObject(response.asString());
     }
 
+    public JSONArray getJSONArray(String url, String array_key, Response response){
+        JSONArray entities = responseJSONObject(response).getJSONArray(array_key);
+        if(entities == null || entities.length() <= 0){
+            log.error(array_key+" can't be null for url : "+url);
+        }
+        return entities;
+    }
+
     /**
      * Compare two list are same or not
      * @param actual_list
@@ -309,4 +317,29 @@ public class Helper {
         }
 		return linkActive;
 	}
+
+    /**
+     * To get verified multiple kind of artwork from same jsonObject
+     * @param url
+     * @param unique_key
+     * @param entity
+     * @param ex_artworks
+     * @return
+     */
+    public boolean validateEachEntityArtworks(String url, String unique_key, JSONObject entity, String [] ex_artworks) {
+        boolean isArtworkValid = false;
+        ArrayList<String> artworks = new ArrayList<>();
+        String unique_id = entity.getString(unique_key.trim().toString());
+        for(int i = 0; i<ex_artworks.length; i++){
+            artworks.add(entity.optString(ex_artworks[i]).toString().trim());
+        }
+        isArtworkValid = validateActiveLinks(artworks);
+        if(!isArtworkValid){
+            log.error("For Url : "+url+ "\n unique_id : "+unique_id+"\nArtworks not validated, artworks are : \n"+artworks);
+            return isArtworkValid;
+        }
+        Assert.assertEquals(isArtworkValid, true);
+        artworks.clear();
+        return isArtworkValid;
+    }
 }

@@ -196,7 +196,7 @@ public class SimilarAlbums extends BaseUrls {
     public Object[][] DataProvider() {
         return new Object[][] { 
             {
-                SimilarAlbumsTd.albumIds[API_CALL]
+                SimilarAlbumsTd.ALBUM_IDS[API_CALL]
             }
         };
     }
