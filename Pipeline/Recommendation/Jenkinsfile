@@ -142,7 +142,7 @@ pipeline {
                     subject: "${emailSub}"+"${dateTime}",
                     /* groovylint-disable-next-line GStringExpressionWithinString */
                     body: '''
-                    ${FILE, path = "Recommendation_Regression/Reports/EmailerReport.html"}<br><br>
+                    ${FILE, path = "/data/jenkins/workspace/Recommendation_Regression/Reports/EmailerReport.html"}<br><br>
                     <b><i>To see detailed information either click and login with help of provided url & credential : <br>
                     ${BUILD_URL}allure/<br>
                     User Name : report<br>
