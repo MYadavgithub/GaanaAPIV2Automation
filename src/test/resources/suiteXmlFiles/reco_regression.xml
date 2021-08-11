@@ -8,6 +8,7 @@
 		<listener class-name="utils.EmailableReportListener" />
 		<listener class-name="utils.RetryTransformListener" />
 		<listener class-name="utils.AllureListener" />
+		<listener class-name="utils.SuiteListener" />
 	</listeners>
 	
 	<test name="Autoqueue RecommendationSongs" annotations="JDK" preserve-order="true">

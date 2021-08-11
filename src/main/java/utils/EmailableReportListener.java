@@ -1,35 +1,16 @@
 package utils;
-import common.FileActions;
-import common.GlobalConfigHandler;
+import common.*;
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import org.slf4j.*;
+import org.testng.*;
 import config.Constants;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.IReporter;
-import org.testng.ISuite;
-import org.testng.ISuiteResult;
-import org.testng.ITestContext;
-import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.collections.Lists;
 import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
+import java.util.concurrent.TimeUnit;
 
 public class EmailableReportListener implements IReporter {
     private String report_title = "GGL NOIDA";
@@ -162,7 +143,7 @@ public class EmailableReportListener implements IReporter {
         int testIndex = 0;
         for(SuiteResult suiteResult : suiteResults) {
             writer.print("<tr><th colspan=\"9\" style=\"border: 1px solid #dee2e6;\">");
-            writer.println("<center><h5><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) +"<I><b></h6></center>");
+            writer.println("<center><h5><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) + " for "+CommonUtils.generateRandomDeviceId()+" device"+"<I><b></h6></center>");
             writer.println("</th></tr>");
 
             for (TestResult testResult : suiteResult.getTestResults()) {
