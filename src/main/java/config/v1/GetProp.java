@@ -1,8 +1,12 @@
-package config.v2;
+package config.v1;
 import java.util.Properties;
 import common.*;
 import config.Constants;
 
+/**
+ * @author umesh-shukla
+ * @version v1
+ */
 public class GetProp {
 
     public Properties prop;

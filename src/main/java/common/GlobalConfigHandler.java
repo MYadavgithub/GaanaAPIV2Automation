@@ -2,7 +2,8 @@ package common;
 import java.util.*;
 import java.util.Map.Entry;
 import config.Constants;
-import config.v2.GetProp;
+import config.v1.GetProp;
+
 import java.text.SimpleDateFormat;
 
 public class GlobalConfigHandler {

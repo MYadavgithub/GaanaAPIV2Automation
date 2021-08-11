@@ -6,15 +6,15 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import common.GlobalConfigHandler;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
 import utils.CommonUtils;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.ArtistController;
 import test_data.ArtistTd;
-import config.v2.RequestHandlerV1;
-import config.v2.RequestHelper;
-import config.v2.RequestHelper.ApiRequestTypes;
-import config.v2.RequestHelper.ContentTypes;
 
 public class SimilarArtistEntityInfo {
 

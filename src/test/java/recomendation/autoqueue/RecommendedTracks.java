@@ -1,5 +1,9 @@
 package recomendation.autoqueue;
 import config.Endpoints;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.AutoQueueController;
@@ -9,10 +13,6 @@ import org.slf4j.*;
 import org.testng.annotations.*;
 import common.GlobalConfigHandler;
 import org.testng.Assert;
-import config.v2.RequestHandlerV1;
-import config.v2.RequestHelper;
-import config.v2.RequestHelper.ApiRequestTypes;
-import config.v2.RequestHelper.ContentTypes;
 
 /**
  * @author umesh-shukla

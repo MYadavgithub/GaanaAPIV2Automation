@@ -1,5 +1,10 @@
 package recomendation.autoqueue;
 import config.*;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
+
 import java.util.*;
 import org.slf4j.*;
 import common.*;
@@ -9,10 +14,6 @@ import org.testng.annotations.*;
 import io.restassured.response.Response;
 import logic_controller.AutoQueueController;
 import test_data.AutoQueueTd;
-import config.v2.RequestHandlerV1;
-import config.v2.RequestHelper;
-import config.v2.RequestHelper.ApiRequestTypes;
-import config.v2.RequestHelper.ContentTypes;
 
 /**
  * @author umesh-shukla

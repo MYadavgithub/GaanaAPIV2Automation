@@ -1,10 +1,10 @@
-package config.v2;
+package config.v1;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.*;
 import config.Constants;
-import config.v2.RequestHelper.ApiRequestTypes;
-import config.v2.RequestHelper.ContentTypes;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;

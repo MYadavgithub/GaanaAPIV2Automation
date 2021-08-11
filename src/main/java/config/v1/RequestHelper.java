@@ -1,4 +1,4 @@
-package config.v2;
+package config.v1;
 import java.util.HashMap;
 import java.util.Map;
 import common.GlobalConfigHandler;
