@@ -18,7 +18,8 @@ public class GetProp {
     public static String deviceId;
     public static String country;
     public static String xForwardedFor;
-    public static String getPodcastAppVersion;
+    public static String PodcastAppVersion;
+    public static String iosPodcastAppVersion;
     public static String gaanaAppVersionAndroid;
     public static String deviceTypeAndroid;
     public static String appVersion;
@@ -135,6 +136,10 @@ public class GetProp {
 
     public String getPodcastAppVersion() {
         return prop.getProperty("podcast_app_version").toString().trim();
+    }
+
+    public String getIosPodcastAppVersion() {
+        return prop.getProperty("ios_podcast_app_version").toString().trim();
     }
 
     public String getGaanaAppVersionAndroid() {

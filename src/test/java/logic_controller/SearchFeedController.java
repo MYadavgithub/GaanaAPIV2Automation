@@ -1,14 +1,10 @@
 package logic_controller;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
+import org.json.*;
+import org.slf4j.*;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
-import common.Helper;
+import common.*;
 import config.Endpoints;
 import io.qameta.allure.Step;
 import test_data.SearchFeedTd;
@@ -73,8 +69,10 @@ public class SearchFeedController {
             tabName = tabSelected.optString("tabName").toString().trim();
         }
 
-        if(tabId.equals("default")){
-            ex_tab_name = SearchFeedTd.tabsName(SearchFeedTd.podcast);
+        if(GlobalConfigHandler.getDeviceType() == 0){
+            if(tabId.equals("default")){
+                ex_tab_name = SearchFeedTd.tabsName(SearchFeedTd.podcast);
+            }
         }
 
         if (tabId.equals(tab_id) && tabName.equals(ex_tab_name)) {
