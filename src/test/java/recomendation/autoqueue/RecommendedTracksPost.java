@@ -1,41 +1,31 @@
 package recomendation.autoqueue;
-import config.BaseUrls;
 import config.Endpoints;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.AutoQueueController;
 import test_data.AutoQueueTd;
 import utils.JosnReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import common.GlobalConfigHandler;
-import common.RequestHandler;
-import org.testng.Assert;
+import org.slf4j.*;
 import org.testng.annotations.*;
+import common.GlobalConfigHandler;
+import org.testng.Assert;
+import config.v2.RequestHandlerV1;
+import config.v2.RequestHelper;
+import config.v2.RequestHelper.ApiRequestTypes;
+import config.v2.RequestHelper.ContentTypes;
 
 /**
  * @author umesh-shukla
  */
 
-public class RecommendedTracksPost extends BaseUrls{
+public class RecommendedTracksPost {
 
     int API_CALL = 0;
     int MAX_CALL = 0;
     String BASEURL = "";
     GlobalConfigHandler handler = new GlobalConfigHandler();
-    RequestHandler request = new RequestHandler();
     ArrayList<String> URLS = new ArrayList<>();
     Map<Integer, Response> RESPONSES = new HashMap<>();
     AutoQueueController aqController = new AutoQueueController();
@@ -45,9 +35,10 @@ public class RecommendedTracksPost extends BaseUrls{
 
     @BeforeClass
     public void prepareEnv(){
-        GlobalConfigHandler.setLocalProps();
-        baseurl();
-        BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        // GlobalConfigHandler.setLocalProps();
+        // baseurl();
+        // BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        BASEURL = GlobalConfigHandler.baseurl();
         MAX_CALL = AutoQueueTd.INVOCATION;
     }
 
@@ -62,7 +53,11 @@ public class RecommendedTracksPost extends BaseUrls{
         String url = BASEURL+Endpoints.RECOMMENDED_TRACK_POST+track_id;
         URLS.add(url);
         JSONObject post_data = JosnReader.ReadJSONFile(AutoQueueTd.TD_FILE_NAME);
-        Response response = request.postDataInRequest(url, post_data);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.POST;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, post_data.toString());
+        // Response response = request.postDataInRequest(url, post_data);
         RESPONSES.put(API_CALL, response);
         if(API_CALL == MAX_CALL-1){
             Assert.assertEquals(RESPONSES.size(), MAX_CALL, "Response not captured properly for further validations!");

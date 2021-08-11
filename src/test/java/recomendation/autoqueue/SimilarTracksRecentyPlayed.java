@@ -9,12 +9,16 @@ import org.testng.annotations.*;
 import io.restassured.response.Response;
 import logic_controller.AutoQueueController;
 import test_data.AutoQueueTd;
+import config.v2.RequestHandlerV1;
+import config.v2.RequestHelper;
+import config.v2.RequestHelper.ApiRequestTypes;
+import config.v2.RequestHelper.ContentTypes;
 
 /**
  * @author umesh-shukla
  */
 
-public class SimilarTracksRecentyPlayed extends BaseUrls{
+public class SimilarTracksRecentyPlayed {
 
     int API_CALL = 0;
     int MAX_CALL = 0;
@@ -30,9 +34,10 @@ public class SimilarTracksRecentyPlayed extends BaseUrls{
 
     @BeforeClass
     public void prepareEnv(){
-        GlobalConfigHandler.setLocalProps();
-        baseurl();
-        BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        // GlobalConfigHandler.setLocalProps();
+        // baseurl();
+        // BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        BASEURL = GlobalConfigHandler.baseurl();
         MAX_CALL = AutoQueueTd.INVOCATION;
     }
 
@@ -46,7 +51,11 @@ public class SimilarTracksRecentyPlayed extends BaseUrls{
     public void createRecoTrackReq(String track_id){
         String url = BASEURL+Endpoints.SIMILAR_TRACKS_RECENTY_PLAYED+track_id;
         URLS.add(url);
-        Response response = request.createGetRequest(url);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
+        // Response response = request.createGetRequest(url);
         RESPONSES.put(API_CALL, response);
         if(API_CALL == MAX_CALL-1){
             Assert.assertEquals(RESPONSES.size(), MAX_CALL, "Response not captured properly for further validations!");

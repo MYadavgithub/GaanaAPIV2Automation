@@ -1,29 +1,20 @@
 package recomendation.album;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import common.GlobalConfigHandler;
-import common.RequestHandler;
-import config.BaseUrls;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import config.v2.RequestHandlerV1;
+import config.v2.RequestHelper.ApiRequestTypes;
+import config.v2.RequestHelper.ContentTypes;
+import config.v2.*;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.SimilarAlbumController;
 import test_data.SimilarAlbumsTd;
 
-public class SimilarAlbums extends BaseUrls {
+public class SimilarAlbums {
     
     int API_CALL = 0;
     int MAX_CALL = 0;
@@ -31,7 +22,6 @@ public class SimilarAlbums extends BaseUrls {
     boolean IS_DATA_PRESENT = false;
     ArrayList<String> URLS = new ArrayList<>();
     Map<Integer, Response> RESPONSES = new HashMap<>();
-    RequestHandler request = new RequestHandler();
     GlobalConfigHandler handler = new GlobalConfigHandler();
     SimilarAlbumController controller = new SimilarAlbumController();
     private static Logger log = LoggerFactory.getLogger(SimilarAlbums.class);
@@ -40,9 +30,10 @@ public class SimilarAlbums extends BaseUrls {
 
     @BeforeClass
     public void prepareEnv(){
-        GlobalConfigHandler.setLocalProps();
-        baseurl();
-        BASEURL = prop.getProperty("reco_baseurl").toString().trim();
+        // GlobalConfigHandler.setLocalProps();
+        // baseurl();
+        // BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        BASEURL = GlobalConfigHandler.baseurl();
         MAX_CALL = SimilarAlbumsTd.SA_INVOCATION;
     }
 
@@ -55,15 +46,17 @@ public class SimilarAlbums extends BaseUrls {
     @Severity(SeverityLevel.NORMAL)
     public void createSimilarAlbumCall(int album_id) {
         String url = controller.createUrl(BASEURL, album_id);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
         URLS.add(url);
-        Response response = request.createGetRequest(url);
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
         RESPONSES.put(API_CALL, response);
 
-        if(API_CALL == (MAX_CALL)){
+        if(API_CALL == MAX_CALL){
             Assert.assertEquals(RESPONSES.size() == URLS.size(), "Error! responses not saved.");
-            log.info("All responses captured successfully for further validations.");
+            log.info("SimilarAlbums : All responses captured successfully for further validations : "+(RESPONSES.size() == URLS.size()));
         }
-
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
@@ -77,6 +70,8 @@ public class SimilarAlbums extends BaseUrls {
         boolean isDataPresent = controller.validateResponseHavingData(response);
         Assert.assertTrue(isDataPresent, "No data available in api response for album_id : "+album_id);
         IS_DATA_PRESENT = isDataPresent;
+        if(API_CALL == MAX_CALL-1)
+            log.info("SimilarAlbums : Response having required content validated successfully : "+IS_DATA_PRESENT);
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
@@ -90,6 +85,8 @@ public class SimilarAlbums extends BaseUrls {
             JSONObject response = new JSONObject(RESPONSES.get(API_CALL).asString());
             boolean isBasicsValidated = controller.validateBasics(response);
             Assert.assertTrue(isBasicsValidated, "Common details validatations failed for album_id : "+album_id);
+            if(API_CALL == MAX_CALL-1)
+                log.info("SimilarAlbums : common details like album_id, seokey, title, language, favorite_count and status validated successfully : "+isBasicsValidated);
             API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
         }
     }
@@ -104,6 +101,8 @@ public class SimilarAlbums extends BaseUrls {
             JSONObject response = new JSONObject(RESPONSES.get(API_CALL).asString());
             boolean isTrackCountCorrect = controller.validatetrackIds(response);
             Assert.assertTrue(isTrackCountCorrect, "Tracks count not matched with track ids for album_id : "+album_id);
+            if(API_CALL == MAX_CALL-1)
+                log.info("SimilarAlbums : track count value matched with trackids successfully : "+isTrackCountCorrect);
             API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
         }
     }
@@ -118,6 +117,8 @@ public class SimilarAlbums extends BaseUrls {
             JSONObject response = new JSONObject(RESPONSES.get(API_CALL).asString());
             boolean isArtworksValid = controller.validateArtworks(response);
             Assert.assertTrue(isArtworksValid, "Artworks not validated for album_id : "+album_id);
+            if(API_CALL == MAX_CALL-1)
+                log.info("SimilarAlbums : Artworks validated successfully : "+isArtworksValid);
             API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
         }
     }
@@ -132,6 +133,8 @@ public class SimilarAlbums extends BaseUrls {
             JSONObject response = new JSONObject(RESPONSES.get(API_CALL).asString());
             boolean isCustomArtworkValid = controller.validateCustomArtworks(response);
             Assert.assertTrue(isCustomArtworkValid, "Custom artworks not validated for album_id : "+album_id);
+            if(API_CALL == MAX_CALL-1)
+                log.info("SimilarAlbums : Custom artworks validated successfully : "+isCustomArtworkValid);
             API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
         }
     }
@@ -146,6 +149,8 @@ public class SimilarAlbums extends BaseUrls {
             JSONObject response = new JSONObject(RESPONSES.get(API_CALL).asString());
             boolean isPrimaryArtistValid = controller.validatePrimaryArtist(response);
             Assert.assertTrue(isPrimaryArtistValid, "Primary Artist not validated for album_id : "+album_id);
+            if(API_CALL == MAX_CALL-1)
+                log.info("SimilarAlbums : Primary Artist validated successfully : "+isPrimaryArtistValid);
             API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
         }
     }
@@ -160,6 +165,8 @@ public class SimilarAlbums extends BaseUrls {
             JSONObject response = new JSONObject(RESPONSES.get(API_CALL).asString());
             boolean isArtistValid = controller.validateArtist(response);
             Assert.assertTrue(isArtistValid, "Artist not validated for album_id : "+album_id);
+            if(API_CALL == MAX_CALL-1)
+                log.info("SimilarAlbums : Artist validated successfully : "+isArtistValid);
             API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
         }
     }
@@ -174,6 +181,8 @@ public class SimilarAlbums extends BaseUrls {
             JSONObject response = new JSONObject(RESPONSES.get(API_CALL).asString());
             boolean isGenerValid = controller.validateGener(response);
             Assert.assertTrue(isGenerValid, "Gener not validated for album_id : "+album_id);
+            if(API_CALL == MAX_CALL-1)
+                log.info("SimilarAlbums : Gener validated successfully : "+isGenerValid);
             API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
         }
     }
@@ -188,6 +197,8 @@ public class SimilarAlbums extends BaseUrls {
             JSONObject response = new JSONObject(RESPONSES.get(API_CALL).asString());
             boolean isReleaseYearAndPremiumContentValid = controller.validateReleaseYearAndPremiumContent(response);
             Assert.assertTrue(isReleaseYearAndPremiumContentValid, "Release Year And Premium Content not validated for album_id : "+album_id);
+            if(API_CALL == MAX_CALL-1)
+                log.info("SimilarAlbums : Release Year And Premium Content validated successfully : "+isReleaseYearAndPremiumContentValid);
             API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
         }
     }

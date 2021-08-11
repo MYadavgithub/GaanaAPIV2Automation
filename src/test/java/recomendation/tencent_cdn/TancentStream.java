@@ -107,7 +107,7 @@ public class TancentStream extends BaseUrls {
         if(decryption_type.equals(DECRYPTION_TYPE)){
             isDecryptedUrlValidated = helper.validateActiveLinks(decryptedUrls);
         }else{
-            isDecryptedUrlValidated = RequestHandler.validateGetUrlStatusCode(decryptedUrls);
+            isDecryptedUrlValidated = Helper.validateGetUrlStatusCode(decryptedUrls);
         }
         Assert.assertEquals(isDecryptedUrlValidated, true, "Some links are not working in tencent url!");
     }

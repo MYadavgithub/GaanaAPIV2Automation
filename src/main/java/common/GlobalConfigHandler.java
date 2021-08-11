@@ -1,10 +1,8 @@
 package common;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.Map.Entry;
 import config.Constants;
+import config.v2.GetProp;
 import java.text.SimpleDateFormat;
 
 public class GlobalConfigHandler {
@@ -16,6 +14,18 @@ public class GlobalConfigHandler {
         // System.setProperty("env", "prod");
         // System.setProperty("type", "Reco");
         // System.setProperty("device_type", "android");
+    }
+
+    /**
+     * V1 global config handler and baseurl provider
+     * @param prop
+     * @return
+     */
+
+    public static String baseurl(){
+        setLocalProps();
+        GetProp prop = new GetProp();
+        return prop.baseurl();
     }
 
     /**

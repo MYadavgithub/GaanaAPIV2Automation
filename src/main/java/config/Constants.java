@@ -18,6 +18,7 @@ public class Constants{
 
     /**Api Type */
     public static String API_TYPE_SEARCH = "Search";
+    public static String API_TYPE_LIVE_SEARCH = "Search_Live"; // only to get live base url
     public static String API_TYPE_RECO = "Reco";
 
     /** Env Type */

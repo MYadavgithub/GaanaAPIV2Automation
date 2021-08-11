@@ -5,19 +5,22 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import common.*;
 import config.*;
+import config.v2.RequestHandlerV1;
+import config.v2.RequestHelper;
+import config.v2.RequestHelper.ApiRequestTypes;
+import config.v2.RequestHelper.ContentTypes;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.SAEntityInfoController;
 import test_data.SimilarAlbumsTd;
 
-public class SimilarAlbumsEntityInfo extends BaseUrls{
+public class SimilarAlbumsEntityInfo {
     
     int API_CALL = 0;
     int MAX_CALL = 0;
     String BASEURL = "";
     ArrayList<String> URLS = new ArrayList<>();
     Map<Integer, Response> RESPONSES = new HashMap<>();
-    RequestHandler request = new RequestHandler();
     GlobalConfigHandler handler = new GlobalConfigHandler();
     SAEntityInfoController saController = new SAEntityInfoController();
     private static Logger log = LoggerFactory.getLogger(SimilarAlbumsEntityInfo.class);
@@ -26,9 +29,10 @@ public class SimilarAlbumsEntityInfo extends BaseUrls{
 
     @BeforeClass
     public void prepEnv(){
-        GlobalConfigHandler.setLocalProps();
-        baseurl();
-        BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        // GlobalConfigHandler.setLocalProps();
+        // baseurl();
+        // BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        BASEURL = GlobalConfigHandler.baseurl();
         MAX_CALL = SimilarAlbumsTd.SAEI_INVOCATION;
     }
 
@@ -41,9 +45,11 @@ public class SimilarAlbumsEntityInfo extends BaseUrls{
     @Severity(SeverityLevel.NORMAL)
     public void createSimilarAlbumEntityReq(int album_id){
         String url = BASEURL+Endpoints.SIMILAR_ALBUMS_ENTITY_INFO+album_id;
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
         URLS.add(url);
-        Response response = request.createGetRequest(url);
-        System.out.println(response.asString());
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
         RESPONSES.put(API_CALL, response);
         if(API_CALL == MAX_CALL-1)
             log.info("SimilarAlbumsEntityInfo api response captured successfully for further validations.");
