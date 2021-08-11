@@ -2,6 +2,7 @@ package common;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Map.Entry;
 import config.Constants;
 import java.text.SimpleDateFormat;
@@ -15,6 +16,25 @@ public class GlobalConfigHandler {
         // System.setProperty("env", "prod");
         // System.setProperty("type", "Reco");
         // System.setProperty("device_type", "android");
+    }
+
+    /**
+     * Get Reco Url
+     * @param prop
+     * @return
+     */
+    public static String getRecoExecUrl(Properties prop) {
+        String baseurl = "";
+        if(prop != null){
+            if(Constants.RECO_BASEURL == 0){
+                baseurl = prop.getProperty("reco_baseurl").toString().trim();
+            }else if(Constants.RECO_BASEURL == 1){
+                baseurl = prop.getProperty("prec_baseurl").toString().trim();
+            }else if(Constants.RECO_BASEURL == 2){
+                baseurl = prop.getProperty("svd_rec_baseurl").toString().trim();
+            }
+        }
+        return baseurl;
     }
 
     /**

@@ -7,14 +7,48 @@
 		<listener class-name="utils.ExtentManagerListener" />
 		<listener class-name="utils.EmailableReportListener" />
 		<listener class-name="utils.RetryTransformListener" />
+		<listener class-name="utils.AllureListener" />
     </listeners>
 
-	<test name="GGM Recomended Track List Api Test" annotations="JDK" preserve-order="true">
+	<!-- <test name="GGM Recomended Track List Api Test" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.reco_tracks.RecomendedTracks" />
 		</classes>
 
+	</test> -->
+
+	<test name="Autoqueue RecommendationSongs" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedSongs" />
+		</classes>
+
 	</test>
+
+	<test name="Autoqueue RecommendationTracks" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracks" />
+		</classes>
+
+	</test>
+
+	<test name="Autoqueue RecommendationTracksPost" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracksPost" />
+		</classes>
+
+	</test>
+
+	<test name="Autoqueue SimilarTracksRecentyPlayed" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.SimilarTracksRecentyPlayed" />
+		</classes>
+
+	</test>
+
 
 </suite>

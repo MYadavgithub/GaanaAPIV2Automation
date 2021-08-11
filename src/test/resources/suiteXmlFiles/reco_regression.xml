@@ -10,10 +10,58 @@
 		<listener class-name="utils.AllureListener" />
 	</listeners>
 	
-	<test name="Recommended Track List" annotations="JDK" preserve-order="true">
+	<test name="Autoqueue RecommendationSongs" annotations="JDK" preserve-order="true">
 
 		<classes>
-			<class name="recomendation.reco_tracks.RecomendedTracks" />
+			<class name="recomendation.autoqueue.RecommendedSongs" />
+		</classes>
+
+	</test>
+
+	<test name="Autoqueue RecommendationTracks" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracks" />
+		</classes>
+
+	</test>
+
+	<test name="Autoqueue RecommendationTracksPost" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracksPost" />
+		</classes>
+
+	</test>
+
+	<test name="Autoqueue SimilarTracksRecentyPlayed" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.SimilarTracksRecentyPlayed" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended RecommendedTrackIds" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTrackIds" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended SimilarTrackGeneric" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.SimilarTrackGeneric" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended RecommendedTracksAQ" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracksAQ" />
 		</classes>
 
 	</test>
@@ -94,6 +142,14 @@
 
 	</test>
 
+	<test name="Recommended SimilarAlbumsEntityInfo" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.album.SimilarAlbumsEntityInfo" />
+		</classes>
+
+	</test>
+
 	<test name="Recommended SimilarArtistEntityInfo" annotations="JDK" preserve-order="true">
 
 		<classes>
@@ -114,22 +170,6 @@
 
 		<classes>
 			<class name="recomendation.podcast.PodcatForYou" />
-		</classes>
-
-	</test>
-
-	<test name="Recommended RecommendedTrackIds" annotations="JDK" preserve-order="true">
-
-		<classes>
-			<class name="recomendation.reco_tracks.RecommendedTrackIds" />
-		</classes>
-
-	</test>
-
-	<test name="Recommended RecommendedTracksAQ" annotations="JDK" preserve-order="true">
-
-		<classes>
-			<class name="recomendation.reco_tracks.RecommendedTracksAQ" />
 		</classes>
 
 	</test>

@@ -3,6 +3,7 @@ package config;
 public class Constants{
 
     /**Commonly Used Constants */
+    public static int RECO_BASEURL = 0; /** 0 = rec.gaana.com, 1 = prec.gaana.com, 2 = https://svd-rec-prod.gaana.com */
     public static int RESPONSE_TIME = 2;
     public static String CUSTOM_REPORT_FOLDER = "/Reports";
 

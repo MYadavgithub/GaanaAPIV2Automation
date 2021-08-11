@@ -49,7 +49,7 @@ public class SearchFeed extends BaseUrls{
     public void prepareEnv(){
         GlobalConfigHandler.setLocalProps();
         baseurl();
-        BASEURL = prop.getProperty("prec_baseurl").toString().trim();
+        BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
         MAX_CALL = SearchFeedTd.INVOCATION_COUNT;
     }
 
@@ -87,11 +87,11 @@ public class SearchFeed extends BaseUrls{
         if(!response.asString().equals("null")){
             JSONObject res_object = new JSONObject(response.asString());
             JSONArray tabs = res_object.getJSONArray("tabs");
-            if(tabs != null && tabs.length() == (SearchFeedTd.tabs.length-1)){
+            if(tabs != null && tabs.length() == (SearchFeedTd.tabs.length-3)){
                 boolean result = controller.validateExTabs(tabs);
                 Assert.assertEquals(result, true, "for api \n"+URLS.get(API_CALL)+"\nexpected tabs not validated.");
             }else{
-                log.error("Tabs never acceptable as null value!");
+                log.error("Tabs never acceptable as null value : Tab Name "+tab_name);
                 softAssert.assertEquals(tabs != null, true);
             }
         }else{
@@ -228,12 +228,14 @@ public class SearchFeed extends BaseUrls{
             JSONObject res_object = new JSONObject(response.asString());
             JSONArray response_array = res_object.getJSONArray("response");
             if(response_array.length() > 0){
+                if(tab_id.equals("default")){
+                    tab_name = SearchFeedTd.tabsName(SearchFeedTd.podcast);
+                }
                 controller.validateSubTitle(tab_name, response_array);
             }else{
                 log.error("Response array can't be null or empty");
                 Assert.assertEquals(response_array.length() > 0, true);
             }
-
         }
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }

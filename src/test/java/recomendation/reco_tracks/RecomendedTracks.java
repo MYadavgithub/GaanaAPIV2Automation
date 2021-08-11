@@ -54,7 +54,7 @@ public class RecomendedTracks extends BaseUrls {
     final static String REPROTING_FEATURE = "Recommended Track autoque response validation.";
 
     public static String prepareUrl(String baseurl, String track_id) {
-        String end_points = Endpoints.recoTracks + track_id;
+        String end_points = Endpoints.RECO_TRACKS + track_id;
         return baseurl + end_points;
     }
 
@@ -336,20 +336,25 @@ public class RecomendedTracks extends BaseUrls {
                 Iterator<Object> itr = genre.iterator();
                 while(itr.hasNext()){
                     JSONObject object = (JSONObject) itr.next();
-                    String gener_name = object.getString("name").toString().trim();
-                    int gener_id = Integer.parseInt(object.getString("genre_id").toString().trim());
-                    if(i == 0){
-                        first_gener_id = gener_id;
-                        first_gener_name = gener_name;
-                    }
+                    String gener_name = object.optString("name").toString().trim();
+                    String _gener_id = object.optString("genre_id").toString().trim();
+                    if(_gener_id.length() > 0){
+                        int gener_id = Integer.parseInt(_gener_id);
+                        if(i == 0){
+                            first_gener_id = gener_id;
+                            first_gener_name = gener_name;
+                        }
 
-                    if(gener_name.equals(first_gener_name) && gener_id == first_gener_id){
-                        isObjectValidated = true;
+                        if(gener_name.equals(first_gener_name) && gener_id == first_gener_id){
+                            isObjectValidated = true;
+                        }else{
+                            isObjectValidated = false;
+                            log.error("For api : \n"+url_list.get(api_hit_count)+" \nObject data was : \n"+track_list.getJSONObject(i)
+                                +"\nGener name or id not matched with expected data.");
+                            break;
+                        }
                     }else{
-                        isObjectValidated = false;
-                        log.error("For api : \n"+url_list.get(api_hit_count)+" \nObject data was : \n"+track_list.getJSONObject(i)
-                            +"\nGener name or id not matched with expected data.");
-                        break;
+                        isObjectValidated = true;
                     }
                 }
 
@@ -566,7 +571,7 @@ public class RecomendedTracks extends BaseUrls {
      */
     private boolean validateTrack(List<Object> keys, JSONObject track) {
         if(!track.isEmpty() && keys.size() > 0) {
-            return helper.validateEachObject(keys, track, RecomendedTrackTd.removeObjectValidationKeys());
+            return helper.validateJSONObjectValueBasedOnKeys(keys, track, RecomendedTrackTd.removeObjectValidationKeys());
         }else{
             log.error("Track List Object can't be null, please manually validate data for : "+ URL);
             Assert.assertEquals(track.isEmpty(), false);
