@@ -126,6 +126,10 @@ public class GetProp {
         return prop.getProperty("deviceId").toString().trim();
     }
 
+    public void setDeviceId(String deviceId) {
+        GetProp.deviceId = deviceId;
+    }
+
     public String getCountry() {
         return prop.getProperty("COUNTRY").toString().trim();
     }

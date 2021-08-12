@@ -24,7 +24,6 @@ public class SimilarTracksRecentyPlayed {
     int MAX_CALL = 0;
     String BASEURL = "";
     GlobalConfigHandler handler = new GlobalConfigHandler();
-    RequestHandler request = new RequestHandler();
     ArrayList<String> URLS = new ArrayList<>();
     Map<Integer, Response> RESPONSES = new HashMap<>();
     AutoQueueController aqController = new AutoQueueController();

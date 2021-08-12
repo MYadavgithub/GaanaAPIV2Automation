@@ -1,41 +1,27 @@
 package recomendation.reco_tracks;
 import common.Helper;
-import common.RequestHandler;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import config.BaseUrls;
-import config.Constants;
-import config.Endpoints;
-import utils.CommonUtils;
-import utils.CsvReader;
-import utils.WriteCsv;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
+import config.*;
+import config.v1.GetProp;
+import utils.*;
+import org.json.*;
+import org.slf4j.*;
 import org.testng.Assert;
 import common.FileActions;
 import db_queries.RecommendedTrack;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import common.GlobalConfigHandler;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import test_data.RecomendedTrackTd;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RecomendedTracks extends BaseUrls {
+public class RecomendedTracks {
 
     String URL = "";
     int loop_count = 0;
@@ -47,7 +33,6 @@ public class RecomendedTracks extends BaseUrls {
     Helper helper = new Helper();
     WriteCsv wcsv = new WriteCsv();
     CommonUtils util = new CommonUtils();
-    RequestHandler req = new RequestHandler();
     SoftAssert softAssert = new SoftAssert();
     Map<Integer, JSONObject> responses = new HashMap<>();
     private static Logger log = LoggerFactory.getLogger(RecomendedTracks.class);
@@ -68,8 +53,9 @@ public class RecomendedTracks extends BaseUrls {
     public void generateAllRecoUrls() {
         GlobalConfigHandler.setLocalProps();
         url_list = new ArrayList<>();
-        String baseurl = BaseUrls.baseurl();
-        String input_file = System.getProperty("user.dir") + "/src/test/resources/data/"+ prop.getProperty("tracks_td");
+        String baseurl = GlobalConfigHandler.baseurl();
+        GetProp prop = new GetProp();
+        String input_file = System.getProperty("user.dir") + "/src/test/resources/data/"+ prop.getTracks_td();
         ArrayList<String> input_values = CsvReader.readCsv(input_file);
 
         for (String val : input_values) {
@@ -101,7 +87,11 @@ public class RecomendedTracks extends BaseUrls {
     @Step("If one or more than one keyword then put all value till last call in map, after that dump into csv file.")
     @Severity(SeverityLevel.BLOCKER)
     public void callRecoTrack(String url) {
-        Response response = req.createGetRequest(url);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
+        // Response response = req.createGetRequest(url);
         if (response != null) {
             JSONObject response_object = new JSONObject(response.asString());
             responses.put(api_hit_count, response_object);

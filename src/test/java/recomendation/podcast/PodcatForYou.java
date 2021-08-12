@@ -1,5 +1,4 @@
 package recomendation.podcast;
-import config.BaseUrls;
 import config.v1.RequestHandlerV1;
 import config.v1.RequestHelper;
 import config.v1.RequestHelper.ApiRequestTypes;
@@ -19,14 +18,13 @@ import common.*;
 /**
  * @author Umesh Shukla
  */
-public class PodcatForYou extends BaseUrls{
+public class PodcatForYou {
     
     int API_CALL = 0;
     int MAX_CALL = 0;
     String BASEURL = "";
     CommonUtils utils = new CommonUtils();
     ArrayList<String> urls = new ArrayList<>();
-    RequestHandler handler = new RequestHandler();
     PodcastConroller controller = new PodcastConroller();
     GlobalConfigHandler ghandler = new GlobalConfigHandler();
     Map<Integer, Response> RESPONSES = new HashMap<>();

@@ -1,40 +1,31 @@
 package recomendation.hashtags;
-import config.BaseUrls;
-import config.Endpoints;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import config.*;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import test_data.HashTagTd;
-import common.GlobalConfigHandler;
-import common.Helper;
-import common.RequestHandler;
-import java.util.Iterator;
-import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import common.*;
+import java.util.*;
+import org.json.*;
+import org.slf4j.*;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
 
 /**
  * @author Umesh Shukla
  * @version 8.22.0 Support Disabled
  * @deprecated https://timesgroup.jira.com/browse/GAANA-43257
  */
-public class TrendingHashtags extends BaseUrls{
+public class TrendingHashtags {
     
     String BASEURL = "";
     Response response = null;
     JSONArray hashTags = null;
     Helper helper = new Helper();
-    RequestHandler request = new RequestHandler();
     private static Logger log = LoggerFactory.getLogger(TrendingHashtags.class);
     final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-42866";
     final static String REPROTING_FEATURE = "Trending Hastag api content validations.";
@@ -42,8 +33,8 @@ public class TrendingHashtags extends BaseUrls{
 
     @BeforeClass
     public void prepEnv(){
-        GlobalConfigHandler.setLocalProps();
-        BASEURL = baseurl();
+        // GlobalConfigHandler.setLocalProps();
+        BASEURL = GlobalConfigHandler.baseurl();
     }
 
     @Test(enabled = true, priority = 1)
@@ -54,7 +45,11 @@ public class TrendingHashtags extends BaseUrls{
     @Severity(SeverityLevel.NORMAL)
     public void createTrendingHashTagCall(){
         String url = BASEURL+Endpoints.trendingHashTag;
-        response = request.createGetRequest(url);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
+        // response = request.createGetRequest(url);
         Assert.assertEquals(response != null, true, "Response can't be null.");
     }
 
