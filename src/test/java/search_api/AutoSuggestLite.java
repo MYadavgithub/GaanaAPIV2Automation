@@ -154,11 +154,18 @@ public class AutoSuggestLite {
         StringBuilder DIFF_KEY_VALUE = new StringBuilder();
 
         JSONObject prod_response = new JSONObject(PROD_RESPONSES.get(API_CALL).asString());
-        JSONArray prod_gr = prod_response.getJSONArray("gr");
-        // log.info("=>"+PROD_RESPONSES.get(API_CALL).asString().toString()+"\n\n");
-
         JSONObject stage_response = new JSONObject(STAGE_RESPONSES.get(API_CALL).asString());
-        JSONArray stage_gr = stage_response.getJSONArray("gr");
+
+        JSONArray prod_gr = null;
+        JSONArray stage_gr = null;
+        try{
+            prod_gr = prod_response.getJSONArray("gr");
+            stage_gr = stage_response.getJSONArray("gr");
+        }catch(Exception e){
+            log.error("Urls : "+URLS.get(keyword));
+        }
+        // JSONArray prod_gr = prod_response.getJSONArray("gr");
+        // JSONArray stage_gr = stage_response.getJSONArray("gr");
         // log.info("=>"+STAGE_RESPONSES.get(API_CALL).asString());
 
         validateArrayLength(keyword, prod_gr, stage_gr);
