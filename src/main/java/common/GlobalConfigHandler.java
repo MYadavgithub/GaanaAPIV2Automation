@@ -13,7 +13,7 @@ public class GlobalConfigHandler {
      */
     public static void setLocalProps(){
         // System.setProperty("env", "prod");
-        // System.setProperty("type", "Reco");
+        // System.setProperty("type", "Search");
         // System.setProperty("device_type", "android");
     }
 
@@ -76,9 +76,11 @@ public class GlobalConfigHandler {
         String type = "";
         String env = System.getProperty("type");
         if (env != null) {
-            if (env.equalsIgnoreCase("Search")) {
+            if(env.equalsIgnoreCase("Search")) {
                 type = Constants.API_TYPE_SEARCH;
-            } else if (env.equalsIgnoreCase("Reco")) {
+            }else if (env.equalsIgnoreCase("Search_Live")) {
+                type = Constants.API_TYPE_LIVE_SEARCH;
+            }else if (env.equalsIgnoreCase("Reco")) {
                 type = Constants.API_TYPE_RECO;
             }
         } else {

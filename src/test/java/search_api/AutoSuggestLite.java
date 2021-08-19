@@ -1,41 +1,33 @@
 package search_api;
-import java.util.Map;
-import config.BaseUrls;
-import config.Constants;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import java.util.HashMap;
+import java.util.*;
+import config.*;
+import config.v1.GetProp;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import org.json.*;
+import org.slf4j.*;
 import org.testng.Assert;
 import common.GlobalConfigHandler;
-import java.util.ArrayList;
-import common.RequestHandler;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.AutoSuggestLiteController;
 import utils.Mailer;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
 
-public class AutoSuggestLite extends BaseUrls {
+public class AutoSuggestLite {
 
     int API_CALL = 0;
     int MAX_COUNT = 0;
     String API_NAME = "Auto_Suggest_Lite";
     ArrayList<String> KEY_INPUTS = null;
+    String STAGE_BASE_URL = "";
+    String LIVE_BASE_URL = "";
     SoftAssert softAssert = new SoftAssert();
     GlobalConfigHandler handler = new GlobalConfigHandler();
     Map<String, ArrayList<String>> URLS = new HashMap<>();
-    RequestHandler request = new RequestHandler();
     Map<Integer, Response> STAGE_RESPONSES = new HashMap<>();
     Map<Integer, Response> PROD_RESPONSES = new HashMap<>();
     Map<Integer, Response> SOLR_RESPONSES = new HashMap<>();
@@ -48,8 +40,9 @@ public class AutoSuggestLite extends BaseUrls {
 
     @BeforeClass
     public void prepareTestEnv(){
-        GlobalConfigHandler.setLocalProps();
-        baseurl();
+        // GlobalConfigHandler.setLocalProps();
+        // baseurl();
+        STAGE_BASE_URL = GlobalConfigHandler.baseurl();
         KEY_INPUTS = AutoSuggestLiteController.getTestData(API_NAME+".csv");
         if(KEY_INPUTS.size() > 0)
             MAX_COUNT = Constants.AS_INVOCATION_COUNT+1;
@@ -68,7 +61,7 @@ public class AutoSuggestLite extends BaseUrls {
         };
     }
 
-    @Test(priority = 1,  dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
+    @Test(enabled = true, priority = 1,  dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
     @Link(name = "Jira Id", url = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Story("Validate response time, status code.")
@@ -76,19 +69,29 @@ public class AutoSuggestLite extends BaseUrls {
     @Step("We are saving each call response in the map.")
     @Severity(SeverityLevel.BLOCKER)
     public void createGetRequestAutoSuggestCall(String keyword){
-        ArrayList<String> urls = AutoSuggestLiteController.prepareUrls(prop, keyword);
+        if(API_CALL == 1)
+            getLiveBaseUrl();
+        ArrayList<String> urls = AutoSuggestLiteController.prepareUrls(STAGE_BASE_URL, LIVE_BASE_URL, keyword);
 
         if(urls.size() != 3)
             Assert.assertEquals(urls.size(), 3, "Staging, Production and Solr Url not generated successfully!");
 
         URLS.put(keyword, urls);
         // log.info("Execution url generated successfully. \nStaging url : "+urls.get(0)+"\nProd url : "+urls.get(1)+"\nSolr url : "+urls.get(2));
-        Response stage_response = request.createGetRequest(urls.get(0));
-        STAGE_RESPONSES.put(API_CALL, stage_response);
-        Response prod_response = request.createGetRequest(urls.get(1));
-        PROD_RESPONSES.put(API_CALL, prod_response);
-        Response solr_response = request.createGetRequest(urls.get(2));
-        SOLR_RESPONSES.put(API_CALL, solr_response);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = null;
+        for(int i = 0; i<urls.size(); i++){
+            response = request.executeRequestAndGetResponse(urls.get(i), requestType, contentType, null, null, null);
+            if(i == 0){
+                STAGE_RESPONSES.put(API_CALL, response);
+            }else if(i == 1){
+                PROD_RESPONSES.put(API_CALL, response);
+            }else if(i == 2){
+                SOLR_RESPONSES.put(API_CALL, response);
+            }
+        }
 
         if(API_CALL == Constants.AS_INVOCATION_COUNT){
             if(STAGE_RESPONSES.size() != PROD_RESPONSES.size() && PROD_RESPONSES.size() != SOLR_RESPONSES.size()){
@@ -99,7 +102,7 @@ public class AutoSuggestLite extends BaseUrls {
         API_CALL = handler.invocationCounter(API_CALL, MAX_COUNT);
     }
 
-    @Test(priority = 2, dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
+    @Test(enabled = true, priority = 2, dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
     @Link(name = "Jira Id", url = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Story("Validate common nodes present in both staging and production api response.")
@@ -136,7 +139,7 @@ public class AutoSuggestLite extends BaseUrls {
         API_CALL = handler.invocationCounter(API_CALL, MAX_COUNT);
     }
 
-    @Test(priority = 3, dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
+    @Test(enabled = true, priority = 3, dataProvider = "key_provider", invocationCount = Constants.AS_INVOCATION_COUNT)
     @Link(name = "Jira Id", url = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Story("Match both production and stage api data for difference validation.")
@@ -277,7 +280,7 @@ public class AutoSuggestLite extends BaseUrls {
         API_CALL = handler.invocationCounter(API_CALL, MAX_COUNT);
     }
 
-    @Test(priority = 4)
+    @Test(enabled = true, priority = 4)
     @Link(name = "Jira Id", url = "https://timesgroup.jira.com/browse/GAANA-40938")
     @Feature(REPROTING_FEATURE)
     @Story("This test will push custom mailer to the defined recipients.")
@@ -325,5 +328,13 @@ public class AutoSuggestLite extends BaseUrls {
             controller.printUrls(URLS.get(keyword));
         }
         softAssert.assertAll();
+    }
+
+    private void getLiveBaseUrl() {
+        String current_type = System.getProperty("type");
+        System.setProperty("type", Constants.API_TYPE_LIVE_SEARCH);
+        GetProp prop = new GetProp();
+        LIVE_BASE_URL = prop.baseurl();
+        System.setProperty("type", current_type);
     }
 }

@@ -88,7 +88,7 @@ public class RequestHandlerV1 {
 
         reqspec.baseUri(url);
         reqspec.headers(headers);
-        reqspec.urlEncodingEnabled(false);
+        reqspec.urlEncodingEnabled(true);
         // reqspec.log().all();
         EncoderConfig encoderconfig = new EncoderConfig();
         reqspec.config(RestAssured.config().encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)));

@@ -56,7 +56,7 @@ public class GetProp {
     public Properties prop() {
         String env = GlobalConfigHandler.getEnv();
         String type = GlobalConfigHandler.getType();
-        if(type.equalsIgnoreCase(Constants.API_TYPE_SEARCH)) {
+        if(type.equalsIgnoreCase(Constants.API_TYPE_SEARCH) || type.equalsIgnoreCase(Constants.API_TYPE_LIVE_SEARCH)) {
             if (env.equals(Constants.STAGE_ENV)) {
                 prop = FileActions.readProp("local.properties");
             }
