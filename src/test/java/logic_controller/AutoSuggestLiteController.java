@@ -46,10 +46,10 @@ public class AutoSuggestLiteController {
      */
     public static ArrayList<String> prepareUrls(String stage_base_url, String live_base_url, String keyword) {
         ArrayList<String> urls = new ArrayList<>();
-        keyword = keyword.replaceAll("\\s", "%20");
-        urls.add(stage_base_url+Endpoints.autoSuggestStageEndpoint(keyword));
-        urls.add(live_base_url+Endpoints.autoSuggestProdEndpoint(keyword));
-        urls.add(stage_base_url+Endpoints.autoSuggestSolrEndpoint(keyword));
+        // keyword = keyword.replaceAll("\\s", "%20");
+        urls.add(GlobalConfigHandler.encodeUrl(stage_base_url+Endpoints.autoSuggestStageEndpoint(keyword)));
+        urls.add(GlobalConfigHandler.encodeUrl(live_base_url+Endpoints.autoSuggestProdEndpoint(keyword)));
+        urls.add(GlobalConfigHandler.encodeUrl(stage_base_url+Endpoints.autoSuggestSolrEndpoint(keyword)));
         return urls;
     }
 

@@ -3,7 +3,8 @@ import java.util.*;
 import java.util.Map.Entry;
 import config.Constants;
 import config.v1.GetProp;
-
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 
 public class GlobalConfigHandler {
@@ -144,5 +145,15 @@ public class GlobalConfigHandler {
             }
         }
         return "";
+    }
+
+    public static String encodeUrl(String url_to_encode){
+        String url = "";
+        try {
+            url = URLEncoder.encode(url_to_encode, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return url;
     }
 }
