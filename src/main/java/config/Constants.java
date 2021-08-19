@@ -42,7 +42,7 @@ public class Constants{
 
     /* Recomended Track Constants */
     public final static int REC_INVOCATION_COUNT = 1;
-    public final static int AS_INVOCATION_COUNT = 2000;
+    public final static int AS_INVOCATION_COUNT = 1000;
     public static int IS_STAGE_LIVE = 0;
     public final static int ASV2_INVOCATION_COUNT = 18;
 
