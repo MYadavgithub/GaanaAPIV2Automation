@@ -304,7 +304,7 @@ public class SearchFeed {
         if(entities.length() <= 0)
             softAssert.assertEquals(entities.length() <= 0, true, "Sections entities validation can't be processed, check response of : \n+"+URLS.get(API_CALL));
 
-        boolean entityValid = controller.validateSectionsEntity(entities);
+        boolean entityValid = controller.validateSectionsEntity(tab_name, entities);
         softAssert.assertEquals(entityValid, true, "Sections Entity validation failed, check response of : \n+"+URLS.get(API_CALL));
         softAssert.assertAll();
         if(API_CALL == MAX_CALL-1)

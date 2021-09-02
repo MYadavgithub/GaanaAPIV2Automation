@@ -8,7 +8,8 @@ import org.testng.asserts.SoftAssert;
 import common.*;
 import config.Endpoints;
 import io.qameta.allure.Step;
-import pojo.RecommendedEntityPojo;
+import pojo.RecommendedShowPojo;
+import pojo.RecommendedTrackPojo;
 import test_data.SearchFeedTd;
 
 /**
@@ -479,19 +480,31 @@ public class SearchFeedController {
         return false;
     }
 
-    public boolean validateSectionsEntity(JSONArray entities) {
+    public boolean validateSectionsEntity(String tab_name, JSONArray entities) {
         Iterator<Object> entity_itr = entities.iterator();
         ArrayList<String> artworks = new ArrayList<>();
         while(entity_itr.hasNext()){
             JSONObject entity = (JSONObject) entity_itr.next();
-            RecommendedEntityPojo entityPojo = new Gson().fromJson(entity.toString(), RecommendedEntityPojo.class);
-            String aw = entityPojo.getAw();
-            entityPojo.validIid(entityPojo.getIid());
-            entityPojo.validTi(entityPojo.getTi());
-            entityPojo.validAw(aw);
-            entityPojo.validLang(entityPojo.getLang());
-            entityPojo.validTy(entityPojo.getTy());
-            artworks.add(aw.trim());
+            if(entity.opt("ty").toString().trim().equals("Show")){
+                RecommendedShowPojo entityPojo = new Gson().fromJson(entity.toString(), RecommendedShowPojo.class);
+                String aw = entityPojo.getAw();
+                entityPojo.validAw(aw);
+                artworks.add(aw.trim());
+                entityPojo.validIid(entityPojo.getIid());
+                entityPojo.validTi(entityPojo.getTi());
+                entityPojo.validateLanguage(entityPojo.getLanguage());
+                String expected_subtitle = (entityPojo.getTy().trim()+" | "+ entityPojo.getLanguage());
+                entityPojo.validateShowSubtitle(expected_subtitle);
+            }else{
+                RecommendedTrackPojo entityPojo = new Gson().fromJson(entity.toString(), RecommendedTrackPojo.class);
+                String aw = entityPojo.getAw();
+                entityPojo.validIid(entityPojo.getIid());
+                entityPojo.validTi(entityPojo.getTi());
+                entityPojo.validAw(aw);
+                entityPojo.validLang(entityPojo.getLang());
+                entityPojo.validTy(entityPojo.getTy());
+                artworks.add(aw.trim());
+            }
         }
 
         boolean isAwValid = helper.validateActiveLinks(artworks);

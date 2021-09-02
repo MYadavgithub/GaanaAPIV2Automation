@@ -1,34 +1,31 @@
 package pojo;
+import org.testng.Assert;
 
-import org.junit.Assert;
-
-public class RecommendedEntityPojo {
-
+public class RecommendedShowPojo {
+    
     private int iid;
     private String ti;
     private String aw;
-    private String sti;
-    private String lang[];
+    private String seo;
     private String ty;
+    private boolean vty;
     private String fty;
-    private String tags[];
-    private float scoreF;
+    private String language;
     private String subtitle;
     
-    public RecommendedEntityPojo() {
+    public RecommendedShowPojo() {
     }
-
-    public RecommendedEntityPojo(int iid, String ti, String aw, String sti, String[] lang, String ty, String fty,
-            String[] tags, float scoreF, String subtitle) {
+    
+    public RecommendedShowPojo(int iid, String ti, String aw, String seo, String ty, boolean vty, String fty,
+            String language, String subtitle) {
         this.iid = iid;
         this.ti = ti;
         this.aw = aw;
-        this.sti = sti;
-        this.lang = lang;
+        this.seo = seo;
         this.ty = ty;
+        this.vty = vty;
         this.fty = fty;
-        this.tags = tags;
-        this.scoreF = scoreF;
+        this.language = language;
         this.subtitle = subtitle;
     }
 
@@ -50,17 +47,11 @@ public class RecommendedEntityPojo {
     public void setAw(String aw) {
         this.aw = aw;
     }
-    public String getSti() {
-        return sti;
+    public String getSeo() {
+        return seo;
     }
-    public void setSti(String sti) {
-        this.sti = sti;
-    }
-    public String[] getLang() {
-        return lang;
-    }
-    public void setLang(String[] lang) {
-        this.lang = lang;
+    public void setSeo(String seo) {
+        this.seo = seo;
     }
     public String getTy() {
         return ty;
@@ -68,23 +59,23 @@ public class RecommendedEntityPojo {
     public void setTy(String ty) {
         this.ty = ty;
     }
+    public boolean isVty() {
+        return vty;
+    }
+    public void setVty(boolean vty) {
+        this.vty = vty;
+    }
     public String getFty() {
         return fty;
     }
     public void setFty(String fty) {
         this.fty = fty;
     }
-    public String[] getTags() {
-        return tags;
+    public String getLanguage() {
+        return language;
     }
-    public void setTags(String[] tags) {
-        this.tags = tags;
-    }
-    public float getScoreF() {
-        return scoreF;
-    }
-    public void setScoreF(float scoreF) {
-        this.scoreF = scoreF;
+    public void setLanguage(String language) {
+        this.language = language;
     }
     public String getSubtitle() {
         return subtitle;
@@ -105,11 +96,11 @@ public class RecommendedEntityPojo {
         Assert.assertTrue(aw.length() > 0);
     }
 
-    public void validLang(String[] lang) {
-        Assert.assertTrue(lang.length >= 1);
+    public void validateShowSubtitle(String ex_subtitle){
+        Assert.assertTrue(ex_subtitle.equals(subtitle));
     }
 
-    public void validTy(String ty) {
-        Assert.assertTrue(ty.length() > 0);
+    public void validateLanguage(String language) {
+        Assert.assertTrue(language.length() > 0);
     }
 }
