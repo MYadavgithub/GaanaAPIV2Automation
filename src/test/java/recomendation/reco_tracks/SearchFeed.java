@@ -8,9 +8,11 @@ import java.util.*;
 import org.json.*;
 import org.slf4j.*;
 import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import common.GlobalConfigHandler;
+import config.Constants;
 import config.v1.GetProp;
 import config.v1.RequestHandlerV1;
 import config.v1.RequestHelper;
@@ -281,6 +283,8 @@ public class SearchFeed {
     @Step("Validate Sections Data along with artworks and entitie nodes.")
     @Severity(SeverityLevel.CRITICAL)
     public void ValidateSectionData(String tab_id, String tab_name){
+        if(System.getProperty("device_type").equalsIgnoreCase(Constants.IOS))
+            throw new SkipException("This test is skipping due to sections not implemented for Ios devices.");
         Response _response = RESPONSES.get(API_CALL);
         JSONObject response = null;
         JSONArray sections = null;
