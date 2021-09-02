@@ -69,7 +69,7 @@ public class PodcatForYou {
     public void validateResponsePodcastForYou(String device_id){
         SoftAssert softAssert = new SoftAssert();
         JSONObject response = utils.converResponseToJSONObject(RESPONSES.get(API_CALL));
-        
+
         int status = Integer.parseInt(response.optString("status").toString().trim());
         softAssert.assertEquals(status, 1, "Status should be 1 but got "+status);
 
