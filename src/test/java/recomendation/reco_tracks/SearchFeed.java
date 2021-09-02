@@ -3,6 +3,7 @@ import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.SearchFeedController;
 import test_data.SearchFeedTd;
+import utils.CommonUtils;
 import java.util.*;
 import org.json.*;
 import org.slf4j.*;
@@ -271,6 +272,43 @@ public class SearchFeed {
                 Assert.assertEquals(response_array.length() > 0, true);
             }
         }
+        API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
+    }
+
+    @Test(enabled = true, priority = 7, dataProvider = "dp", invocationCount = SearchFeedTd.INVOCATION_COUNT)
+    @Link(name =  "Jira Task Id", value = JIRA_ID)
+    @Feature(REPROTING_FEATURE)
+    @Step("Validate Sections Data along with artworks and entitie nodes.")
+    @Severity(SeverityLevel.CRITICAL)
+    public void ValidateSectionData(String tab_id, String tab_name){
+        Response _response = RESPONSES.get(API_CALL);
+        JSONObject response = null;
+        JSONArray sections = null;
+        SoftAssert softAssert = new SoftAssert();
+        CommonUtils util = new CommonUtils();
+        if(_response != null){
+            response = util.converResponseToJSONObject(_response);
+        }
+
+        sections = response.getJSONArray("sections");
+
+        if(sections == null)
+            softAssert.assertEquals(sections != null, true, "Sections data can't be null, please check response of : \n+"+URLS.get(API_CALL));
+
+        softAssert.assertEquals(sections.length() == 1, true, "Sections length should be equal to 1, check response of : \n+"+URLS.get(API_CALL));
+
+        boolean isBasicsValid = controller.validateSectionBasics(sections.getJSONObject(0));
+        softAssert.assertEquals(isBasicsValid, true, "Sections basic validation failed, check response of : \n+"+URLS.get(API_CALL));
+
+        JSONArray entities = sections.getJSONObject(0).getJSONArray("entities");
+        if(entities.length() <= 0)
+            softAssert.assertEquals(entities.length() <= 0, true, "Sections entities validation can't be processed, check response of : \n+"+URLS.get(API_CALL));
+
+        boolean entityValid = controller.validateSectionsEntity(entities);
+        softAssert.assertEquals(entityValid, true, "Sections Entity validation failed, check response of : \n+"+URLS.get(API_CALL));
+        softAssert.assertAll();
+        if(API_CALL == MAX_CALL-1)
+            log.info("Sections tab validated successfully.");
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
