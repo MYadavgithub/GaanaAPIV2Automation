@@ -1,29 +1,19 @@
 package recomendation.reco_tracks;
-import config.BaseUrls;
 import config.Endpoints;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import utils.CommonUtils;
 import org.testng.Assert;
-import org.json.JSONArray;
-import org.json.JSONObject;
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
-import org.testng.annotations.Test;
+import org.json.*;
 import common.GlobalConfigHandler;
-import common.RequestHandler;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.TrendingTrackController;
 import test_data.TrendingTrackTd;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
+import org.testng.annotations.*;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
 
 /**
  * @author Umesh Shukla
@@ -31,28 +21,27 @@ import org.testng.annotations.DataProvider;
  * @deprecated https://timesgroup.jira.com/browse/GAANA-43257
  */
 
-public class TrendingShortTrack extends BaseUrls {
+public class TrendingShortTrack {
 
     int API_CALL = 0;
     int MAX_CALL = 0;
     String BASEURL = "";
     CommonUtils utils = new CommonUtils();
     ArrayList<String> URLS = new ArrayList<>();
-    RequestHandler request = new RequestHandler();
     GlobalConfigHandler handler = new GlobalConfigHandler();
     ArrayList<String> Types = new ArrayList<>(); 
     Map<Integer, Response> RESPONSES = new HashMap<>();
     TrendingTrackController controller = new TrendingTrackController();
     final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-41651";
     final static String REPROTING_FEATURE = "Trending Short Track Api Validations";
-    // private static Logger log = LoggerFactory.getLogger(TrendingShortTrack.class);
 
     @BeforeClass
     public void prepareEnv(){
-        GlobalConfigHandler.setLocalProps();
+        BASEURL = GlobalConfigHandler.baseurl();
+        // GlobalConfigHandler.setLocalProps();
         Types.add(TrendingTrackTd.defaultCall);
         MAX_CALL = TrendingTrackTd.INVOCATION;
-        BASEURL = baseurl();
+        // BASEURL = baseurl();
     }
 
     @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = TrendingTrackTd.INVOCATION)
@@ -63,13 +52,18 @@ public class TrendingShortTrack extends BaseUrls {
     @Severity(SeverityLevel.BLOCKER)
     public void createGetTrendingShortTrackCall(String type_key){
         Response response;
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
         String url = BASEURL+Endpoints.trendingShortTrack;
         if(type_key.equals(TrendingTrackTd.defaultCall)){
-            response = request.createGetRequest(url);
+            // response = request.createGetRequest(url);
+            response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
             Types = controller.getSpecificSearchKeywords(Types, response);
         }else{
             url = BASEURL+Endpoints.trendingShortTrack+type_key;
-            response = request.createGetRequest(url);
+            // response = request.createGetRequest(url);
+            response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
         }
         RESPONSES.put(API_CALL, response);
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);

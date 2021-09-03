@@ -1,28 +1,22 @@
 package recomendation.reco_tracks;
 import java.util.Map;
-import utils.WriteCsv;
-import config.BaseUrls;
-import utils.CsvReader;
-import config.Constants;
-import config.Endpoints;
-import org.slf4j.Logger;
+import utils.*;
+import config.*;
+import config.v1.GetProp;
 import java.util.HashMap;
-import org.testng.Assert;
-import org.testng.ITestContext;
-import org.testng.Reporter;
+import org.testng.*;
 import java.util.Iterator;
-import common.FileActions;
-import common.GlobalConfigHandler;
-import common.Helper;
+import common.*;
 import org.json.JSONArray;
 import java.util.ArrayList;
 import org.json.JSONObject;
-import common.RequestHandler;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.Test;
+import org.slf4j.*;
 import io.restassured.response.Response;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
+import org.testng.annotations.*;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
 
 /**
  * @author Umesh Shukla
@@ -30,7 +24,7 @@ import org.testng.annotations.DataProvider;
  * @deprecated https://timesgroup.jira.com/browse/GAANA-43257
  */
 
-public class Vibes extends BaseUrls {
+public class Vibes {
 
     String id = "1";
     String baseurl = "";
@@ -38,9 +32,9 @@ public class Vibes extends BaseUrls {
     int DEVICE_ID_COUNT = 1;
     static int RES_OBJ = 10;
     String API_NAME = "Vibes";
+    GetProp prop = null;
     final static int CASE_COUNT = 5;
     JSONArray entities_list = null;
-    RequestHandler rq = new RequestHandler();
     Helper helper = new Helper();
     ArrayList<String> device_ids = null;
     ArrayList<String> urls = new ArrayList<>();
@@ -50,10 +44,12 @@ public class Vibes extends BaseUrls {
 
     @BeforeClass
     public void prepareRequestData(ITestContext context) {
-        GlobalConfigHandler.setLocalProps();
+        // GlobalConfigHandler.setLocalProps();
         EXEC_CONTEXT = Integer.parseInt(context.getCurrentXmlTest().getParameter("id"));
-        baseurl();
-        baseurl = prop.getProperty("reco_baseurl").toString().trim();
+        // baseurl();
+        // baseurl = prop.getProperty("reco_baseurl").toString().trim();
+        baseurl = GlobalConfigHandler.baseurl();
+        prop = new GetProp();
         device_ids = CsvReader.readCsv("./src/test/resources/data/deviceid.csv");
     }
 
@@ -69,9 +65,13 @@ public class Vibes extends BaseUrls {
     @Test(priority = 1, dataProvider = "device_id", invocationCount = CASE_COUNT)
     public void validateStatusAndDataType(String device_id) {
         String url = baseurl + Endpoints.vibes;
-        prop.setProperty("deviceId", device_id);
+        prop.setDeviceId(device_id);
         urls.add(url);
-        Response response = rq.createGetRequest(url);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
+        // Response response = rq.createGetRequest(url);
         Assert.assertEquals(response != null, true, "Response time or code is not valid!");
         responses.put(DEVICE_ID_COUNT, response);
         deviceIdCounter();

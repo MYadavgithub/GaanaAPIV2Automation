@@ -1,10 +1,10 @@
 package common;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.Map.Entry;
 import config.Constants;
+import config.v1.GetProp;
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 
 public class GlobalConfigHandler {
@@ -13,9 +13,21 @@ public class GlobalConfigHandler {
      * Only for Local debugging
      */
     public static void setLocalProps(){
-        // System.setProperty("env", "prod");
+        // System.setProperty("env", "local");
         // System.setProperty("type", "Reco");
         // System.setProperty("device_type", "android");
+    }
+
+    /**
+     * V1 global config handler and baseurl provider
+     * @param prop
+     * @return
+     */
+
+    public static String baseurl(){
+        setLocalProps();
+        GetProp prop = new GetProp();
+        return prop.baseurl();
     }
 
     /**
@@ -65,9 +77,11 @@ public class GlobalConfigHandler {
         String type = "";
         String env = System.getProperty("type");
         if (env != null) {
-            if (env.equalsIgnoreCase("Search")) {
+            if(env.equalsIgnoreCase("Search")) {
                 type = Constants.API_TYPE_SEARCH;
-            } else if (env.equalsIgnoreCase("Reco")) {
+            }else if (env.equalsIgnoreCase("Search_Live")) {
+                type = Constants.API_TYPE_LIVE_SEARCH;
+            }else if (env.equalsIgnoreCase("Reco")) {
                 type = Constants.API_TYPE_RECO;
             }
         } else {
@@ -131,5 +145,15 @@ public class GlobalConfigHandler {
             }
         }
         return "";
+    }
+
+    public static String encodeUrl(String url_to_encode){
+        String url = "";
+        try {
+            url = URLEncoder.encode(url_to_encode, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return url;
     }
 }

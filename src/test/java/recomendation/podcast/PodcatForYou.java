@@ -1,40 +1,30 @@
 package recomendation.podcast;
-import config.BaseUrls;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.PodcastConroller;
 import test_data.PodcastTd;
 import utils.CommonUtils;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import java.util.*;
+import org.json.*;
+import org.slf4j.*;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
-import common.GlobalConfigHandler;
-import common.Headers;
-import common.RequestHandler;
+import common.*;
 
 /**
  * @author Umesh Shukla
  */
-public class PodcatForYou extends BaseUrls{
+public class PodcatForYou {
     
     int API_CALL = 0;
     int MAX_CALL = 0;
+    String BASEURL = "";
     CommonUtils utils = new CommonUtils();
     ArrayList<String> urls = new ArrayList<>();
-    RequestHandler handler = new RequestHandler();
     PodcastConroller controller = new PodcastConroller();
     GlobalConfigHandler ghandler = new GlobalConfigHandler();
     Map<Integer, Response> RESPONSES = new HashMap<>();
@@ -44,8 +34,9 @@ public class PodcatForYou extends BaseUrls{
 
     @BeforeClass
     public void prepareEnv(){
-        GlobalConfigHandler.setLocalProps();
-        baseurl();
+        // GlobalConfigHandler.setLocalProps();
+        // baseurl();
+        BASEURL = GlobalConfigHandler.baseurl();
         MAX_CALL = PodcastTd.deviceIds.length;
     }
 
@@ -57,12 +48,15 @@ public class PodcatForYou extends BaseUrls{
     @Severity(SeverityLevel.NORMAL)
     public void createPodcastForYouCall(String device_id){
         device_id = utils.createUrlEncodedStr(device_id);
-        String baseurl = prop.getProperty("reco_baseurl");
-        String url = controller.prepareUrlPFY(baseurl, device_id);
+        String url = controller.prepareUrlPFY(BASEURL, device_id);
         urls.add(url);        
-        Map<String, String> headers = Headers.getHeaders(0, null);
+        Map<String, String> headers = RequestHelper.getHeader(0);
         headers.replace("deviceId", device_id);
-        Response response = handler.createGetRequestWithCustomHeaders(url, headers);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, headers, null, null);
+        // Response response = handler.createGetRequestWithCustomHeaders(url, headers);
         RESPONSES.put(API_CALL, response);
         API_CALL = ghandler.invocationCounter(API_CALL, MAX_CALL);
     }
@@ -75,7 +69,7 @@ public class PodcatForYou extends BaseUrls{
     public void validateResponsePodcastForYou(String device_id){
         SoftAssert softAssert = new SoftAssert();
         JSONObject response = utils.converResponseToJSONObject(RESPONSES.get(API_CALL));
-        
+
         int status = Integer.parseInt(response.optString("status").toString().trim());
         softAssert.assertEquals(status, 1, "Status should be 1 but got "+status);
 

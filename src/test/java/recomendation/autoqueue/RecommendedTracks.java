@@ -1,39 +1,29 @@
 package recomendation.autoqueue;
-import config.BaseUrls;
 import config.Endpoints;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.AutoQueueController;
 import test_data.AutoQueueTd;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import common.GlobalConfigHandler;
-import common.RequestHandler;
-import org.testng.Assert;
+import java.util.*;
+import org.slf4j.*;
 import org.testng.annotations.*;
+import common.GlobalConfigHandler;
+import org.testng.Assert;
 
 /**
  * @author umesh-shukla
  */
 
-public class RecommendedTracks extends BaseUrls{
+public class RecommendedTracks {
 
     int API_CALL = 0;
     int MAX_CALL = 0;
     String BASEURL = "";
     GlobalConfigHandler handler = new GlobalConfigHandler();
-    RequestHandler request = new RequestHandler();
     ArrayList<String> URLS = new ArrayList<>();
     Map<Integer, Response> RESPONSES = new HashMap<>();
     AutoQueueController aqController = new AutoQueueController();
@@ -43,9 +33,10 @@ public class RecommendedTracks extends BaseUrls{
 
     @BeforeClass
     public void prepareEnv(){
-        GlobalConfigHandler.setLocalProps();
-        baseurl();
-        BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        // GlobalConfigHandler.setLocalProps();
+        // baseurl();
+        // BASEURL = GlobalConfigHandler.getRecoExecUrl(prop);
+        BASEURL = GlobalConfigHandler.baseurl();
         MAX_CALL = AutoQueueTd.INVOCATION;
     }
 
@@ -59,7 +50,11 @@ public class RecommendedTracks extends BaseUrls{
     public void createRecoTrackReq(String track_id){
         String url = BASEURL+Endpoints.RECO_TRACKS+track_id;
         URLS.add(url);
-        Response response = request.createGetRequest(url);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
+        // Response response = request.createGetRequest(url);
         RESPONSES.put(API_CALL, response);
         if(API_CALL == MAX_CALL-1){
             Assert.assertEquals(RESPONSES.size(), MAX_CALL, "Response not captured properly for further validations!");

@@ -1,16 +1,15 @@
 package logic_controller;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
+import com.google.gson.Gson;
+import org.json.*;
+import org.slf4j.*;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
-import common.Helper;
+import common.*;
 import config.Endpoints;
 import io.qameta.allure.Step;
+import pojo.RecommendedShowPojo;
+import pojo.RecommendedTrackPojo;
 import test_data.SearchFeedTd;
 
 /**
@@ -73,8 +72,10 @@ public class SearchFeedController {
             tabName = tabSelected.optString("tabName").toString().trim();
         }
 
-        if(tabId.equals("default")){
-            ex_tab_name = SearchFeedTd.tabsName(SearchFeedTd.podcast);
+        if(GlobalConfigHandler.getDeviceType() == 0){
+            if(tabId.equals("default")){
+                ex_tab_name = SearchFeedTd.tabsName(SearchFeedTd.podcast);
+            }
         }
 
         if (tabId.equals(tab_id) && tabName.equals(ex_tab_name)) {
@@ -466,5 +467,47 @@ public class SearchFeedController {
             }
             Assert.assertEquals(subtitle, exSubTitle);
         }
+    }
+
+    public boolean validateSectionBasics(JSONObject section) {
+        boolean entity_description = section.optString("entity_description").toString().trim().equals(SearchFeedTd.SECTION_DEFAULT_ENTITY_DESCRIPTION);
+        boolean view_type = section.optString("view_type").toString().trim().equals(SearchFeedTd.SECTION_VIEW_TYPE);
+        boolean url_see_all = section.optString("url_see_all").toString().trim().equals(SearchFeedTd.SECTION_URL_SEE_ALL);
+
+        if(entity_description && view_type && url_see_all)
+            return true;
+
+        return false;
+    }
+
+    public boolean validateSectionsEntity(String tab_name, JSONArray entities) {
+        Iterator<Object> entity_itr = entities.iterator();
+        ArrayList<String> artworks = new ArrayList<>();
+        while(entity_itr.hasNext()){
+            JSONObject entity = (JSONObject) entity_itr.next();
+            if(entity.opt("ty").toString().trim().equals("Show")){
+                RecommendedShowPojo entityPojo = new Gson().fromJson(entity.toString(), RecommendedShowPojo.class);
+                String aw = entityPojo.getAw();
+                entityPojo.validAw(aw);
+                artworks.add(aw.trim());
+                entityPojo.validIid(entityPojo.getIid());
+                entityPojo.validTi(entityPojo.getTi());
+                entityPojo.validateLanguage(entityPojo.getLanguage());
+                String expected_subtitle = (entityPojo.getTy().trim()+" | "+ entityPojo.getLanguage());
+                entityPojo.validateShowSubtitle(expected_subtitle);
+            }else{
+                RecommendedTrackPojo entityPojo = new Gson().fromJson(entity.toString(), RecommendedTrackPojo.class);
+                String aw = entityPojo.getAw();
+                entityPojo.validIid(entityPojo.getIid());
+                entityPojo.validTi(entityPojo.getTi());
+                entityPojo.validAw(aw);
+                entityPojo.validLang(entityPojo.getLang());
+                entityPojo.validTy(entityPojo.getTy());
+                artworks.add(aw.trim());
+            }
+        }
+
+        boolean isAwValid = helper.validateActiveLinks(artworks);
+        return isAwValid;
     }
 }
