@@ -3,7 +3,6 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import config.Constants;
-import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
@@ -12,6 +11,11 @@ import io.restassured.http.ContentType;
 import java.util.concurrent.TimeUnit;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+
+/**
+ * @author umesh-shukla
+ * @version v1
+ */
 
 public class RequestHandler {
 
@@ -126,42 +130,5 @@ public class RequestHandler {
             return response;
         }
         return null;
-    }
-
-
-    /**
-     * Validate Link is active or not
-     * @param urls
-     * @return
-     */
-    public static boolean validateGetUrlStatusCode(ArrayList<String> urls){
-        boolean linkActive = false;
-        ArrayList<String> inactiveUrls = new ArrayList<>();
-
-        if(urls.size() <= 0){
-            return linkActive;
-        }
-
-        int count = 1;
-		for(String url : urls) {
-			if(url.contains("http")) {
-               Response response = RestAssured.given()
-                    .urlEncodingEnabled(false)
-                    .when().get(url);
-                if(response.getStatusCode() == 200){
-                    linkActive = true;
-                }else{
-                    linkActive = false;
-                    inactiveUrls.add("Count : "+count+", URL :"+url);
-                }
-            }
-            count++;
-        }
-
-        if(inactiveUrls.size() > 0){
-            linkActive = false;
-            log.error("Below given urls are inactive state, please manually validate the same : \n"+inactiveUrls);
-        }
-		return linkActive;
     }
 }

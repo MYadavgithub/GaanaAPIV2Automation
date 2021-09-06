@@ -18,6 +18,7 @@ public class Constants{
 
     /**Api Type */
     public static String API_TYPE_SEARCH = "Search";
+    public static String API_TYPE_LIVE_SEARCH = "Search_Live"; // only to get live base url
     public static String API_TYPE_RECO = "Reco";
 
     /** Env Type */
@@ -41,7 +42,7 @@ public class Constants{
 
     /* Recomended Track Constants */
     public final static int REC_INVOCATION_COUNT = 1;
-    public final static int AS_INVOCATION_COUNT = 25;
+    public final static int AS_INVOCATION_COUNT = 500;
     public static int IS_STAGE_LIVE = 0;
     public final static int ASV2_INVOCATION_COUNT = 18;
 

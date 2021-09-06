@@ -9,10 +9,15 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.json.JSONObject;
+import org.slf4j.*;
+import common.GlobalConfigHandler;
+import config.Constants;
 import io.restassured.response.Response;
 
 public class CommonUtils {
     
+    private static Logger log = LoggerFactory.getLogger(CommonUtils.class);
+
     public static String getCurrentDateTime() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy:HH.mm.ss");
@@ -79,5 +84,19 @@ public class CommonUtils {
             encoded_str = val;
         }
         return encoded_str;
+    }
+
+    public static String getDeviceTypeForReports(){
+        String deviceType = "";
+        if(GlobalConfigHandler.getDeviceType() == 0){
+            deviceType = Constants.ANDROID;
+            log.info("This suite will get executed using ANDROID headers.");
+        }else if(GlobalConfigHandler.getDeviceType() == 1){
+            deviceType = Constants.IOS;
+            log.info("This suite will get executed using IOS headers.");
+        }else{
+            log.info("Execution context not defined, please manually check for which device type suite getting executed.");
+        }
+        return deviceType;
     }
 }

@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import io.qameta.allure.Step;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -341,5 +342,41 @@ public class Helper {
         Assert.assertEquals(isArtworkValid, true);
         artworks.clear();
         return isArtworkValid;
+    }
+
+    /**
+     * Validate Link is active or not
+     * @param urls
+     * @return
+     */
+    public static boolean validateGetUrlStatusCode(ArrayList<String> urls){
+        boolean linkActive = false;
+        ArrayList<String> inactiveUrls = new ArrayList<>();
+
+        if(urls.size() <= 0){
+            return linkActive;
+        }
+
+        int count = 1;
+		for(String url : urls) {
+			if(url.contains("http")) {
+               Response response = RestAssured.given()
+                    .urlEncodingEnabled(false)
+                    .when().get(url);
+                if(response.getStatusCode() == 200){
+                    linkActive = true;
+                }else{
+                    linkActive = false;
+                    inactiveUrls.add("Count : "+count+", URL :"+url);
+                }
+            }
+            count++;
+        }
+
+        if(inactiveUrls.size() > 0){
+            linkActive = false;
+            log.error("Below given urls are inactive state, please manually validate the same : \n"+inactiveUrls);
+        }
+		return linkActive;
     }
 }

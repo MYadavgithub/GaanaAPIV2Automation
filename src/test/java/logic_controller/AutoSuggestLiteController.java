@@ -1,16 +1,8 @@
 package logic_controller;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import common.CommonPath;
-import common.FileActions;
-import common.Helper;
+import java.util.*;
+import org.json.*;
+import org.slf4j.*;
+import common.*;
 import config.Endpoints;
 import io.qameta.allure.Step;
 import search_api.AutoSuggestLite;
@@ -52,14 +44,12 @@ public class AutoSuggestLiteController {
      * @param keyword
      * @return
      */
-    public static ArrayList<String> prepareUrls(Properties prop, String keyword) {
+    public static ArrayList<String> prepareUrls(String stage_base_url, String live_base_url, String keyword) {
         ArrayList<String> urls = new ArrayList<>();
         // keyword = keyword.replaceAll("\\s", "%20");
-        String stage_base_url = prop.getProperty("search_baseurl").toString().trim();
-        String live_url = prop.getProperty("search_live_url").toString().trim();
-        urls.add(stage_base_url+Endpoints.autoSuggestStageEndpoint(keyword));
-        urls.add(live_url+Endpoints.autoSuggestProdEndpoint(keyword));
-        urls.add(stage_base_url+Endpoints.autoSuggestSolrEndpoint(keyword));
+        urls.add(GlobalConfigHandler.encodeUrl(stage_base_url+Endpoints.autoSuggestStageEndpoint(keyword)));
+        urls.add(GlobalConfigHandler.encodeUrl(live_base_url+Endpoints.autoSuggestProdEndpoint(keyword)));
+        urls.add(GlobalConfigHandler.encodeUrl(stage_base_url+Endpoints.autoSuggestSolrEndpoint(keyword)));
         return urls;
     }
 

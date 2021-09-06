@@ -14,6 +14,9 @@ public class SearchFeedTd {
     public static String tabs[] = { "default", "-1", "-2", "-4", "-5", "-6", "100", "103", "104", "1389"}; // do not change order else manage TC-> 1
     public static final int INVOCATION_COUNT = 10; // increate is according to tabs length
     private static String query_params = "?geoLocation=IN&usrLang=";
+    public static String SECTION_DEFAULT_ENTITY_DESCRIPTION = "Recommended";
+    public static String SECTION_VIEW_TYPE = "feed_horz_scroll";
+    public static String SECTION_URL_SEE_ALL = "https://rec.gaana.com/searchfeed/fetch?tabSelected=-1";
 
     /**
      * To get correct tab name call this function by passing tab_id

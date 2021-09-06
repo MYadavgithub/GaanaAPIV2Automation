@@ -1,34 +1,26 @@
 package recomendation.artist;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import config.BaseUrls;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import java.util.*;
+import org.json.*;
+import org.slf4j.*;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.ArtistController;
 import test_data.ArtistTd;
 import utils.CommonUtils;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import common.GlobalConfigHandler;
-import common.RequestHandler;
+import config.v1.RequestHandlerV1;
+import config.v1.RequestHelper;
+import config.v1.RequestHelper.ApiRequestTypes;
+import config.v1.RequestHelper.ContentTypes;
+
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 
 /**
  * @author Umesh Shukla
  */
 
-public class SimilarArtists extends BaseUrls{
+public class SimilarArtists {
     
     int API_CALL = 0;
     int MAX_CALL = 0;
@@ -36,7 +28,6 @@ public class SimilarArtists extends BaseUrls{
     boolean IS_COUNT_VALID = false;
     CommonUtils utils = new CommonUtils();
     ArrayList<String> URLS = new ArrayList<>();
-    RequestHandler request = new RequestHandler();
     Map<Integer, Response> RESPONSES = new HashMap<>();
     ArtistController controller = new ArtistController();
     GlobalConfigHandler handler = new GlobalConfigHandler();
@@ -46,9 +37,10 @@ public class SimilarArtists extends BaseUrls{
 
     @BeforeClass
     public void prepareEnv(){
-        GlobalConfigHandler.setLocalProps();
-        baseurl();
-        BASEURL = prop.getProperty("prec_baseurl").toString().trim();
+        // GlobalConfigHandler.setLocalProps();
+        // baseurl();
+        // BASEURL = prop.getProperty("prec_baseurl").toString().trim();
+        BASEURL = GlobalConfigHandler.baseurl();
         MAX_CALL = ArtistTd.artistIds.length-1;
     }
 
@@ -60,8 +52,11 @@ public class SimilarArtists extends BaseUrls{
     @Severity(SeverityLevel.BLOCKER)
     public void createGetRequestSimilarArtist(int artist_id){
         String url = controller.prepareUrl(0, BASEURL, artist_id);
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
         URLS.add(url);
-        Response response = request.createGetRequest(url);
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
         RESPONSES.put(API_CALL, response);
         if(API_CALL == (MAX_CALL-1)){
             Assert.assertEquals(RESPONSES.size(), MAX_CALL, "Error! responses not saved.");
