@@ -24,6 +24,7 @@ public class Endpoints {
     public static String SIMILAR_ALBUMS_ENTITY_INFO = "/recommendation/similarAlbumsEntityInfo/";
     public static String TAG_AFFINITY_30DAYS = "/tagaffinity30days?md5DeviceId=";
     public static String TRACK_RECOMMEND = "/track/recommend/";
+    public static String IS_EXISTING_DEVICE = "/isExistingDevice";
 
     /** Stream Info apis */
     public static String streamInfoEndpoint(String track_ids, String hashkey){

@@ -13,7 +13,6 @@ import config.v1.RequestHelper.ApiRequestTypes;
 import config.v1.RequestHelper.ContentTypes;
 import org.testng.asserts.SoftAssert;
 
-
 public class TrackRecommend {
     
     int API_CALL = 0;
@@ -21,7 +20,7 @@ public class TrackRecommend {
     String BASEURL = "";
     Helper helper = new Helper();
     GlobalConfigHandler handler = new GlobalConfigHandler();
-    private static Logger LOG = LoggerFactory.getLogger(Tagaffinity30days.class);
+    private static Logger LOG = LoggerFactory.getLogger(TrackRecommend.class);
     final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-45447";
     final static String REPROTING_FEATURE = "TrackRecommend content validations.";
 
@@ -37,7 +36,7 @@ public class TrackRecommend {
     @Feature(REPROTING_FEATURE)
     @Step("Prepare Urls for all requests which listed in RecomendedTrackTd file, and get response.")
     @Severity(SeverityLevel.NORMAL)
-    public void createRecoTrackReq(String track_id){
+    public void createTrackRecommendReq(String track_id){
         SoftAssert softAssert = new SoftAssert();
         int random_count = Helper.generateRandomNumber(1, 12);
         String url = BASEURL+Endpoints.TRACK_RECOMMEND+track_id+"/"+random_count;

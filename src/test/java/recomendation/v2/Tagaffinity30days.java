@@ -43,7 +43,7 @@ public class Tagaffinity30days {
     @Feature(REPROTING_FEATURE)
     @Step("Prepare Urls for all requests which listed in PodcastTd file, and get response.")
     @Severity(SeverityLevel.NORMAL)
-    public void createRecoTrackReq(String device_md5){
+    public void Tagaffinity30daysReq(String device_md5){
         String url = BASEURL+Endpoints.TAG_AFFINITY_30DAYS+device_md5;
         URLS.add(url);
         ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
@@ -63,7 +63,7 @@ public class Tagaffinity30days {
     @Feature(REPROTING_FEATURE)
     @Step("Validating response body using plane java object class.")
     @Severity(SeverityLevel.NORMAL)
-    public void validateRecommendedTrackResponseData(String device_md5){
+    public void validateTagaffinity30daysResponseData(String device_md5){
         SoftAssert softAssert = new SoftAssert();
         JSONObject response_object = helper.responseJSONObject(RESPONSES.get(API_CALL));
         Tagaffinity30daysPojo tagaffinity30days= new Gson().fromJson(response_object.toString(), Tagaffinity30daysPojo.class);
