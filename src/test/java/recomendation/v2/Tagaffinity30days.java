@@ -66,7 +66,7 @@ public class Tagaffinity30days {
     public void validateTagaffinity30daysResponseData(String device_md5){
         SoftAssert softAssert = new SoftAssert();
         JSONObject response_object = helper.responseJSONObject(RESPONSES.get(API_CALL));
-        Tagaffinity30daysPojo tagaffinity30days= new Gson().fromJson(response_object.toString(), Tagaffinity30daysPojo.class);
+        Tagaffinity30daysPojo tagaffinity30days = new Gson().fromJson(response_object.toString(), Tagaffinity30daysPojo.class);
 
         if(tagaffinity30days.getId() == null){
             boolean tagAffinityNotFound = tagaffinity30days.getTags() == null;

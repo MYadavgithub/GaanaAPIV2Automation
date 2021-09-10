@@ -39,9 +39,12 @@ public class Helper {
         return obj.getString(key).trim();
     }
 
-
     public JSONObject responseJSONObject(Response response){
         return new JSONObject(response.asString());
+    }
+
+    public JSONArray responseJSONArray(Response response){
+        return new JSONArray(response.asString());
     }
 
     public JSONArray getJSONArray(String url, String array_key, Response response){
