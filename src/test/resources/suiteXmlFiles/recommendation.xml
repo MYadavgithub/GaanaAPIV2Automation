@@ -125,6 +125,18 @@
 		</classes>
 	</test>
 
+	<test name="Recommended DailyMix" annotations="JDK" preserve-order="true">
+		<classes>
+            <class name="recomendation.v2.DailyMix" />
+		</classes>
+	</test>
+
+	<test name="Recommended WeeklyMix" annotations="JDK" preserve-order="true">
+		<classes>
+            <class name="recomendation.v2.WeeklyMix" />
+		</classes>
+	</test>
+
 	<test name="Recommended MadeForYou" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.v2.MadeForYou" />
