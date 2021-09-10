@@ -1,8 +1,9 @@
 package recomendation.device_language;
 import java.util.*;
+import org.apache.commons.lang3.StringUtils;
+import org.json.*;
 import org.slf4j.*;
 import pojo.*;
-import org.json.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import io.qameta.allure.*;
@@ -21,7 +22,7 @@ import logic_controller.DeviceLanguageController;
 /**
  * @author Umesh.Shukla
  */
-public class DeviceLanguage {
+public class DeviceLanguageUpdate {
     
     int API_CALL = 0;
     int MAX_CALL = 0;
@@ -32,32 +33,40 @@ public class DeviceLanguage {
     Map<Integer, Response> RESPONSES = new HashMap<>();
     GlobalConfigHandler handler = new GlobalConfigHandler();
     DeviceLanguageController controller = new DeviceLanguageController();
-    private static Logger LOG = LoggerFactory.getLogger(DeviceLanguage.class);
-    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-45473";
-    final static String REPROTING_FEATURE = "DeviceLanguage content validations.";
+    private static Logger LOG = LoggerFactory.getLogger(DeviceLanguageUpdate.class);
+    final static String JIRA_ID = "";
+    final static String REPROTING_FEATURE = "DeviceLanguageUpdate api content validations.";
 
     @BeforeClass
     public void prepareEnv(){
         BASEURL = GlobalConfigHandler.baseurl();
-        MAX_CALL = DeviceLangTd.DEVICE_IDS.length;
+        MAX_CALL = DeviceLangTd.languagesUpdateList().size();
     }
 
-    @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = DeviceLangTd.E_D_INVOCATION)
+    @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = DeviceLangTd.DLU_INVOCATION)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Story("Need to validate over-all API response, Status code, Response Time, Response Body Validation.")
     @Feature(REPROTING_FEATURE)
     @Step("Prepare Urls for all requests which listed in DeviceTd file, and get response.")
     @Severity(SeverityLevel.BLOCKER)
-    public void createDeviceLanguageCall(String device_id) {
-        device_id = utils.createUrlEncodedStr(device_id);
-        String url = BASEURL+Endpoints.DEVICE_LANGUAGE+device_id;
-        URLS.add(url);
+    public void createDeviceLanguageUpdateReq(String languges) {
         Map<String, String> headers = RequestHelper.getHeader(0);
-        headers.replace("deviceId", device_id);
+        String device_id = headers.get("deviceId");
+        String url = BASEURL+Endpoints.DEVICE_LANGUAGE_UPDATE+device_id+"&language="+languges;
+        URLS.add(url);
         ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
         ContentTypes contentType = RequestHelper.ContentTypes.JSON;
         RequestHandlerV1 request = new RequestHandlerV1();
-        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, headers, null, null);
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
+        String _deviceId = response.asString();
+        
+        if(!StringUtils.equals(_deviceId, device_id)){
+            LOG.error(this.getClass()+ " Update request device id not matched with response device id...");
+            Assert.assertEquals(_deviceId.equals(device_id), true);
+        }
+
+        String updated_language_check_url = BASEURL+Endpoints.DEVICE_LANGUAGE+device_id;
+        response = request.executeRequestAndGetResponse(updated_language_check_url, requestType, contentType, null, null, null);
         RESPONSES.put(API_CALL, response);
 
         if(API_CALL == MAX_CALL-1){
@@ -67,12 +76,12 @@ public class DeviceLanguage {
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = DeviceLangTd.E_D_INVOCATION)
+    @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = DeviceLangTd.DLU_INVOCATION)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
+    @Story("Detailed validation for DeviceLanguageUpdate response data.")
     @Feature(REPROTING_FEATURE)
-    @Step("Validating response body using plane java object class.")
-    @Severity(SeverityLevel.CRITICAL)
-    public void validateDeviceLanguageResponseData(String device_id){
+    @Severity(SeverityLevel.BLOCKER)
+    public void validateDeviceLanguageUpdate(String languges) {
         JSONObject response_object = helper.responseJSONObject(RESPONSES.get(API_CALL));
         try{
             JSONArray languageArray = response_object.getJSONArray("languageDetails");
@@ -80,27 +89,19 @@ public class DeviceLanguage {
             LanguageDetails languageDetails = new LanguageDetails(langEntity);
 
             int languge_size = languageDetails.getLanguageDetails().size();
-            for(int i = 0; i<languge_size; i++){
-                LanguageEntity language = languageDetails.getLanguageDetails().get(i);
-                if(language.getId() <= 0){
-                    LOG.error(this.getClass()+" languge id is not valid, please check for device_id : "+device_id+ " Url was "+URLS.get(API_CALL));
-                }
+            Assert.assertEquals(languge_size > 0, true);
 
-                if(language.getLanguage().length() <= 0){
-                    LOG.error(this.getClass()+" languge name is not valid, please check for device_id : "+device_id+ " Url was "+URLS.get(API_CALL));
-                }
-
-                if(language.getWeight() > 0 && language.getWeight() < 0){
-                    LOG.error(this.getClass()+" languge weight is not valid, please check for device_id : "+device_id+ " Url was "+URLS.get(API_CALL));
-                }
+            boolean isResponseValid = controller.validateUpdatedLanguageWithAssociatedLanguage(languges, languageDetails);
+            
+            if(!isResponseValid){
+                LOG.error(this.getClass()+ " DeviceLanguage api response is not valid Url was : "+URLS.get(API_CALL));
+                Assert.assertEquals(isResponseValid, true);
             }
         }catch(Exception e){
             // e.printStackTrace();
             Assert.assertEquals(response_object.get("languageDetails").toString().equals("null"), true);
-            LOG.warn(this.getClass()+" languge details got null for device id "+device_id+ " Url was "+URLS.get(API_CALL));
+            LOG.warn(this.getClass()+" language update request response got null for language :"+languges+ " Url was "+URLS.get(API_CALL));
         }
-        if(API_CALL == MAX_CALL-1)
-            LOG.info("DeviceLanguage api validated successfully.");
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
@@ -108,7 +109,7 @@ public class DeviceLanguage {
     public Object[][] DataProvider() {
         return new Object[][] { 
             {
-                DeviceLangTd.DEVICE_IDS[API_CALL]
+                DeviceLangTd.languagesUpdateList().get(API_CALL)
             }
         };
     }

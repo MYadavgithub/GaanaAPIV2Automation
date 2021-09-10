@@ -51,4 +51,34 @@ public class DeviceLangTd {
         }
         return associatedLanguages;
     }
+
+    /**
+     * Language Update TD
+     */
+    public final static int DLU_INVOCATION = 4;
+    public static ArrayList<String>languagesUpdateList(){
+        ArrayList<String> associatedLang = new ArrayList<>();
+        associatedLang.add("Random_Test");
+        associatedLang.add("English");
+        associatedLang.add("Hindi,Punjabi,English");
+        associatedLang.add("Haryanvi");
+        return associatedLang;
+    }
+
+    public static String[] langugeUpdateExLanguageDetails(String language){
+        String[] associatedLanguages = {};
+        Map<String, String[]> associatedLangs = new HashMap<>();
+        associatedLangs.put("Random_Test", new String [] {"Random_Test"});
+        associatedLangs.put("English", new String [] {"English", "Hindi", "Punjabi"});
+        associatedLangs.put("Hindi,Punjabi,English", new String [] {"Hindi", "Punjabi", "English"});
+        associatedLangs.put("Haryanvi", new String [] {"Haryanvi"});
+
+        for(Entry<String, String[]> aLang : associatedLangs.entrySet()){
+            if(aLang.getKey().trim().equals(language.trim())){
+                return aLang.getValue();
+            }
+        }
+        return associatedLanguages;
+    }
+
 }

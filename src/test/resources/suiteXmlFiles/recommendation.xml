@@ -101,6 +101,12 @@
 		</classes>
 	</test>
 
+	<test name="Recommended DeviceLanguageUpdate" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.device_language.DeviceLanguageUpdate" />
+		</classes>
+	</test>
+
 	<test name="Recommended DeviceTrackPlayouts" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.device_language.DeviceTrackPlayouts" />

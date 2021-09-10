@@ -116,4 +116,24 @@ public class DeviceLanguageController {
         }
         return deviceTrackPlayouts;
     }
+
+    /** ------------------- DeviceLanguageUpdate ------------------- */
+    public boolean validateUpdatedLanguageWithAssociatedLanguage(String languges, LanguageDetails languageDetails) {
+        boolean isLangPresent = false;
+        String [] expectedLanguages = DeviceLangTd.langugeUpdateExLanguageDetails(languges);
+
+        if(expectedLanguages.length == languageDetails.getLanguageDetails().size()){
+            for(String exLang : expectedLanguages){
+                int size_of_response = languageDetails.getLanguageDetails().size();
+                for(int i = 0; i<size_of_response; i++){
+                    String responseLang = languageDetails.getLanguageDetails().get(i).getLanguage();
+                    if(responseLang.equals(exLang)){
+                        isLangPresent = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return isLangPresent;
+    }
 }
