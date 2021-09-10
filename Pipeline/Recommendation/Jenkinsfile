@@ -28,13 +28,13 @@ pipeline {
     parameters
     {
         string(
-            defaultValue: 'release/sprint_24th_Aug_2021',
+            defaultValue: 'release/release/sprint_30th_Sep_2021',
             description: 'Provide branch for execution',
             name: 'branch',
             trim: true
         )
         string(
-            defaultValue: 'reco_regression.xml',
+            defaultValue: 'recommendation.xml',
             description: 'Enter your suite xml file which you want to execute.',
             name: 'suiteXmlFile',
             trim: true
