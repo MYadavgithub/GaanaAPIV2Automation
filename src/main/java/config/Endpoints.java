@@ -31,6 +31,7 @@ public class Endpoints {
     public static String ASSOCIATED_LANGUAGES = "/recommendation/associatedLanguages?languages=";
     public static String DAILY_MIX = "/dailyMix/";
     public static String WEEKLY_MIX = "/weeklyMix/";
+    public static String DEVICE_LANGUAGE_UPDATE = "/recommendation/deviceLanguageUpdate?deviceId=";
 
     /** Stream Info apis */
     public static String streamInfoEndpoint(String track_ids, String hashkey){
