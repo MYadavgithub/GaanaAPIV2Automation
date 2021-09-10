@@ -176,14 +176,14 @@ public class EmailableReportListener implements IReporter {
                 if(!include_groups.isEmpty()){
                     writeTableData(testResult.getIncludedGroups());
                 }else{
-                    writeTableData("Not Found");
+                    writeTableData("N/A");
                 }
 
                 String exclude_groups =  testResult.getExcludedGroups().toString().trim();
                 if(!exclude_groups.isEmpty()){
                     writeTableData(testResult.getExcludedGroups());
                 }else{
-                    writeTableData("Not Found");
+                    writeTableData("N/A");
                 }
                 
                 writer.println("</tr>");

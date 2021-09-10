@@ -1,31 +1,18 @@
-package recomendation.v2;
-import java.util.Map;
+package recomendation.device_language;
 import common.Headers;
 import common.Helper;
 import common.RequestHandler;
 import config.BaseUrls;
 import config.Endpoints;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import utils.CommonUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
+import org.json.*;
+import org.slf4j.*;
 import org.testng.Assert;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.Test;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import org.testng.annotations.*;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import test_data.MoodMixTd;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 
 public class DeviceConsumedLanguage extends BaseUrls {
     
