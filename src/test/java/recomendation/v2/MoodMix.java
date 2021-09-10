@@ -1,31 +1,19 @@
 package recomendation.v2;
-import java.util.Map;
+import java.util.*;
 import common.Helper;
 import config.BaseUrls;
 import config.Endpoints;
-import org.slf4j.Logger;
+import org.slf4j.*;
 import org.testng.Assert;
-import java.util.HashMap;
-import java.util.Iterator;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import test_data.MoodMixTd;
+import org.json.*;
 import java.util.ArrayList;
-import common.RequestHandler;
-import org.slf4j.LoggerFactory;
-import common.GlobalConfigHandler;
+import common.*;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
+import test_data.MixTd;
+import org.testng.annotations.*;
 
 public class MoodMix extends BaseUrls{
 
@@ -59,7 +47,7 @@ public class MoodMix extends BaseUrls{
     }
 
 
-    @Test(priority = 1, dataProvider = "urlProvider", invocationCount = MoodMixTd.INVOCATION_COUNT)
+    @Test(priority = 1, dataProvider = "urlProvider", invocationCount = MixTd.INVOCATION_COUNT)
     @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-40468")
     @Feature(REPROTING_FEATURE)
     @Story("Validate response time, status code, response body, title, entity type, and artworks.")
@@ -71,13 +59,13 @@ public class MoodMix extends BaseUrls{
         Response response = handler.createGetRequest(url);
         responses.put(api_call_count, response);
 
-        if(api_call_count == (MoodMixTd.INVOCATION_COUNT-1)){
-            Assert.assertEquals(responses.size(), MoodMixTd.INVOCATION_COUNT, "All Responses not captured please check manually!");
+        if(api_call_count == (MixTd.INVOCATION_COUNT-1)){
+            Assert.assertEquals(responses.size(), MixTd.INVOCATION_COUNT, "All Responses not captured please check manually!");
         }
         api_call_count = gHandler.invocationCounter(api_call_count, max_call);
     }
 
-    @Test(priority = 2, dataProvider = "urlProvider", invocationCount = MoodMixTd.INVOCATION_COUNT)
+    @Test(priority = 2, dataProvider = "urlProvider", invocationCount = MixTd.INVOCATION_COUNT)
     @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-40468")
     @Feature(REPROTING_FEATURE)
     @Description("Validate response body w.r.t. Title, subtitle, userType and artworks.")
@@ -185,7 +173,7 @@ public class MoodMix extends BaseUrls{
     }
 
     private void prepareUrls() {
-        int[] entity_ids = MoodMixTd.entity_ids;
+        int[] entity_ids = MixTd.entity_ids;
         max_call = entity_ids.length;
         // max_call = 1;
         // urls.add(baseurl+Endpoints.moodMix+"?deviceId="+device_id+"&entityId="+30);

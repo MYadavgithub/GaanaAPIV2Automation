@@ -29,6 +29,8 @@ public class Endpoints {
     public static String SIMILAR_TOP_SHOW = "/recommendation/SimilarTopShows/";
     public static String DEVICE_TRACK_PLAYOUTS = "/recommendation/DeviceTrackPlayouts?deviceId=";
     public static String ASSOCIATED_LANGUAGES = "/recommendation/associatedLanguages?languages=";
+    public static String DAILY_MIX = "/dailyMix/";
+    public static String WEEKLY_MIX = "/weeklyMix/";
 
     /** Stream Info apis */
     public static String streamInfoEndpoint(String track_ids, String hashkey){
