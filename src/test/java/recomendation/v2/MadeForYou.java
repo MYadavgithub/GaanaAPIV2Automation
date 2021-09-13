@@ -26,7 +26,7 @@ import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import logic_controller.MadeForYouController;
-import test_data.MoodMixTd;
+import test_data.MixTd;
 
 /**
  * @author umesh shukla
@@ -52,7 +52,7 @@ public class MadeForYou extends BaseUrls {
         URL = baseUrl + Endpoints.madeForYou;
     }
 
-    @Test(enabled = true, priority = 1, dataProvider = "urlProvider", invocationCount = MoodMixTd.MADE_FOR_YOU_INVOCATION)
+    @Test(enabled = true, priority = 1, dataProvider = "urlProvider", invocationCount = MixTd.MADE_FOR_YOU_INVOCATION)
     @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-41033")
     @Feature(REPROTING_FEATURE)
     @Story("Validate response time, status code, response body, track type, track-ids present or not, and artworks.")
@@ -63,12 +63,12 @@ public class MadeForYou extends BaseUrls {
         Response response;
         if(counter <= 1){
             Map<String, String> headers = Headers.getHeaders(0, null);
-            headers.replace("deviceId", MoodMixTd.device_ids[counter]);
+            headers.replace("deviceId", MixTd.device_ids[counter]);
             response = handler.createGetRequestWithCustomHeaders(url, headers);
             RESPONSES.put(counter, response);
         }else if(counter > 1){
             Map<String, String> headers = Headers.getHeaders(0, null);
-            headers.replace("deviceId", MoodMixTd.device_ids[counter]);
+            headers.replace("deviceId", MixTd.device_ids[counter]);
             if(counter == 3){
                 NEW_DEVICE_ID = CommonUtils.generateRandomDeviceId();
                 headers.replace("deviceId", NEW_DEVICE_ID);
@@ -89,7 +89,7 @@ public class MadeForYou extends BaseUrls {
         }
     }
 
-    @Test(enabled = true, priority = 2, dataProvider = "urlProvider", invocationCount = MoodMixTd.MADE_FOR_YOU_INVOCATION)
+    @Test(enabled = true, priority = 2, dataProvider = "urlProvider", invocationCount = MixTd.MADE_FOR_YOU_INVOCATION)
     @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-41033")
     @Feature(REPROTING_FEATURE)
     @Description("Validate user type values")
@@ -97,13 +97,13 @@ public class MadeForYou extends BaseUrls {
     public void validateUsertype(String url, int count){
         JSONObject responseObject = new JSONObject(RESPONSES.get(counter).asString());
         String user_type = responseObject.optString("userType").toString().trim();
-        if(counter <= 1 && user_type.equalsIgnoreCase(MoodMixTd.expectedUserType[0])){
-            log.info("Device id : "+MoodMixTd.device_ids[counter]+ " is registered user.");
-        }else if(counter > 1 && user_type.equalsIgnoreCase(MoodMixTd.expectedUserType[1])){
+        if(counter <= 1 && user_type.equalsIgnoreCase(MixTd.expectedUserType[0])){
+            log.info("Device id : "+MixTd.device_ids[counter]+ " is registered user.");
+        }else if(counter > 1 && user_type.equalsIgnoreCase(MixTd.expectedUserType[1])){
             if(counter == 3){
                 log.info("Device id : "+NEW_DEVICE_ID+ " is new user.");
             }else{
-                log.info("Device id : "+MoodMixTd.device_ids[counter]+ " is new user.");
+                log.info("Device id : "+MixTd.device_ids[counter]+ " is new user.");
             }
         }else{
             log.error("User Type value unexpected in response body! Value got for user type is : "+user_type);
@@ -112,7 +112,7 @@ public class MadeForYou extends BaseUrls {
         counter = controller.resetCounter(counter);
     }
 
-    @Test(enabled = true, priority = 3, dataProvider = "urlProvider", invocationCount = MoodMixTd.MADE_FOR_YOU_INVOCATION)
+    @Test(enabled = true, priority = 3, dataProvider = "urlProvider", invocationCount = MixTd.MADE_FOR_YOU_INVOCATION)
     @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-41033")
     @Feature(REPROTING_FEATURE)
     @Description("Validating response on basis of registred and not registred devices.")
@@ -126,7 +126,7 @@ public class MadeForYou extends BaseUrls {
         JSONArray response = responseObject.getJSONArray("vplMix");
 
         if(counter <= 2){
-            isMadeForYouValidated = controller.genricVplValidation(flag, user_type, response, MoodMixTd.device_ids[counter]);
+            isMadeForYouValidated = controller.genricVplValidation(flag, user_type, response, MixTd.device_ids[counter]);
         }else {
             isMadeForYouValidated = controller.genricVplValidation(flag, user_type, response, NEW_DEVICE_ID);
         }
@@ -149,7 +149,7 @@ public class MadeForYou extends BaseUrls {
         }*/
     }
 
-    @Test(enabled = true, priority = 4, dataProvider = "urlProvider", invocationCount = MoodMixTd.MADE_FOR_YOU_INVOCATION)
+    @Test(enabled = true, priority = 4, dataProvider = "urlProvider", invocationCount = MixTd.MADE_FOR_YOU_INVOCATION)
     @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-41033")
     @Feature(REPROTING_FEATURE)
     @Description("Validating trackIds and trackType for user type in response.")
@@ -162,7 +162,7 @@ public class MadeForYou extends BaseUrls {
         JSONArray response = responseObject.getJSONArray("vplMix");
 
         if(counter <= 2){
-            isTrackIdsValid = controller.genricVplValidation(flag, user_type, response, MoodMixTd.device_ids[counter]);
+            isTrackIdsValid = controller.genricVplValidation(flag, user_type, response, MixTd.device_ids[counter]);
         }else {
             isTrackIdsValid = controller.genricVplValidation(flag, user_type, response, NEW_DEVICE_ID);
         }
@@ -175,7 +175,7 @@ public class MadeForYou extends BaseUrls {
         }
     }
 
-    @Test(enabled = true, priority = 5, dataProvider = "urlProvider", invocationCount = MoodMixTd.MADE_FOR_YOU_INVOCATION)
+    @Test(enabled = true, priority = 5, dataProvider = "urlProvider", invocationCount = MixTd.MADE_FOR_YOU_INVOCATION)
     @Link(name =  "Jira Task Id", value = "https://timesgroup.jira.com/browse/GAANA-41033")
     @Feature(REPROTING_FEATURE)
     @Description("Validating sourceId for Artist and Tag in response.")
@@ -188,7 +188,7 @@ public class MadeForYou extends BaseUrls {
         JSONArray response = responseObject.getJSONArray("vplMix");
 
         if(counter <= 2){
-            isSourceIdValid = controller.genricVplValidation(flag, user_type, response, MoodMixTd.device_ids[counter]);
+            isSourceIdValid = controller.genricVplValidation(flag, user_type, response, MixTd.device_ids[counter]);
         }else {
             isSourceIdValid = controller.genricVplValidation(flag, user_type, response, NEW_DEVICE_ID);
         }
