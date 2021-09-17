@@ -126,7 +126,7 @@ pipeline {
                     body: ''' ${SCRIPT, template="groovy-html.template"}<br>
                     <b>Best Regards,</b><br>
                     <i>Umesh Shukla<br>
-                    QA GGM Noida</i></b>''',
+                    QA GGL Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true
                 }else{
@@ -145,7 +145,7 @@ pipeline {
                     ${SCRIPT, template="groovy-html.template"}<br>
                     <b>Best Regards,</b><br>
                     <i>Umesh Shukla<br>
-                    QA GGM Noida</i></b>''',
+                    QA GGL Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true,
                     attachmentsPattern: '**/Reports/*ExtentReport.html'
