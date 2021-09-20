@@ -143,7 +143,11 @@ public class EmailableReportListener implements IReporter {
         int testIndex = 0;
         for(SuiteResult suiteResult : suiteResults) {
             writer.print("<tr><th colspan=\"9\" style=\"border: 1px solid #dee2e6;\">");
-            writer.println("<center><h5><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) + " for "+CommonUtils.getDeviceTypeForReports()+" device"+"<I><b></h6></center>");
+            if(GlobalConfigHandler.getType().equals(Constants.API_TYPE_STREAM)){
+                writer.println("<center><h5><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName())+"<I><b></h6></center>");
+            }else{
+                writer.println("<center><h5><b><I>"+ Utils.escapeHtml(suiteResult.getSuiteName()) + " for "+CommonUtils.getDeviceTypeForReports()+" device"+"<I><b></h6></center>");
+            }
             writer.println("</th></tr>");
 
             for (TestResult testResult : suiteResult.getTestResults()) {

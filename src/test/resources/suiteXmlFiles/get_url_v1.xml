@@ -8,12 +8,84 @@
 		<listener class-name="utils.EmailableReportListener" />
 		<listener class-name="utils.RetryTransformListener" />
 		<!-- <listener class-name="utils.AllureListener" /> -->
-		<listener class-name="utils.SuiteListener" />
+		<!-- <listener class-name="utils.SuiteListener" /> -->
 	</listeners>
 
-	<test name="Streaming StreamInfo" annotations="JDK" preserve-order="true">
-		<parameter name = "consumer" value="android"/>
-		
+	<test name="GetUrlV1 AndroidApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaAndroidApp"/>
+
+		<classes>
+			<class name="stream.GetUrlV1" />
+		</classes>
+	</test>
+
+	<test name="GetUrlV1 IPhoneApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaIphoneApp"/>
+
+		<classes>
+			<class name="stream.GetUrlV1" />
+		</classes>
+	</test>
+
+	<test name="GetUrlV1 MxPlayerApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaMxplayerApp"/>
+
+		<classes>
+			<class name="stream.GetUrlV1" />
+		</classes>
+	</test>
+
+	<test name="GetUrlV1 BoschApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaBoschApp"/>
+
+		<classes>
+			<class name="stream.GetUrlV1" />
+		</classes>
+	</test>
+
+	<test name="GetUrlV1 MikoApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaMikoApp"/>
+
+		<classes>
+			<class name="stream.GetUrlV1" />
+		</classes>
+	</test>
+
+	<test name="GetUrlV1 GreatwallMotorsApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaGreatwallmotorsApp"/>
+
+		<classes>
+			<class name="stream.GetUrlV1" />
+		</classes>
+	</test>
+
+	<test name="GetUrlV1 SamsungFridgeApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaSamsungfridgeApp"/>
+
+		<classes>
+			<class name="stream.GetUrlV1" />
+		</classes>
+	</test>
+
+	<test name="GetUrlV1 FaureciaAptoideApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaFaureciaaptoideApp"/>
+
+		<classes>
+			<class name="stream.GetUrlV1" />
+		</classes>
+	</test>
+
+	<test name="GetUrlV1 GaanaWapApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaWapApp"/>
+
+		<classes>
+			<class name="stream.GetUrlV1" />
+		</classes>
+	</test>
+
+	<test name="GetUrlV1 GaanaWebsiteApp" annotations="JDK" preserve-order="true">
+		<parameter name = "consumer" value="GaanaWebsiteApp"/>
+
 		<classes>
 			<class name="stream.GetUrlV1" />
 		</classes>
