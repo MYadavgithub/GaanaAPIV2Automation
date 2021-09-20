@@ -32,9 +32,10 @@ public class RecomendedTrackTd {
     }
 
     /**
-     * RecommendedTrackIds Test Data
+     * Track Recommended Test Data
      */
 
-    public static String track_ids [] = {"722863", "722878"};
-    public final static int T_IDS_INVOCATION = 2; // based on length of track_ids
+    public static String TRACK_IDS [] = {"722863", "722878"};
+    public final static int T_RECOMMEND_INVOCATION = 2;
+
 }

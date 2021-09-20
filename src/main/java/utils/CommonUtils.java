@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.json.JSONObject;
 import org.slf4j.*;
+import org.springframework.util.DigestUtils;
 import common.GlobalConfigHandler;
 import config.Constants;
 import io.restassured.response.Response;
@@ -23,6 +24,10 @@ public class CommonUtils {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy:HH.mm.ss");
 		return formatter.format(currentDate.getTime());
     }
+
+    public static String md5(final String data) {
+		return DigestUtils.md5DigestAsHex(data.getBytes()).toLowerCase();
+	}
 
     public JSONObject converResponseToJSONObject(Response response){
         JSONObject obj = new JSONObject(response.asString());

@@ -1,31 +1,18 @@
-package recomendation.v2;
-import java.util.Map;
+package recomendation.device_language;
 import common.Headers;
 import common.Helper;
 import common.RequestHandler;
 import config.BaseUrls;
 import config.Endpoints;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import utils.CommonUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.slf4j.Logger;
+import org.json.*;
+import org.slf4j.*;
 import org.testng.Assert;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.Test;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import org.testng.annotations.*;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
-import test_data.MoodMixTd;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
+import test_data.MixTd;
 
 public class DeviceConsumedLanguage extends BaseUrls {
     
@@ -49,7 +36,7 @@ public class DeviceConsumedLanguage extends BaseUrls {
         createUrls();
     }
 
-    @Test(priority = 1, dataProvider = "urlProvider", invocationCount = MoodMixTd.DEVICE_CONSUMED_INVOCATION_COUNT)
+    @Test(priority = 1, dataProvider = "urlProvider", invocationCount = MixTd.DEVICE_CONSUMED_INVOCATION_COUNT)
     @Link(name = "Jira Id", url = "https://timesgroup.jira.com/browse/GAANA-41034")
     @Feature(REPROTING_FEATURE)
     @Story("Validate response time, status code, response body mainly lanuguage and language_id")
@@ -73,7 +60,7 @@ public class DeviceConsumedLanguage extends BaseUrls {
         }
     }
 
-    @Test(priority = 2, dataProvider = "urlProvider", invocationCount = MoodMixTd.DEVICE_CONSUMED_INVOCATION_COUNT)
+    @Test(priority = 2, dataProvider = "urlProvider", invocationCount = MixTd.DEVICE_CONSUMED_INVOCATION_COUNT)
     @Link(name = "Jira Id", url = "https://timesgroup.jira.com/browse/GAANA-41034")
     @Feature(REPROTING_FEATURE)
     @Description("Validating language details data with registered and not registred device ids.")
@@ -86,7 +73,7 @@ public class DeviceConsumedLanguage extends BaseUrls {
             if(languageDetails.length() > 0){
                 for(int i = 0; i<languageDetails.length(); i++){
                     JSONObject language = languageDetails.getJSONObject(i);
-                    boolean isKeyValidated = validatekeys(MoodMixTd.exKeysDeviceConsumedLanguage(), helper.keys(language));
+                    boolean isKeyValidated = validatekeys(MixTd.exKeysDeviceConsumedLanguage(), helper.keys(language));
                     if(isKeyValidated){
                         int id = Integer.parseInt(language.optString("id").toString().trim());
                         String language_name = language.optString("language").toString().trim();
@@ -114,7 +101,7 @@ public class DeviceConsumedLanguage extends BaseUrls {
     }
 
     private void createUrls(){
-        for(int i = 0; i<MoodMixTd.DEVICE_CONSUMED_INVOCATION_COUNT; i++){
+        for(int i = 0; i<MixTd.DEVICE_CONSUMED_INVOCATION_COUNT; i++){
             if(i == 0){
                 String device_id = prop.getProperty("deviceId").toString().trim();
                 String url = BASEURL+Endpoints.deviceConsumedLanguage+device_id;

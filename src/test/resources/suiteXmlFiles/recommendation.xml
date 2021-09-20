@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Recommendation Daily Test Suite" verbose="1" parallel="tests" thread-count="1" configfailurepolicy="continue">
+
+    <listeners>
+		<listener class-name="utils.ExtentManagerListener" />
+		<listener class-name="utils.EmailableReportListener" />
+		<listener class-name="utils.RetryTransformListener" />
+		<listener class-name="utils.AllureListener" />
+		<listener class-name="utils.SuiteListener" />
+	</listeners>
+
+	<test name="Autoqueue RecommendationSongs" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedSongs" />
+		</classes>
+	</test>
+
+	<test name="Recommended RecommendedTrackIds" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTrackIds" />
+		</classes>
+	</test>
+
+	<test name="Autoqueue RecommendationTracks" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracks" />
+		</classes>
+	</test>
+
+	<test name="Recommended RecommendedTracksAQ" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracksAQ" />
+		</classes>
+	</test>
+
+	<test name="Autoqueue RecommendationTracksPost" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.RecommendedTracksPost" />
+		</classes>
+	</test>
+
+	<test name="Recommended SimilarTrackGeneric" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.SimilarTrackGeneric" />
+		</classes>
+	</test>
+
+	<test name="Autoqueue SimilarTracksRecentyPlayed" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.SimilarTracksRecentyPlayed" />
+		</classes>
+	</test>
+
+	<test name="Recommended SimilarAlbums" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.album.SimilarAlbums" />
+		</classes>
+	</test>
+
+	<test name="Recommended SimilarAlbumsEntityInfo" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.album.SimilarAlbumsEntityInfo" />
+		</classes>
+	</test>
+
+	<test name="Recommended SimilarTopShow" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.album.SimilarTopShow" />
+		</classes>
+	</test>
+
+	<test name="Recommended SimilarArtists" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.artist.SimilarArtists" />
+		</classes>
+	</test>
+
+	<test name="Recommended SimilarArtistEntityInfo" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.artist.SimilarArtistEntityInfo" />
+		</classes>
+	</test>
+
+	<test name="Recommended AssociatedLanguage" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.device_language.AssociatedLanguage" />
+		</classes>
+	</test>
+
+	<test name="Recommended DeviceConsumedLanguage" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.device_language.DeviceConsumedLanguage" />
+		</classes>
+	</test>
+
+	<test name="Recommended DeviceLanguage" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.device_language.DeviceLanguage" />
+		</classes>
+	</test>
+
+	<test name="Recommended DeviceLanguageUpdate" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.device_language.DeviceLanguageUpdate" />
+		</classes>
+	</test>
+
+	<test name="Recommended DeviceTrackPlayouts" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.device_language.DeviceTrackPlayouts" />
+		</classes>
+	</test>
+
+	<test name="Recommended ExistingDevice" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.device_language.ExistingDevice" />
+		</classes>
+	</test>
+
+	<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.podcast.PodcatForYou" />
+		</classes>
+	</test>
+
+	<test name="Search Feed" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.reco_tracks.SearchFeed" />
+		</classes>
+	</test>
+
+	<test name="Recommended DailyMix" annotations="JDK" preserve-order="true">
+		<classes>
+            <class name="recomendation.v2.DailyMix" />
+		</classes>
+	</test>
+
+	<test name="Recommended WeeklyMix" annotations="JDK" preserve-order="true">
+		<classes>
+            <class name="recomendation.v2.WeeklyMix" />
+		</classes>
+	</test>
+
+	<test name="Recommended MadeForYou" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.v2.MadeForYou" />
+		</classes>
+	</test>
+
+	<test name="Recommended MoodMix" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.v2.MoodMix" />
+		</classes>
+	</test>
+
+    <test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.v2.Tagaffinity30days" />
+		</classes>
+	</test>
+
+    <test name="Recommended TrackRecommend" annotations="JDK" preserve-order="true">
+		<classes>
+            <class name="recomendation.v2.TrackRecommend" />
+		</classes>
+	</test>
+
+</suite>

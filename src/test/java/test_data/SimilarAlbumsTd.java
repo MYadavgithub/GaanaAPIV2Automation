@@ -16,4 +16,10 @@ public class SimilarAlbumsTd {
     public static String SKIPLIST [] = {"generic_entity_info"};
     public static String ARTWORK_TYPES [] = {"atw", "artwork", "artwork_medium"};
 
+    /**
+     * Similar top show ids
+     */
+    public final static int STS_INVOCATION = 5;
+    public static int STS_SHOW_IDS []  = {67, 68, 69, 1627, 1628};
+
 }

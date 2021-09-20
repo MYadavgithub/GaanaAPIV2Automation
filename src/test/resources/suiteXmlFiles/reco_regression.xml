@@ -94,7 +94,15 @@
 	<test name="Recommended DeviceConsumedLanguage" annotations="JDK" preserve-order="true">
 
 		<classes>
-			<class name="recomendation.v2.DeviceConsumedLanguage" />
+			<class name="recomendation.device_language.DeviceConsumedLanguage" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended ExistingDevice" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.device_language.ExistingDevice" />
 		</classes>
 
 	</test>
@@ -182,5 +190,21 @@
 		</classes>
 
 	</test> -->
+
+	<test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.v2.Tagaffinity30days" />
+		</classes>
+
+	</test>
+
+	<test name="Recommended TrackRecommend" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="recomendation.v2.TrackRecommend" />
+		</classes>
+
+	</test>
 
 </suite>

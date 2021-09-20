@@ -1,33 +1,30 @@
 package common;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.net.*;
+import java.util.*;
 import java.util.stream.Collectors;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 import org.testng.Assert;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-
 
 public class Helper {
 
     int resCode = 200;
     HttpURLConnection uc = null;
     private static Logger log = LoggerFactory.getLogger(Helper.class);
-    
+
+    public static int generateRandomNumber(int minimum, int maximum){
+        Random rn = new Random();
+        int range = (maximum-(minimum + 1));
+        return rn.nextInt(range) + minimum;
+    }
+
     /**
      * Get All keys in one Json object.
      * @param val
@@ -42,9 +39,12 @@ public class Helper {
         return obj.getString(key).trim();
     }
 
-
     public JSONObject responseJSONObject(Response response){
         return new JSONObject(response.asString());
+    }
+
+    public JSONArray responseJSONArray(Response response){
+        return new JSONArray(response.asString());
     }
 
     public JSONArray getJSONArray(String url, String array_key, Response response){

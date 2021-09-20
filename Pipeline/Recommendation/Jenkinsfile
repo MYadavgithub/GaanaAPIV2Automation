@@ -12,14 +12,15 @@ pipeline {
     }
 
     triggers {
-        cron('30 09 * * *')
+        // cron('30 09 * * *')
+        cron('0 */4 * * *') // shifted to every four hours.
     }
 
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
-        def emailTo = "manish.pandey@gaana.com, ajay.malhotra@timesinternet.in, qa.gaana@timesinternet.in"
-        def abortedTo = "manish.pandey@gaana.com, umesh.shukla@gaana.com"
+        def emailTo = "manish.pandey@gaana.com, qa.gaana@timesinternet.in"
+        def abortedTo = "manish.pandey@gaana.com, ajay.malhotra@timesinternet.in, umesh.shukla@gaana.com"
         def replyTo = "umesh.shukla@gaana.com"
         def emailSub = "TIP | Recommendation | Daily Regression Test Suite | "
         def dateTime = new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
@@ -28,13 +29,13 @@ pipeline {
     parameters
     {
         string(
-            defaultValue: 'release/sprint_24th_Aug_2021',
+            defaultValue: 'release/release/sprint_30th_Sep_2021',
             description: 'Provide branch for execution',
             name: 'branch',
             trim: true
         )
         string(
-            defaultValue: 'reco_regression.xml',
+            defaultValue: 'recommendation.xml',
             description: 'Enter your suite xml file which you want to execute.',
             name: 'suiteXmlFile',
             trim: true
@@ -132,7 +133,7 @@ pipeline {
                     body: ''' ${SCRIPT, template="groovy-html.template"}<br>
                     <b>Best Regards,</b><br>
                     <i>Umesh Shukla<br>
-                    QA GGM Noida</i></b>''',
+                    QA GGL Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true
                 }else{
@@ -151,7 +152,7 @@ pipeline {
                     ${SCRIPT, template="groovy-html.template"}<br>
                     <b>Best Regards,</b><br>
                     <i>Umesh Shukla<br>
-                    QA GGM Noida</i></b>''',
+                    QA GGL Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true,
                     attachmentsPattern: '**/Reports/*ExtentReport.html'
