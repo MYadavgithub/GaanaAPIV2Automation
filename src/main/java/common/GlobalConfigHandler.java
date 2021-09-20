@@ -13,9 +13,9 @@ public class GlobalConfigHandler {
      * Only for Local debugging
      */
     public static void setLocalProps(){
-        // System.setProperty("env", "local");
-        // System.setProperty("type", "Reco");
-        // System.setProperty("device_type", "android");
+        System.setProperty("env", "local");
+        System.setProperty("type", "Stream");
+        System.setProperty("device_type", "android");
     }
 
     /**
@@ -83,6 +83,8 @@ public class GlobalConfigHandler {
                 type = Constants.API_TYPE_LIVE_SEARCH;
             }else if (env.equalsIgnoreCase("Reco")) {
                 type = Constants.API_TYPE_RECO;
+            }else if(env.equalsIgnoreCase("Stream")){
+                type = Constants.API_TYPE_STREAM;
             }
         } else {
             type = null;
@@ -94,21 +96,22 @@ public class GlobalConfigHandler {
      * Get Device Type default value android.
      */
     public static int getDeviceType() {
-        String env = System.getProperty("device_type");
-        if (env != null) {
-            if (env.equalsIgnoreCase(Constants.ANDROID)) {
+        String device_type = System.getProperty("device_type");
+
+        if (device_type != null) {
+            if(device_type.equalsIgnoreCase(Constants.ANDROID)) {
                 return 0;
-            } else if (env.equalsIgnoreCase(Constants.IOS)) {
+            }else if (device_type.equalsIgnoreCase(Constants.IOS)) {
                 return 1;
-            } else if (env.equalsIgnoreCase(Constants.Bosch)) {
+            }else if (device_type.equalsIgnoreCase(Constants.Bosch)) {
                 return 2;
-            } else if (env.equalsIgnoreCase(Constants.GreatWall)) {
+            }else if (device_type.equalsIgnoreCase(Constants.GreatWall)) {
                 return 3;
-            } else if (env.equalsIgnoreCase(Constants.SamsungFridge)) {
+            }else if (device_type.equalsIgnoreCase(Constants.SamsungFridge)) {
                 return 4;
-            } else if (env.equalsIgnoreCase(Constants.GaanaWapApp)) {
+            }else if (device_type.equalsIgnoreCase(Constants.GaanaWapApp)) {
                 return 5;
-            } else if (env.equalsIgnoreCase(Constants.GaanaWebsiteApp)) {
+            }else if (device_type.equalsIgnoreCase(Constants.GaanaWebsiteApp)) {
                 return 6;
             }
         }

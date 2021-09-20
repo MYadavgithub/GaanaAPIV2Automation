@@ -46,7 +46,13 @@ public class GetProp {
     public static String dburl;
     public static String dbuser;
     public static String dbpwd;
-    public static String pstream_baseurl;
+    public static String stream_baseurl;
+    public static String deviceType;
+    public static String recoBaseurl;
+    public static String deviceTypeMx;
+    public static String gaanaAppVersionMx;
+    public static String deviceTypeMiko;
+    public static String deviceTypeGFA;
 
     public GetProp() {
         super();
@@ -82,6 +88,20 @@ public class GetProp {
 
             return prop;
         }
+        else if(type.equalsIgnoreCase(Constants.API_TYPE_STREAM)){
+            if(env.equals(Constants.STAGE_ENV)){
+                prop = FileActions.readProp("local.properties");
+            }
+            else if(env.equals(Constants.PRE_PROD_ENV)){
+                prop = FileActions.readProp("preprod.properties");
+            }
+            else if(env.equals(Constants.PROD_ENV)){
+                prop = FileActions.readProp("prod.properties");
+            }
+
+            return prop;
+        }
+
         return null;
     }
 
@@ -90,6 +110,8 @@ public class GetProp {
             return prop.getProperty("search_baseurl").toString().trim();
         }else if(GlobalConfigHandler.getType().equals(Constants.API_TYPE_LIVE_SEARCH)){
             return prop.getProperty("search_live_url").toString().trim();
+        }else if(GlobalConfigHandler.getType().equals(Constants.API_TYPE_STREAM)){
+            return getStreamBaseurl().toString().trim();
         }else if(GlobalConfigHandler.getType().equals(Constants.API_TYPE_RECO)){
             String baseurl = "";
             if(prop != null){
@@ -250,7 +272,31 @@ public class GetProp {
         return prop.getProperty("dbpwd").toString().trim();
     }
 
-    public String getPstream_baseurl() {
-        return prop.getProperty("pstream-baseurl").toString().trim();
+    public String getStreamBaseurl() {
+        return prop.getProperty("stream_baseurl").toString().trim();
+    }
+
+    public String [] getDeviceType() {
+        return prop.getProperty("device_type").toString().trim().replaceAll(" ", "").split(",");
+    }
+
+    public String getRecoBaseUrl(){
+        return prop.getProperty("reco_baseurl").toString().trim();
+    }
+
+    public String getDeviceTypeMx() {
+        return prop.getProperty("deviceTypeMx").toString().trim();
+    }
+
+    public String getGaanaAppVersionMx() {
+        return prop.getProperty("gaanaAppVersionMx").toString().trim();
+    }
+
+    public String getDeviceTypeMiko() {
+        return prop.getProperty("deviceTypeMiko").toString().trim();
+    }
+
+    public String getDeviceTypeGFA() {
+        return prop.getProperty("deviceTypeGFA").toString().trim();
     }
 }

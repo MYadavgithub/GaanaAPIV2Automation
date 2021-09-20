@@ -7,12 +7,17 @@ public class Constants{
     public static int RESPONSE_TIME = 2;
     public static String CUSTOM_REPORT_FOLDER = "/Reports";
 
-    /**Device Types (0 to 6)*/
+    /**Device Types (0 to 11)*/
     public static String ANDROID = "Android";
     public static String IOS = "Ios";
+    public static String MXPLAYER = "MxApp";
     public static String Bosch = "Bosch";
+    public static String MIKO = "Miko";
     public static String GreatWall = "GreatWall";
     public static String SamsungFridge = "SamsungFridge";
+    public static String HOMEPOD = "HomePod";
+    public static String PodcasterApp = "PodcasterApp";
+    public static String GaanaFaureciaAptoideApp = "GFAApp";
     public static String GaanaWapApp = "WapApp";
     public static String GaanaWebsiteApp = "WebApp";
 
@@ -20,6 +25,7 @@ public class Constants{
     public static String API_TYPE_SEARCH = "Search";
     public static String API_TYPE_LIVE_SEARCH = "Search_Live"; // only to get live base url
     public static String API_TYPE_RECO = "Reco";
+    public static String API_TYPE_STREAM = "Stream";
 
     /** Env Type */
     public static String STAGE_ENV = "local";
