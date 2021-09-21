@@ -145,7 +145,7 @@ public class GetUrlV1 {
                         url = prop.getPortalXurl().trim()+Endpoints.WEB_STREAM_DECRYPT+savedStreamUrls[i];
                     }else{
                         if(GlobalConfigHandler.getEnv().equals(Constants.PROD_ENV)){
-                            url = prop.getPortalXurl()+Endpoints.APP_STREAM_DECRYPT+savedStreamUrls[i];
+                            url = prop.getStreamStageUrl()+Endpoints.APP_STREAM_DECRYPT+savedStreamUrls[i];
                         }else{
                             url = BASEURL+Endpoints.APP_STREAM_DECRYPT+savedStreamUrls[i];
                         }
