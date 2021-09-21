@@ -3,12 +3,6 @@
 
 <suite name="StreamInfo Test Suite" verbose="1" parallel="tests" thread-count="1" configfailurepolicy="continue">
 
-    <listeners>
-		<listener class-name="utils.ExtentManagerListener" />
-		<listener class-name="utils.EmailableReportListener" />
-		<listener class-name="utils.RetryTransformListener" />
-	</listeners>
-
 	<test name="StreamInfo AndroidApp" annotations="JDK" preserve-order="true">
 		<parameter name = "consumer" value="GaanaAndroidApp"/>
 
