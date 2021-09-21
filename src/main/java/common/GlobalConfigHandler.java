@@ -13,9 +13,9 @@ public class GlobalConfigHandler {
      * Only for Local debugging
      */
     public static void setLocalProps(){
-        System.setProperty("env", "local");
-        System.setProperty("type", "Stream");
-        System.setProperty("device_type", "android");
+        // System.setProperty("env", "local");
+        // System.setProperty("type", "Stream");
+        // System.setProperty("device_type", "android");
     }
 
     /**
