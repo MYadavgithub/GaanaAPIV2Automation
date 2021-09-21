@@ -1,8 +1,9 @@
 package stream;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.*;
@@ -17,11 +18,25 @@ import config.v1.RequestHelper.ApiRequestTypes;
 import config.v1.RequestHelper.ContentTypes;
 import io.restassured.response.Response;
 import stream.stream_pojo.GetUrlV1Response;
+import stream.stream_pojo.StreamInfoResponse;
+import stream.stream_pojo.StreamUrlDetails;
+
+ /**
+ * @author [umesh.shukla]
+ * @email [umesh.shukla@gaana.com]
+ * @create date 2021-09-20 19:36:23
+ * @modify date 2021-09-20 19:36:23
+ * @desc [description]
+ */
 
 public class StreamHelper {
 
     private static String filter_type = "Track";
     private static Logger LOGGER = LoggerFactory.getLogger(StreamHelper.class);
+
+    public static String convertIntArrayToString(int [] arr){
+        return Arrays.toString(arr).replaceAll(" ", "").trim().replaceAll("\\[|\\]", "");
+    }
     
     public static int[] getTrackIdsFromSearchFeed(GetProp prop, int tracks_required){
         int count = 0;
@@ -91,5 +106,29 @@ public class StreamHelper {
         RequestHandlerV1 request = new RequestHandlerV1();
         Response response = request.executeRequestAndGetResponse(url, requestType, contentType, headers, null, null);
         return response.asString().trim();
+    }
+
+    public static Map<String, String[]> getStreamInfoResponse(String url, Map<String, String> headers) {
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, headers, null, null);
+        try{
+            StreamInfoResponse streamInfoResponse = response.as(StreamInfoResponse.class);
+            if(streamInfoResponse.getStatus() == 1 && streamInfoResponse.getMessage().equals("success")){
+                Map<String, String[]> stream_urls = new HashMap<>();
+                for(StreamUrlDetails track_details : streamInfoResponse.getStreamingDetails()){
+                    String track_id = track_details.getTrackId();
+                    String stream_url = track_details.getStreamUrl().trim();
+                    String expiry = track_details.getExpiryTime().trim();
+                    stream_urls.put(track_id, new String[]{stream_url, expiry});
+                }
+                return stream_urls;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            LOGGER.error("Error => "+response.asString());
+        }
+        return null;
     }
 }

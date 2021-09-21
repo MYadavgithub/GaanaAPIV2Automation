@@ -27,7 +27,13 @@ public class Token {
         return token;
     }
 
-    public static String hashcodeIds(String baseurl, String [] ids){
-        return null;
+    public static String hashcodeIds(String baseurl, Map<String, String> headers, String ids){
+        String url = baseurl+Endpoints.TRACKIDS_ENDPOINT_HASHCODE+ids;
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ContentTypes contentType = RequestHelper.ContentTypes.JSON;
+        RequestHandlerV1 request = new RequestHandlerV1();
+        Response response = request.executeRequestAndGetResponse(url, requestType, contentType, headers, null, null);
+        String token = response.asString().trim();
+        return token;
     }
 }
