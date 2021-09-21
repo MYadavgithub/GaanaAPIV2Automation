@@ -7,6 +7,7 @@ import org.testng.annotations.*;
 import org.testng.annotations.Optional;
 import common.GlobalConfigHandler;
 import common.Helper;
+import config.Constants;
 import config.Endpoints;
 import config.enums.DeviceType;
 import config.v1.GetProp;
@@ -45,7 +46,12 @@ public class StreamInfo {
     public void generateHashCodes(@Optional("GaanaAndroidApp") String device_type) {
         DeviceType deviceType = DeviceType.valueDeviceType(device_type);
         Map<String, String> headers = RequestHelper.getHeaders(0, deviceType);
-        TRACK_WITH_HASHCODE.put(TRACK_IDS, Token.hashcodeIds(BASEURL, headers, TRACK_IDS));
+
+        if(GlobalConfigHandler.getEnv().equals(Constants.PROD_ENV)){
+            TRACK_WITH_HASHCODE.put(TRACK_IDS, Token.hashcodeIds(prop.getStreamStageUrl(), headers, TRACK_IDS));
+        }else{
+            TRACK_WITH_HASHCODE.put(TRACK_IDS, Token.hashcodeIds(BASEURL, headers, TRACK_IDS));
+        }
 
         if(TRACK_WITH_HASHCODE.isEmpty()){
             LOGGER.error(this.getClass() +"Hashcodes not generated properly...!");
@@ -86,9 +92,13 @@ public class StreamInfo {
             String streamUrl = track_stream_details.getValue()[0];
 
             if(deviceType.equals(DeviceType.GAANA_WEBSITE_APP)){
-                url = prop.getPortalXurl().trim()+Endpoints.WEB_STREAM_DECRYPT+streamUrl;
+                url = prop.getStreamStageUrl().trim()+Endpoints.WEB_STREAM_DECRYPT+streamUrl;
             }else{
-                url = BASEURL+Endpoints.APP_STREAM_DECRYPT+streamUrl;
+                if(GlobalConfigHandler.getEnv().equals(Constants.PROD_ENV)){
+                    url = prop.getStreamStageUrl()+Endpoints.APP_STREAM_DECRYPT+streamUrl;
+                }else{
+                    url = BASEURL+Endpoints.APP_STREAM_DECRYPT+streamUrl;
+                }
             }
 
             String decryptedStreamUrl = StreamHelper.createDecryptAppCall(url, headers);

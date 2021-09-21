@@ -8,6 +8,7 @@ import org.testng.ITestContext;
 import org.testng.annotations.*;
 import common.GlobalConfigHandler;
 import common.Helper;
+import config.Constants;
 import config.Endpoints;
 import config.enums.DeviceType;
 import config.v1.GetProp;
@@ -57,10 +58,15 @@ public class GetUrlV1 {
             Map<String, String> headers = RequestHelper.getHeaders(0, DeviceType.valueDeviceType(device_type));
             JSONArray hashcodes = new JSONArray();
             for(int i = 0; i<=StreamTd.MAX_TEST_TRACKS; i++){
+                String token;
                 JSONObject hashcode = new JSONObject();
                 int random_number = Helper.generateRandomNumber(0, (StreamTd.TRACK_COUNT-1));
                 int track_id = TRACK_IDS[random_number];
-                String token = Token.hashcodeId(BASEURL, headers, track_id);
+                if(GlobalConfigHandler.getEnv().equals(Constants.PROD_ENV)){
+                    token = Token.hashcodeId(prop.getStreamStageUrl(), headers, track_id);
+                }else{
+                    token = Token.hashcodeId(BASEURL, headers, track_id);
+                }
                 hashcode.put("track_id", track_id);
                 hashcode.put("token", token);
                 hashcodes.put(hashcode);
@@ -136,9 +142,13 @@ public class GetUrlV1 {
                 if(!savedStreamUrls[i].contains(BASEURL)){
                     String url;
                     if(DeviceType.valueDeviceType(device_type).equals(DeviceType.GAANA_WEBSITE_APP)){
-                        url = prop.getPortalXurl().trim()+Endpoints.WEB_STREAM_DECRYPT+savedStreamUrls[i];
+                        url = prop.getStreamStageUrl().trim()+Endpoints.WEB_STREAM_DECRYPT+savedStreamUrls[i];
                     }else{
-                        url = BASEURL+Endpoints.APP_STREAM_DECRYPT+savedStreamUrls[i];
+                        if(GlobalConfigHandler.getEnv().equals(Constants.PROD_ENV)){
+                            url = prop.getStreamStageUrl()+Endpoints.APP_STREAM_DECRYPT+savedStreamUrls[i];
+                        }else{
+                            url = BASEURL+Endpoints.APP_STREAM_DECRYPT+savedStreamUrls[i];
+                        }
                     }
 
                     String decryptedStreamUrl = StreamHelper.createDecryptAppCall(url, headers);
