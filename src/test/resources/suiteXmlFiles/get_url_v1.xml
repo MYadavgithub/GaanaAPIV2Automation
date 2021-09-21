@@ -3,12 +3,6 @@
 
 <suite name="GetUrlV1 Test Suite" verbose="1" parallel="tests" thread-count="1" configfailurepolicy="continue">
 
-    <listeners>
-		<listener class-name="utils.ExtentManagerListener" />
-		<listener class-name="utils.EmailableReportListener" />
-		<listener class-name="utils.RetryTransformListener" />
-	</listeners>
-
 	<test name="GetUrlV1 AndroidApp" annotations="JDK" preserve-order="true">
 		<parameter name = "consumer" value="GaanaAndroidApp"/>
 
