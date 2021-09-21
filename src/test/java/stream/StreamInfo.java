@@ -92,7 +92,7 @@ public class StreamInfo {
             String streamUrl = track_stream_details.getValue()[0];
 
             if(deviceType.equals(DeviceType.GAANA_WEBSITE_APP)){
-                url = prop.getStreamStageUrl().trim()+Endpoints.WEB_STREAM_DECRYPT+streamUrl;
+                url = prop.getPortalXurl().trim()+Endpoints.WEB_STREAM_DECRYPT+streamUrl;
             }else{
                 if(GlobalConfigHandler.getEnv().equals(Constants.PROD_ENV)){
                     url = prop.getStreamStageUrl()+Endpoints.APP_STREAM_DECRYPT+streamUrl;

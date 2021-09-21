@@ -142,7 +142,7 @@ public class GetUrlV1 {
                 if(!savedStreamUrls[i].contains(BASEURL)){
                     String url;
                     if(DeviceType.valueDeviceType(device_type).equals(DeviceType.GAANA_WEBSITE_APP)){
-                        url = prop.getStreamStageUrl().trim()+Endpoints.WEB_STREAM_DECRYPT+savedStreamUrls[i];
+                        url = prop.getPortalXurl().trim()+Endpoints.WEB_STREAM_DECRYPT+savedStreamUrls[i];
                     }else{
                         if(GlobalConfigHandler.getEnv().equals(Constants.PROD_ENV)){
                             url = prop.getStreamStageUrl()+Endpoints.APP_STREAM_DECRYPT+savedStreamUrls[i];
