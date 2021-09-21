@@ -46,13 +46,14 @@ public class GetProp {
     public static String dburl;
     public static String dbuser;
     public static String dbpwd;
-    public static String stream_baseurl;
+    public static String streamBaseurl;
     public static String deviceType;
     public static String recoBaseurl;
     public static String deviceTypeMx;
     public static String gaanaAppVersionMx;
     public static String deviceTypeMiko;
     public static String deviceTypeGFA;
+    public static String streamStageUrl;
 
     public GetProp() {
         super();
@@ -298,5 +299,9 @@ public class GetProp {
 
     public String getDeviceTypeGFA() {
         return prop.getProperty("deviceTypeGFA").toString().trim();
+    }
+
+    public String getStreamStageUrl() {
+        return prop.getProperty("stream_stage_url").toString().trim();
     }
 }
