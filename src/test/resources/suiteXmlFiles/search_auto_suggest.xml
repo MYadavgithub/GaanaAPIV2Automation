@@ -13,7 +13,7 @@
 	<test name="GGM Auto Suggest Compare With Live" annotations="JDK" preserve-order="true">
 
 		<classes>
-			<class name="search_api.AutoSuggestLite" />
+			<class name="search.AutoSuggestLite" />
 		</classes>
 
 	</test>

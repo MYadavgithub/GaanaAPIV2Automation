@@ -1,4 +1,4 @@
-package search_api;
+package search;
 import java.util.*;
 import config.*;
 import config.v1.GetProp;

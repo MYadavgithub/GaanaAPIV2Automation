@@ -5,7 +5,7 @@ import org.slf4j.*;
 import common.*;
 import config.Endpoints;
 import io.qameta.allure.Step;
-import search_api.AutoSuggestLite;
+import search.AutoSuggestLite;
 import utils.CsvReader;
 import utils.WriteCsv;
 
