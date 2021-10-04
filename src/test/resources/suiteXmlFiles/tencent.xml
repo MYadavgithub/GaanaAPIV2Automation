@@ -16,7 +16,7 @@
 		<parameter name = "decryption_type" value="tencent"/>
 
 		<classes>
-			<class name="recomendation.tencent_cdn.TancentStream" />
+			<class name="stream.tencent.tencent_cdn.TancentStream" />
 		</classes>
 
 	</test>
@@ -27,7 +27,7 @@
 		<parameter name = "decryption_type" value="tencent"/>
 
 		<classes>
-			<class name="recomendation.tencent_cdn.TancentStream" />
+			<class name="stream.tencent.tencent_cdn.TancentStream" />
 		</classes>
 
 	</test>
@@ -38,7 +38,7 @@
 		<parameter name = "decryption_type" value="tencent"/>
 
 		<classes>
-			<class name="recomendation.tencent_cdn.TancentStream" />
+			<class name="stream.tencent.tencent_cdn.TancentStream" />
 		</classes>
 
 	</test>
@@ -49,7 +49,7 @@
 		<parameter name = "decryption_type" value="tencent"/>
 
 		<classes>
-			<class name="recomendation.tencent_cdn.TancentStream" />
+			<class name="stream.tencent.tencent_cdn.TancentStream" />
 		</classes>
 
 	</test>
@@ -60,7 +60,7 @@
 		<parameter name = "decryption_type" value="tencent"/>
 
 		<classes>
-			<class name="recomendation.tencent_cdn.TancentStream" />
+			<class name="stream.tencent.tencent_cdn.TancentStream" />
 		</classes>
 
 	</test>
@@ -71,7 +71,7 @@
 		<parameter name = "decryption_type" value="tencent"/>
 
 		<classes>
-			<class name="recomendation.tencent_cdn.TancentStream" />
+			<class name="stream.tencent.tencent_cdn.TancentStream" />
 		</classes>
 
 	</test>
@@ -82,7 +82,7 @@
 		<parameter name = "decryption_type" value="tencent"/>
 
 		<classes>
-			<class name="recomendation.tencent_cdn.TancentStream" />
+			<class name="stream.tencent.tencent_cdn.TancentStream" />
 		</classes>
 
 	</test>

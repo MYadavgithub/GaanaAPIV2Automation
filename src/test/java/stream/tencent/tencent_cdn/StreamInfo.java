@@ -1,4 +1,4 @@
-package recomendation.tencent_cdn;
+package stream.tencent.tencent_cdn;
 import config.BaseUrls;
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package recomendation.hashtags;
+package recomendation.vibes;
 import config.*;
 import io.qameta.allure.*;
 import io.restassured.response.Response;

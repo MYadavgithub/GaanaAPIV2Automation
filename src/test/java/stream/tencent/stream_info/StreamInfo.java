@@ -1,4 +1,4 @@
-package recomendation.stream_info;
+package stream.tencent.stream_info;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package recomendation.tencent_cdn;
+package stream.tencent.tencent_cdn;
 import common.Helper;
 import config.BaseUrls;
 import config.Constants;

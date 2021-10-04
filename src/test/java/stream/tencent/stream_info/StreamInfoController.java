@@ -1,4 +1,4 @@
-package recomendation.stream_info;
+package stream.tencent.stream_info;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import common.Helper;
 import io.restassured.response.Response;
-import pstream.DecryptStreamUrl;
+import stream.tencent.pstream.DecryptStreamUrl;
 import test_data.StreamInfoTD;
 
 public class StreamInfoController {

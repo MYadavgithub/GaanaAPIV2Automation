@@ -1,4 +1,4 @@
-package pstream;
+package stream.tencent.pstream;
 import java.util.Map;
 import common.Headers;
 import test_data.PstreamTd;

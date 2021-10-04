@@ -1,4 +1,4 @@
-package pstream;
+package stream.tencent.pstream;
 import java.util.Map;
 import org.json.JSONObject;
 import common.RequestHandler;

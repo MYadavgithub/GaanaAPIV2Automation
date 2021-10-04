@@ -1,4 +1,4 @@
-package pstream;
+package stream.tencent.pstream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
