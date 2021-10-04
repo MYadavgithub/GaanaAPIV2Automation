@@ -1,0 +1,148 @@
+/* groovylint-disable NoDef */
+/* groovylint-disable-next-line CompileStatic */
+pipeline {
+
+    agent any
+
+    options {
+        // retry(2)
+        timestamps()
+        timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
+    }
+
+    triggers {
+        cron('0 6 */2 * *')
+    }
+
+    environment {
+        /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
+        def mvnHome = tool name: 'Maven', type: 'maven'
+        def emailTo = "manish.pandey@gaana.com, umesh.shukla@gaana.com"
+        def abortedTo = "umesh.shukla@gaana.com"
+        def replyTo = "umesh.shukla@gaana.com"
+        def emailSub = "TIP | Stream | Regression Test Suite | "
+        def dateTime = new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
+    }
+
+    parameters
+    {
+        string(
+            defaultValue: 'feature/stream_url_creation',
+            description: 'Provide branch for execution',
+            name: 'branch',
+            trim: true
+        )
+        string(
+            defaultValue: 'streaming.xml',
+            description: 'Enter your suite xml file which you want to execute.',
+            name: 'suiteXmlFile',
+            trim: true
+        )
+        choice(
+            choices: ['local', 'preprod', 'prod'],
+            description: 'Select environment according to your execution requirement.',
+            name: 'env'
+        )
+        string(
+            defaultValue: 'Stream',
+            description: 'Execution module Recommendation is default value.',
+            name: 'type',
+            trim: true
+        )
+        choice(
+            choices: ['Android', 'Ios', 'Web'],
+            description: 'Please select device type, for api header segregation.',
+            name: 'device_type'
+        )
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // script{
+                //     def buildNum = "${currentBuild.number}"
+                //     if(buildNum != 0) {
+                //         sh 'git stash'
+                //     }
+                // }
+                sh 'git stash'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '$branch']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [
+                        [
+                            credentialsId: 'b48d7528-2319-416d-b08b-ce5001fad3d8',
+                            url: 'git@bitbucket.org:times_internet/gaana_qa_search_reco.git'
+                        ]
+                    ],
+                    extensions: [
+                        [
+                            $class: 'CheckoutOption',
+                            timeout: 10
+                        ]
+                    ]
+                ])
+            }
+        }
+
+        stage ('Build') {
+            steps {
+                sh 'rm -rf allure-re*'
+                sh "${mvnHome}/bin/mvn -version"
+                sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
+                sh "chmod 777 -R ${env.WORKSPACE}/pom.xml"
+            }
+        }
+
+        stage ('Execute Tests') {
+            steps {
+                /* groovylint-disable-next-line LineLength */
+                /* groovylint-disable-next-line ConsecutiveStringConcatenation, GStringExpressionWithinString, LineLength */
+                sh "mvn -B -f ${env.WORKSPACE}/pom.xml clean install " + '-Denv=${env} -Dtype=${type} -Ddevice_type=${device_type} -DsuiteXmlFile=${suiteXmlFile}'
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+               def buildStatus = "${currentBuild.currentResult}"
+                if(buildStatus.equalsIgnoreCase('FAILURE') || buildStatus.equalsIgnoreCase('UNSTABLE') || buildStatus.equalsIgnoreCase('ABORTED')){
+                    echo "Bulid was : ${buildStatus}"
+                    emailext attachLog: true,
+                    to: "${abortedTo}",
+                    replyTo: "${replyTo}",
+                    subject: "${emailSub}"+"${dateTime}",
+                    body: ''' ${SCRIPT, template="groovy-html.template"}<br>
+                    <b>Best Regards,</b><br>
+                    QA GGL Noida</i></b>''',
+                    mimeType: 'text/html',
+                    compressLog: true
+                }else{
+                    emailext attachLog: true,
+                    to: "${emailTo}",
+                    replyTo: "${replyTo}",
+                    subject: "${emailSub}"+"${dateTime}",
+                    /* groovylint-disable-next-line GStringExpressionWithinString */
+                    body: '''
+                    ${FILE, path = "/data/jenkins/workspace/GaanaStream/Reports/EmailerReport.html"}<br><br>
+                    <b><i>To see detailed information either click and login with help of provided url & credential : <br>
+                    ${BUILD_URL}allure/<br>
+                    User Name : report<br>
+                    Password : 123456<br>
+                    Or Download attached Extent Report.</i></b><br><br>
+                    ${SCRIPT, template="groovy-html.template"}<br>
+                    <b>Best Regards,</b><br>
+                    QA GGL Noida</i></b>''',
+                    mimeType: 'text/html',
+                    compressLog: true,
+                    attachmentsPattern: '**/Reports/*ExtentReport.html'
+                }
+            }
+        }
+    }
+}
