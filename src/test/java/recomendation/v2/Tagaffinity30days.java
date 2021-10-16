@@ -37,7 +37,7 @@ public class Tagaffinity30days {
         MAX_CALL = PodcastTd.TAG_AFFINITY_30DAYS_DEVICES.length;
     }
 
-    @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = PodcastTd.TAG_AFFINITY_INVOCATION)
+    @Test(enabled = false, priority = 1, dataProvider = "dp", invocationCount = PodcastTd.TAG_AFFINITY_INVOCATION)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Story("Need to validate over-all API response, Status code, Response Time, Response Body Validation.")
     @Feature(REPROTING_FEATURE)
@@ -58,7 +58,7 @@ public class Tagaffinity30days {
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = PodcastTd.TAG_AFFINITY_INVOCATION)
+    @Test(enabled = false, priority = 2, dataProvider = "dp", invocationCount = PodcastTd.TAG_AFFINITY_INVOCATION)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Step("Validating response body using plane java object class.")
