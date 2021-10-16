@@ -1,5 +1,7 @@
 package config;
 
+import java.util.HashMap;
+
 public class Endpoints {
 
     public static String RECO_TRACKS = "/recommendation/recommendedTracks/";
@@ -49,21 +51,21 @@ public class Endpoints {
     public static String autoSuggestStageEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
         endpoint.append("/entityd/mobilesuggest/search?query="+query_params);
-        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1");
+        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1&indent=true");
         return endpoint.toString();
     }
 
     public static String autoSuggestProdEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
         endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
-        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1");
+        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1&indent=true");
         return endpoint.toString();
     }
 
     public static String autoSuggestSolrEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
         endpoint.append("/live/mobilesuggest/getErSolr?query=" + query_params);
-        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1");
+        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1&indent=true");
         return endpoint.toString();
     }
 
@@ -72,5 +74,40 @@ public class Endpoints {
         StringBuilder endpoints = new StringBuilder();
         endpoints.append("/mobile/autocomplete-v2?query="+keyword+"&content_filter=2&geoLocation=IN&include=allItems&isRegSrch=0");
         return endpoints.toString().trim();
+    }
+
+    /**
+     * Gsearch all endpoints
+     * @return 
+     */
+    public static HashMap<String, String> searchEndpoints(){
+        HashMap<String, String> endpoint_idetifier = new HashMap<>();
+        endpoint_idetifier.put("lite_v1", "autosuggest-lite-v1");
+        endpoint_idetifier.put("lite_v2", "autosuggest-lite-v2");
+        endpoint_idetifier.put("vltro", "autosuggest-lite-vltr");
+        endpoint_idetifier.put("vltro_demo", "autosuggest-lite-vltr-demo");
+        endpoint_idetifier.put("lite_vltro", "autosuggest-lite-vltr-ro");
+        endpoint_idetifier.put("lite_no_syn", "autosuggest-lite-nosynonyms");
+        endpoint_idetifier.put("lite_vs1", "autosuggest-lite-vs1");
+        endpoint_idetifier.put("lite_v3", "autosuggest-lite-v3");
+        endpoint_idetifier.put("lite_cms", "autosuggest-lite-cms");
+        endpoint_idetifier.put("lite_vi1", "autosuggest-lite-vi1");
+        endpoint_idetifier.put("lite_tp", "autosuggest-lite-tp");
+        endpoint_idetifier.put("vltro_mini", "autosuggest-lite-vltr-ro-mini");
+        return endpoint_idetifier;
+    }
+
+    /**
+     * for all endpoints regression
+     * @param endpoint_val
+     * @param query_params
+     * @return
+     */
+    public static String autoSuggestEndpoint(String endpoint_val, String query_params) {
+        StringBuilder endpoint = new StringBuilder();
+        endpoint.append("/gaanasearch-api/mobilesuggest/"+endpoint_val+"?query="+query_params);
+        endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0");
+        endpoint.append("&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1&indent=true");
+        return endpoint.toString();
     }
 }

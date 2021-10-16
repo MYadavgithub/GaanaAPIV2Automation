@@ -3,7 +3,9 @@ import java.util.*;
 import org.json.*;
 import org.slf4j.*;
 import common.*;
+import config.Constants;
 import config.Endpoints;
+import config.v1.GetProp;
 import io.qameta.allure.Step;
 import search.AutoSuggestLite;
 import utils.CsvReader;
@@ -25,6 +27,16 @@ public class AutoSuggestLiteController {
     ArrayList<String> stage_ext_data = new ArrayList<>();
     ArrayList<String> artworks = new ArrayList<>();
     private static Logger log = LoggerFactory.getLogger(SearchFeedController.class);
+
+    public String getLiveBaseUrl() {
+        String live_base_url;
+        String current_type = System.getProperty("type");
+        System.setProperty("type", Constants.API_TYPE_LIVE_SEARCH);
+        GetProp prop = new GetProp();
+        live_base_url = prop.baseurl();
+        System.setProperty("type", current_type);
+        return live_base_url;
+    }
 
     /**
      * Get Test Data from Specific Sheet

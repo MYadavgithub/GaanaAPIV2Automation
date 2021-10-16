@@ -1,7 +1,6 @@
 package search;
 import java.util.*;
 import config.*;
-import config.v1.GetProp;
 import config.v1.RequestHandlerV1;
 import config.v1.RequestHelper;
 import org.json.*;
@@ -70,7 +69,7 @@ public class AutoSuggestLite {
     @Severity(SeverityLevel.BLOCKER)
     public void createGetRequestAutoSuggestCall(String keyword){
         if(API_CALL == 1)
-            getLiveBaseUrl();
+            controller.getLiveBaseUrl();
         ArrayList<String> urls = AutoSuggestLiteController.prepareUrls(STAGE_BASE_URL, LIVE_BASE_URL, keyword);
 
         if(urls.size() != 3)
@@ -335,13 +334,5 @@ public class AutoSuggestLite {
             controller.printUrls(URLS.get(keyword));
         }
         softAssert.assertAll();
-    }
-
-    private void getLiveBaseUrl() {
-        String current_type = System.getProperty("type");
-        System.setProperty("type", Constants.API_TYPE_LIVE_SEARCH);
-        GetProp prop = new GetProp();
-        LIVE_BASE_URL = prop.baseurl();
-        System.setProperty("type", current_type);
     }
 }
