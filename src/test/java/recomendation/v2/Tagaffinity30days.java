@@ -1,7 +1,5 @@
 package recomendation.v2;
 import java.util.*;
-import com.google.gson.Gson;
-import org.json.JSONObject;
 import org.slf4j.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -10,13 +8,15 @@ import io.qameta.allure.*;
 import common.GlobalConfigHandler;
 import config.Endpoints;
 import common.Helper;
-import io.restassured.response.Response;
-import pojo.Tagaffinity30daysPojo;
 import test_data.PodcastTd;
 import config.v1.RequestHandlerV1;
 import config.v1.RequestHelper;
+import com.google.gson.Gson;
+import org.json.JSONObject;
+import pojo.Tagaffinity30daysPojo;
 import config.v1.RequestHelper.ApiRequestTypes;
 import config.v1.RequestHelper.ContentTypes;
+import io.restassured.response.Response;
 
 public class Tagaffinity30days {
 
@@ -37,7 +37,7 @@ public class Tagaffinity30days {
         MAX_CALL = PodcastTd.TAG_AFFINITY_30DAYS_DEVICES.length;
     }
 
-    @Test(enabled = false, priority = 1, dataProvider = "dp", invocationCount = PodcastTd.TAG_AFFINITY_INVOCATION)
+    @Test(enabled = true, priority = 1, dataProvider = "dp", invocationCount = PodcastTd.TAG_AFFINITY_INVOCATION)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Story("Need to validate over-all API response, Status code, Response Time, Response Body Validation.")
     @Feature(REPROTING_FEATURE)
@@ -58,7 +58,7 @@ public class Tagaffinity30days {
         API_CALL = handler.invocationCounter(API_CALL, MAX_CALL);
     }
 
-    @Test(enabled = false, priority = 2, dataProvider = "dp", invocationCount = PodcastTd.TAG_AFFINITY_INVOCATION)
+    @Test(enabled = true, priority = 2, dataProvider = "dp", invocationCount = PodcastTd.TAG_AFFINITY_INVOCATION)
     @Link(name =  "Jira Task Id", value = JIRA_ID)
     @Feature(REPROTING_FEATURE)
     @Step("Validating response body using plane java object class.")
