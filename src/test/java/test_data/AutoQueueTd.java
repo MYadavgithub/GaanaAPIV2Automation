@@ -22,4 +22,10 @@ public class AutoQueueTd {
     /** SimilarTrackGeneric TD */
     public static String EX_ENTITY_TYPE = "Track";
 
+    /** getSuggestedSongs Td */
+    public final static int SS_INVOCATION = 1;
+    public static String DEVICE_ID = "Redmi Y3_aa8f0ef7c2354e12";
+    public static String TRACKS = "1,66701,480,1014";
+public static int [] TYPE = {1, /*1, 2, 3*/}; // one to times to handle type calls in api
+
 }
