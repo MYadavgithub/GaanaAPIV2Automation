@@ -1,30 +1,30 @@
 package recomendation.autoqueue;
 import java.util.*;
-import org.json.*;
 import org.slf4j.*;
-import org.testng.Assert;
-import org.testng.annotations.*;
-import common.GlobalConfigHandler;
+import org.json.*;
 import common.Helper;
+import test_data.AutoQueueTd;
+import common.GlobalConfigHandler;
+import io.qameta.allure.*;
 import config.Endpoints;
 import config.enums.DeviceType;
 import config.v1.RequestHandlerV1;
 import config.v1.RequestHelper;
 import config.v1.RequestHelper.ApiRequestTypes;
 import config.v1.RequestHelper.ContentTypes;
-import io.qameta.allure.*;
 import io.restassured.response.Response;
 import logic_controller.AutoQueueController;
-import test_data.AutoQueueTd;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
 /**
  * @author [umesh.shukla]
  * @email [umesh.shukla@gaana.com]
  * @create date 2021-10-21 15:55:14
  * @modify date 2021-10-21 15:55:14
- * @desc [GetSuggestedSongs api validation]
+ * @desc [GetSuggestedSongsPost api validation]
  */
-public class GetSuggestedSongs {
+public class GetSuggestedSongsPost {
     
     int API_CALL;
     int MAX_CALL;
@@ -34,10 +34,10 @@ public class GetSuggestedSongs {
     Map<Integer, Response> RESPONSES = new HashMap<>();
     GlobalConfigHandler handler = new GlobalConfigHandler();
     AutoQueueController aqController = new AutoQueueController();
-    private static Logger LOGGER = LoggerFactory.getLogger(GetSuggestedSongs.class);
-    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-46065";
-    final static String REPROTING_FEATURE = "GetSuggestedSongs api response validation.";
-    
+    private static Logger LOGGER = LoggerFactory.getLogger(GetSuggestedSongsPost.class);
+    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-46066";
+    final static String REPROTING_FEATURE = "GetSuggestedSongsPost api response validation.";
+
     @BeforeClass
     public void prepareEnv(){
         BASEURL = GlobalConfigHandler.baseurl();
@@ -55,19 +55,21 @@ public class GetSuggestedSongs {
         String url;
         Map<String, String> headers;
         Response response = null;
-        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.GET;
+        ApiRequestTypes requestType = RequestHelper.ApiRequestTypes.POST;
         ContentTypes contentType = RequestHelper.ContentTypes.JSON;
         RequestHandlerV1 request = new RequestHandlerV1();
+        String bodyData = AutoQueueTd.GSSPPostData(type);
         if(API_CALL == 0){
-            url = BASEURL+Endpoints.GET_SUGGESTED_SONGS+type;
+            url = BASEURL+Endpoints.GET_SUGGESTED_SONGS_POST;
             headers = RequestHelper.getHeaders(0, DeviceType.ANDROID_APP);
             headers.replace("deviceId", AutoQueueTd.DEVICE_ID);
-            response = request.executeRequestAndGetResponse(url, requestType, contentType, headers, null, null);
+            response = request.executeRequestAndGetResponse(url, requestType, contentType, headers, null, bodyData);
         }else{
-            url = BASEURL+Endpoints.GET_SUGGESTED_SONGS+type+"&trackIds="+track_ids;
-            response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, null);
+            url = BASEURL+Endpoints.GET_SUGGESTED_SONGS_POST;
+            response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, bodyData);
         }
         URLS.add(url);
+        response.prettyPrint();
         RESPONSES.put(API_CALL, response);
         if(API_CALL == MAX_CALL-1){
             Assert.assertEquals(RESPONSES.size(), MAX_CALL, "Response not captured properly for further validations!");

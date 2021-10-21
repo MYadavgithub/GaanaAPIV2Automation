@@ -35,6 +35,7 @@ public class Endpoints {
     public static String TRACKID_ENDPOINT_HASHCODE = "/hashcode?id=";
     public static String TRACKIDS_ENDPOINT_HASHCODE = "/aes/sum/ids?ids=";
     public static String GET_SUGGESTED_SONGS = "/recommendation/getSuggestedSongs?type=";
+    public static String GET_SUGGESTED_SONGS_POST = "/recommendation/getSuggestedSongsPOST";
     public static String GET_URL_V1 = "/getURLV1.php?";
     public static String APP_STREAM_DECRYPT = "/aes/app/decrypt?val=";
     public static String WEB_STREAM_DECRYPT = "/aes/web/decrypt?val=";
