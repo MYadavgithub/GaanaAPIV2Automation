@@ -18,7 +18,6 @@ public class AutoQueueController {
     private static Logger log = LoggerFactory.getLogger(AutoQueueController.class);
     
     public boolean validateCountStatusUserToken(String url, Response response) {
-        response.prettyPrint();
         JSONObject response_object = helper.responseJSONObject(response);
         JSONArray tracks = response_object.getJSONArray("tracks");
         int count = Integer.parseInt(response_object.optString("count").toString().trim());

@@ -69,7 +69,6 @@ public class GetSuggestedSongsPost {
             response = request.executeRequestAndGetResponse(url, requestType, contentType, null, null, bodyData);
         }
         URLS.add(url);
-        response.prettyPrint();
         RESPONSES.put(API_CALL, response);
         if(API_CALL == MAX_CALL-1){
             Assert.assertEquals(RESPONSES.size(), MAX_CALL, "Response not captured properly for further validations!");
