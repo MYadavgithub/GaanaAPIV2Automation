@@ -84,6 +84,7 @@ public class RequestHelper {
 	}
 
     public static Map<String, String> getHeaders(int country, DeviceType deviceType){
+        prop = new GetProp();
         Map<String, String> headers = new HashMap<String, String>();
         switch (deviceType) {
             case ANDROID_APP:
