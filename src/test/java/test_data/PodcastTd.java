@@ -8,7 +8,7 @@ public class PodcastTd {
 
     public final static int TAG_AFFINITY_INVOCATION = 4;
     public static String TAG_AFFINITY_30DAYS_DEVICES[] = {"1077a6b5fd639e212f1e56165fcedba3", "c7af2bbcf754d5d55c27033d713aa8a0",
-        "8a5c799b73233c6df4fbe0bce165b071", "574439b298ba749774ebfc8935d3471b"};
+        "6087702aa8cd353893c1c4f4cca17914", "574439b298ba749774ebfc8935d3471b"};
 
     /**
      * SM-M515F_9221be64abfda831  c7af2bbcf754d5d55c27033d713aa8a0
