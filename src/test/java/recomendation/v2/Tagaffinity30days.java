@@ -1,7 +1,5 @@
 package recomendation.v2;
 import java.util.*;
-import com.google.gson.Gson;
-import org.json.JSONObject;
 import org.slf4j.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -10,13 +8,15 @@ import io.qameta.allure.*;
 import common.GlobalConfigHandler;
 import config.Endpoints;
 import common.Helper;
-import io.restassured.response.Response;
-import pojo.Tagaffinity30daysPojo;
 import test_data.PodcastTd;
 import config.v1.RequestHandlerV1;
 import config.v1.RequestHelper;
+import com.google.gson.Gson;
+import org.json.JSONObject;
+import pojo.Tagaffinity30daysPojo;
 import config.v1.RequestHelper.ApiRequestTypes;
 import config.v1.RequestHelper.ContentTypes;
+import io.restassured.response.Response;
 
 public class Tagaffinity30days {
 
