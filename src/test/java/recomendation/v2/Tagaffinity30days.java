@@ -20,6 +20,11 @@ import config.v1.RequestHelper.ContentTypes;
 
 public class Tagaffinity30days {
 
+    /**
+     * if script failure please change md5 device id for those tag affinity exists.
+     * To get device md5 check here : http://172.26.61.212:5601/app/kibana#/discover?_g=(refreshInterval:(pause:!t,value:0),time:(from:now%2Fw,to:now%2Fw))&_a=(columns:!(_source),index:dee032c0-4de4-11ec-bf17-5198aa9c6cba,interval:auto,query:(language:lucene,query:tagaffinity30days),sort:!(!('@timestamp',desc)))
+     */
+
     int API_CALL = 0;
     int MAX_CALL = 0;
     String BASEURL = "";
