@@ -11,6 +11,18 @@
 		<listener class-name="utils.SuiteListener" />
 	</listeners>
 
+	<test name="Autoqueue GetSuggestedSongs" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.GetSuggestedSongs" />
+		</classes>
+	</test>
+
+	<test name="Autoqueue GetSuggestedSongsPost" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.GetSuggestedSongsPost" />
+		</classes>
+	</test>
+
 	<test name="Autoqueue RecommendationSongs" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.autoqueue.RecommendedSongs" />

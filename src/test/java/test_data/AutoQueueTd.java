@@ -1,4 +1,7 @@
 package test_data;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 public class AutoQueueTd {
     
@@ -22,4 +25,26 @@ public class AutoQueueTd {
     /** SimilarTrackGeneric TD */
     public static String EX_ENTITY_TYPE = "Track";
 
+    /** getSuggestedSongs Td */
+    public final static int SS_INVOCATION = 4;
+    public static String DEVICE_ID = "Redmi Y3_aa8f0ef7c2354e12";
+    public static String TRACKS = "1,66701,480,1014";
+    public static int [] TYPE = {1, 1, 2, 3}; // one to times to handle type calls in api
+
+    public static int trackCount(String type){
+        JsonObject obj = new JsonObject();
+        obj.addProperty("1", 20);
+        obj.addProperty("2", 3);
+        obj.addProperty("3", 10);
+        return Integer.parseInt(obj.get(type).toString().trim());
+    }
+
+    public static String GSSPPostData(int type){
+        JSONObject obj = new JSONObject();
+        JSONObject dataObj = new JSONObject();
+        dataObj.put("trackIds", TRACKS);
+        dataObj.put("type", type);
+        obj.put("data", dataObj);
+        return obj.toString();
+    }
 }

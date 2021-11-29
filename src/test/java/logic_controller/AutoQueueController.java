@@ -26,6 +26,8 @@ public class AutoQueueController {
 
         if(tracks.length() == count && status && user_token_status){
             return true;
+        }else if(tracks.length() == count){
+            return true;
         }
         return false;
     }
