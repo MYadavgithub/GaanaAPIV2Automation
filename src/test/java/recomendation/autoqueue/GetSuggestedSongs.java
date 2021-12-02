@@ -103,7 +103,7 @@ public class GetSuggestedSongs {
         JSONArray tracks = response.getJSONArray("tracks");
         int ex_track_count = AutoQueueTd.trackCount(String.valueOf(type));
 
-        if(count == ex_track_count && count == tracks.length()){
+        if(count <= ex_track_count && count == tracks.length()){
             isTrackCountValid = true;
             // LOGGER.info(this.getClass()+"Track count validated successfully for url : \n"+URLS.get(API_CALL));
         }else{

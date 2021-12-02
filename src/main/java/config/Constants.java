@@ -59,4 +59,6 @@ public class Constants{
     public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
     public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, c-abhishek.gupta@gaana.com, umesh.shukla@gaana.com";
     public static String EMAIL_BCC_LIST = "";
+
+    public static String AUTOQUEUE_NOT_IMP_KEYS [] = {"lyrics_type", "lyrics_url"};
 }

@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.*;
 import org.testng.Assert;
+import config.Constants;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -63,18 +64,34 @@ public class Helper {
      */
     @Step("Comparing two lists, actual list : {0} expected list : {1}")
     public boolean compareList(List<Object> actual_list, List<String> ex_list){
+        List<String> missingNodes = new ArrayList<>();
         List<String> actual = actual_list.stream()
             .map(object -> Objects.toString(object, null))
             .collect(Collectors.toList());
         Collections.sort(actual);
         Collections.sort(ex_list);
-        if(!actual.equals(ex_list)){
-            if(actual.size() != ex_list.size()){
-                log.error("There is key missing please compare manually and validate : \n Expected List was : \n"+ex_list+"\n Current List : \n"+actual);
-                return false;
+        for(String val : ex_list){
+            if(!actual.contains(val)){
+                missingNodes.add(val);
             }
         }
-        return actual.equals(ex_list);
+
+        if(missingNodes.contains(Constants.AUTOQUEUE_NOT_IMP_KEYS[0]) ||
+            missingNodes.contains(Constants.AUTOQUEUE_NOT_IMP_KEYS[1]))
+        {
+            log.warn(this.getClass()+"Given expected keys not present in response : "+missingNodes);
+            return true;
+        }else if(missingNodes.size() == 0 || actual.size() == ex_list.size()){
+            return true;
+        }
+        // if(!actual.equals(ex_list)){
+        //     if(actual.size() != ex_list.size()){
+        //         log.error("There is key missing please compare manually and validate : \n Expected List was : \n"+ex_list+"\n Current List : \n"+actual);
+        //         return false;
+        //     }
+        // }
+        // return actual.equals(ex_list);
+        return false;
     }
 
     /**
@@ -85,17 +102,33 @@ public class Helper {
      */
     public boolean validateJSONObjectValueBasedOnKeys(List<Object> keys, JSONObject data, List<String> skiplist){
         boolean isvalid = false;
+        boolean isLyricType = false;
+        boolean isLyricUrl = false;
         ArrayList<String> emptyKeys = new ArrayList<>();
         if(keys == null || data == null){
             return false;
         }
 
+        /** As confirmed by dev lyric_type and lyric_url is optional values */
+        if(keys.size() != data.length()){
+            isLyricType = keys.contains(Constants.AUTOQUEUE_NOT_IMP_KEYS[0]);
+            isLyricUrl = keys.contains(Constants.AUTOQUEUE_NOT_IMP_KEYS[1]);
+        }
+
         for(Object _key : keys){
             String key = _key.toString();
             Object value = "";
-            if(!skiplist.contains(key)){
+
+            if(!skiplist.contains(key) && !isLyricType && !isLyricUrl){
                 value = data.get(key);
+            }else if(!skiplist.contains(key) && isLyricType && isLyricUrl){
+                if(key.equals(Constants.AUTOQUEUE_NOT_IMP_KEYS[0]) || key.equals(Constants.AUTOQUEUE_NOT_IMP_KEYS[1])){
+                    value = "N/A";
+                }else{
+                    value = data.get(key);
+                }
             }
+
             if(value != null && !value.toString().equals("null") && value.toString().length() != 0){
                 if(value instanceof String){
                     if(value.toString().length() > 0){

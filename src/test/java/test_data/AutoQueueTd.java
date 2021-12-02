@@ -1,6 +1,5 @@
 package test_data;
 import com.google.gson.JsonObject;
-
 import org.json.JSONObject;
 
 public class AutoQueueTd {
@@ -11,14 +10,14 @@ public class AutoQueueTd {
     public static String [] VALIDATOR_KEYS ={"TRACK_KEY_VAL", "ARTWORKS", "PREMIUM_KEY", "RELEASE_DATE", "LANG_LANG_ID" , "GENER", "ARTIST",
         "STREAM_URL", "TRACK_FORMAT"};
 
-    public static String EX_TRACKS_KEYS []= {"country", "artist", "rating", "language", "language_id", "premium_content", "sap_id", 
-        "duration", "rtmp", "parental_warning", "content_source", "albumseokey", "vendor", "popularity", "stream_type", "stream_url", 
-        "is_local", "lyrics_url", "artwork_large", "user_rating", "is_sonos_playable", "seokey", "track_format", "atw", "gener", 
-        "track_title", "mobile", "secondary_language", "isrc", "rtsp", "artwork", "display_global", "total_favourite_count", 
-        "is_most_popular", "release_date", "user_favorite", "track_id", "lyrics_type", "album_id", "artwork_web", "album_title", 
-        "is_premium", "http", "https"
+    public static String EX_TRACKS_KEYS []= {"album_id", "album_title", "albumseokey", "artist", "artwork", "artwork_large", 
+        "artwork_web", "atw", "content_source", "country", "display_global", "duration", "gener", "http", "https", "is_local", 
+        "is_most_popular", "is_premium", "is_sonos_playable", "isrc", "language", "language_id", "lyrics_type", "lyrics_url",
+        "mobile", "parental_warning", "popularity", "premium_content", "rating", "release_date", "rtmp", "rtsp", "sap_id",
+        "secondary_language", "seokey", "stream_type", "stream_url", "total_favourite_count", "track_format", "track_id",
+        "track_title", "user_favorite", "user_rating", "vendor"
     };
-    
+
     public static String RTP_REMOVE_FROM_VALUE_VALIDATION [] = {"artist", "track_format", "gener"};
     public static String ARTWORK_TYPES [] = {"atw", "artwork", "artwork_web", "artwork_large"};
 
