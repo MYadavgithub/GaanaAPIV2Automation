@@ -18,9 +18,9 @@ pipeline {
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
-        def emailTo = "manish.pandey@gaana.com, umesh.shukla@gaana.com"
-        def abortedTo = "manish.pandey@gaana.com, umesh.shukla@gaana.com"
-        def replyTo = "umesh.shukla@gaana.com"
+        def emailTo = "manish.pandey@gaana.com, namisha.negi@gaana.com, ritvik.sharma@gaana.com"
+        def abortedTo = "manish.pandey@gaana.com, namisha.negi@gaana.com"
+        def replyTo = "namisha.negi@gaana.com"
         def emailSub = "TIP | Search | Daily Regression Test Suite | "
         def dateTime = new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
     }
@@ -125,7 +125,7 @@ pipeline {
                     subject: "${emailSub}"+"${dateTime}",
                     body: ''' ${SCRIPT, template="groovy-html.template"}<br>
                     <b>Best Regards,</b><br>
-                    <i>Umesh Shukla<br>
+                    <i>Namisha Negi<br>
                     QA GGL Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true
@@ -144,7 +144,7 @@ pipeline {
                     Or Download attached Extent Report.</i></b><br><br>
                     ${SCRIPT, template="groovy-html.template"}<br>
                     <b>Best Regards,</b><br>
-                    <i>Umesh Shukla<br>
+                    <i>Namisha Negi<br>
                     QA GGL Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true,
