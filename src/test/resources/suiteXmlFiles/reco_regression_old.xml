@@ -175,7 +175,7 @@
 
 	</test> -->
 
-	<!--<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
+	<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.podcast.PodcatForYou" />
@@ -191,13 +191,13 @@
 
 	</test> -->
 
-	<!--<test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
+	<test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
 
 		<classes>
 			<class name="recomendation.v2.Tagaffinity30days" />
 		</classes>
 
-	</test> -->
+	</test>
 
 	<test name="Recommended TrackRecommend" annotations="JDK" preserve-order="true">
 
