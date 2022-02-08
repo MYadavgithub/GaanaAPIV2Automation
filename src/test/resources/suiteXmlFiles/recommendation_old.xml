@@ -119,11 +119,11 @@
 		</classes>
 	</test>
 
-	<!--<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
+	<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.podcast.PodcatForYou" />
 		</classes>
-	</test> -->
+	</test>
 
 	<test name="Search Feed" annotations="JDK" preserve-order="true">
 		<classes>
@@ -155,11 +155,11 @@
 		</classes>
 	</test>
 
-   <!-- <test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
+    <test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.v2.Tagaffinity30days" />
 		</classes>
-	</test> -->
+	</test>
 
     <test name="Recommended TrackRecommend" annotations="JDK" preserve-order="true">
 		<classes>
