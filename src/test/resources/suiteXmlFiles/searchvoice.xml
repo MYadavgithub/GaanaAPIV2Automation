@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Auto Suggest Lite Voice Search" verbose="1" parallel="tests" thread-count="1" configfailurepolicy="continue">
+
+    <listeners>
+		<listener class-name="utils.ExtentManagerListener" />
+		<listener class-name="utils.EmailableReportListener" />
+		<listener class-name="utils.RetryTransformListener" />
+		<listener class-name="utils.AllureListener" />
+    </listeners>
+
+	<test name="GGM Auto Suggest Voice Compare With Live" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="search_api.SearchVoice" />
+		</classes>
+
+	</test>
+
+</suite>
