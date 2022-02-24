@@ -17,5 +17,12 @@
 		</classes>
 
 	</test>
+	<test name="GGM Auto Suggest Voice Compare With Live" annotations="JDK" preserve-order="true">
+
+		<classes>
+			<class name="search_api.SearchVoice" />
+		</classes>
+
+	</test>
 
 </suite>

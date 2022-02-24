@@ -37,7 +37,7 @@ public class SearchVoice {
     //AutoSuggestLiteController controller = new AutoSuggestLiteController();
     SearchvoiceController controller= new SearchvoiceController();
     private static Logger log = LoggerFactory.getLogger(SearchVoice.class);
-    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-40938";
+    final static String JIRA_ID = "https://timesgroup.jira.com/browse/GAANA-47909";
     final static String REPROTING_FEATURE = "Auto-suggest api comparision with production response to stage response.";
 
     @BeforeClass
