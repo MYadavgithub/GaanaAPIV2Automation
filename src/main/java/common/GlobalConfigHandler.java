@@ -15,10 +15,10 @@ public class GlobalConfigHandler {
      * Only for Local debugging
      */
     public static void setLocalProps(){
-         System.setProperty("env", "local");
+      //   System.setProperty("env", "local");
          //System.setProperty("type", "Reco");
-         System.setProperty("type", "Search");
-         System.setProperty("device_type", "android");
+     //    System.setProperty("type", "Search");
+     //    System.setProperty("device_type", "android");
     }
 
     /**
