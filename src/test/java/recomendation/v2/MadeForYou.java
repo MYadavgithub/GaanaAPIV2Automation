@@ -125,11 +125,12 @@ public class MadeForYou extends BaseUrls {
         String user_type = responseObject.optString("userType").toString().trim();
         JSONArray response = responseObject.getJSONArray("vplMix");
 
-        if(counter <= 2){
+        if(counter <= 3){
             isMadeForYouValidated = controller.genricVplValidation(flag, user_type, response, MixTd.device_ids[counter]);
         }else {
-            isMadeForYouValidated = controller.genricVplValidation(flag, user_type, response, NEW_DEVICE_ID);
+            isMadeForYouValidated = controller.genricVplValidation(flag, user_type, response,MixTd.device_ids[counter] );
         }
+        //NEW_DEVICE_ID
 
         if(!isMadeForYouValidated){
             log.error("Response body validation broken for Made For You api!");

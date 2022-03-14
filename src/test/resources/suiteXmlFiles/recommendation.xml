@@ -15,7 +15,7 @@
 		<classes>
 			<class name="recomendation.autoqueue.RecommendedSongs" />
 		</classes>
-	</test>
+	</test> 
 
 	<test name="Recommended RecommendedTrackIds" annotations="JDK" preserve-order="true">
 		<classes>
@@ -45,63 +45,63 @@
 		<classes>
 			<class name="recomendation.autoqueue.SimilarTrackGeneric" />
 		</classes>
-	</test>
+	</test> 
 
-	<test name="Autoqueue SimilarTracksRecentyPlayed" annotations="JDK" preserve-order="true">
+	 <test name="Autoqueue SimilarTracksRecentyPlayed" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.autoqueue.SimilarTracksRecentyPlayed" />
 		</classes>
-	</test>
+	</test> 
 
-	<test name="Recommended SimilarAlbums" annotations="JDK" preserve-order="true">
+    <test name="Recommended SimilarAlbums" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.album.SimilarAlbums" />
 		</classes>
-	</test>
+	</test> 
 
 	<test name="Recommended SimilarAlbumsEntityInfo" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.album.SimilarAlbumsEntityInfo" />
 		</classes>
-	</test>
+	</test>  
 
 	<test name="Recommended SimilarTopShow" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.album.SimilarTopShow" />
 		</classes>
-	</test>
+	</test> 
 
 	<test name="Recommended SimilarArtists" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.artist.SimilarArtists" />
 		</classes>
-	</test>
+	</test> 
 
-	<test name="Recommended SimilarArtistEntityInfo" annotations="JDK" preserve-order="true">
+	<!--<test name="Recommended SimilarArtistEntityInfo" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.artist.SimilarArtistEntityInfo" />
 		</classes>
-	</test>
+	</test> -->
 
 	<test name="Recommended AssociatedLanguage" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.device_language.AssociatedLanguage" />
 		</classes>
-	</test>
+	</test> 
 
 	<test name="Recommended DeviceConsumedLanguage" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.device_language.DeviceConsumedLanguage" />
 		</classes>
-	</test>
+	</test> 
 
 	<test name="Recommended DeviceLanguage" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.device_language.DeviceLanguage" />
 		</classes>
-	</test>
+	</test> 
 
-	<test name="Recommended DeviceLanguageUpdate" annotations="JDK" preserve-order="true">
+	 <test name="Recommended DeviceLanguageUpdate" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.device_language.DeviceLanguageUpdate" />
 		</classes>
@@ -111,15 +111,15 @@
 		<classes>
 			<class name="recomendation.device_language.DeviceTrackPlayouts" />
 		</classes>
-	</test>
+	</test>  
 
 	<test name="Recommended ExistingDevice" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.device_language.ExistingDevice" />
 		</classes>
 	</test>
-
-	<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
+	
+	 <test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.podcast.PodcatForYou" />
 		</classes>
@@ -130,12 +130,12 @@
 			<class name="recomendation.reco_tracks.SearchFeed" />
 		</classes>
 	</test>
-
+	 
 	<test name="Recommended DailyMix" annotations="JDK" preserve-order="true">
 		<classes>
             <class name="recomendation.v2.DailyMix" />
 		</classes>
-	</test>
+	</test> 
 
 	<test name="Recommended WeeklyMix" annotations="JDK" preserve-order="true">
 		<classes>
@@ -143,23 +143,23 @@
 		</classes>
 	</test>
 
-	<test name="Recommended MadeForYou" annotations="JDK" preserve-order="true">
+	<!--<test name="Recommended MadeForYou" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.v2.MadeForYou" />
 		</classes>
-	</test>
+	</test> -->
 
-	<test name="Recommended MoodMix" annotations="JDK" preserve-order="true">
+	 <test name="Recommended MoodMix" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.v2.MoodMix" />
 		</classes>
-	</test>
+	</test> 
 
-    <test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
+   <!-- <test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.v2.Tagaffinity30days" />
 		</classes>
-	</test>
+	</test> -->
 
     <test name="Recommended TrackRecommend" annotations="JDK" preserve-order="true">
 		<classes>

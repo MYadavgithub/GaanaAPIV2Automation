@@ -142,6 +142,7 @@ public class AutoQueueController {
         boolean isGenerValid = false;
         String track_id = track.getString("track_id").trim().toString();
         JSONArray geners = track.getJSONArray("gener");
+        System.out.println("gener json" + geners);
         if(geners.length() <= 0)
             return isGenerValid;
 

@@ -7,7 +7,7 @@ public class PodcastTd {
         "vivo 1906_70f061265840aac6", "ONEPLUS A6000_f264f15b7475ac77"};
 
     public final static int TAG_AFFINITY_INVOCATION = 4;
-    public static String TAG_AFFINITY_30DAYS_DEVICES[] = {"1077a6b5fd639e212f1e56165fcedba3", "9e94a9690e90050752ab9b1f915f5765",
-        "8a5c799b73233c6df4fbe0bce165b071", "574439b298ba749774ebfc8935d3471b"};
+    public static String TAG_AFFINITY_30DAYS_DEVICES[] = {"1077a6b5fd639e212f1e56165fcedba3", "40f31112fbb129d5a99a851203e8d5cc",
+        "95b6499845ebf7ab8c1c2d5eeb92ef73", "574439b298ba749774ebfc8935d3471b"};
 }
 

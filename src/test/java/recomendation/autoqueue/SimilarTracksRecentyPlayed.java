@@ -82,9 +82,11 @@ public class SimilarTracksRecentyPlayed {
     @Description("Validate all keys expected in tracks response object.")
     @Severity(SeverityLevel.BLOCKER)
     @Test(priority = 3, dataProvider = "dp", invocationCount = AutoQueueTd.INVOCATION)
-    public void validateTracksKeys(String track_id){
+    public void validateTracksKeys(String track_id) throws InterruptedException{
         String url = URLS.get(API_CALL);
+        Thread.sleep(2000);
         Response response = RESPONSES.get(API_CALL);
+        Thread.sleep(2000);
         boolean isKeysValid = aqController.validateTracksKeys(url, response, AutoQueueTd.EX_TRACKS_KEYS);
         Assert.assertEquals(isKeysValid, true, "Error in validateTracksKeys for Url : "+url);
         if(API_CALL == MAX_CALL-1 && isKeysValid)
@@ -100,7 +102,9 @@ public class SimilarTracksRecentyPlayed {
     public void validateEachTrackKeyValue(String track_id){
         String validator_key = AutoQueueTd.VALIDATOR_KEYS[0];
         String url = URLS.get(API_CALL);
+        System.out.println("URL is"+ url);
         Response response = RESPONSES.get(API_CALL);
+      
         boolean isKeyValueValid = aqController.validateTrackDetails(validator_key, url, response, AutoQueueTd.RTP_REMOVE_FROM_VALUE_VALIDATION);
         Assert.assertEquals(isKeyValueValid, true, "Error in validateEachTrackKeyValue for Url : "+url);
         if(API_CALL == MAX_CALL-1 && isKeyValueValid)

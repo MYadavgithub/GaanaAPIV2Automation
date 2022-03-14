@@ -32,6 +32,7 @@ public class RequestHelper {
             headers.put("deviceType", prop.getDeviceTypeAndroid());
             headers.put("deviceId", prop.getDeviceId());
             headers.put("appVersion", prop.getAppVersion());
+            
         }
         else if(device_type == 1){
             headers.put("gaanaAppVersion", prop.getGaanaAppVersionIos());
