@@ -59,11 +59,11 @@
 		</classes>
 	</test> 
 
-	<test name="Recommended SimilarAlbumsEntityInfo" annotations="JDK" preserve-order="true">
+	<!--<test name="Recommended SimilarAlbumsEntityInfo" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.album.SimilarAlbumsEntityInfo" />
 		</classes>
-	</test>  
+	</test>  -->
 
 	<test name="Recommended SimilarTopShow" annotations="JDK" preserve-order="true">
 		<classes>
@@ -77,11 +77,11 @@
 		</classes>
 	</test> 
 
-	<!--<test name="Recommended SimilarArtistEntityInfo" annotations="JDK" preserve-order="true">
+	<test name="Recommended SimilarArtistEntityInfo" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.artist.SimilarArtistEntityInfo" />
 		</classes>
-	</test> -->
+	</test> 
 
 	<test name="Recommended AssociatedLanguage" annotations="JDK" preserve-order="true">
 		<classes>
