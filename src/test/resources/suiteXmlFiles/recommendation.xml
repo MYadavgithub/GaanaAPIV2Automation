@@ -11,11 +11,11 @@
 		<listener class-name="utils.SuiteListener" />
 	</listeners>
 
-	<test name="Autoqueue RecommendationSongs" annotations="JDK" preserve-order="true">
+	<!--<test name="Autoqueue RecommendationSongs" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.autoqueue.RecommendedSongs" />
 		</classes>
-	</test> 
+	</test> -->
 
 	<test name="Recommended RecommendedTrackIds" annotations="JDK" preserve-order="true">
 		<classes>
