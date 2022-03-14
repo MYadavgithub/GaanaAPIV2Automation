@@ -23,11 +23,11 @@
 		</classes>
 	</test>
 
-	<test name="Autoqueue RecommendationTracks" annotations="JDK" preserve-order="true">
+	<!--<test name="Autoqueue RecommendationTracks" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.autoqueue.RecommendedTracks" />
 		</classes>
-	</test>
+	</test> -->
 
 	<test name="Recommended RecommendedTracksAQ" annotations="JDK" preserve-order="true">
 		<classes>
@@ -47,11 +47,11 @@
 		</classes>
 	</test> 
 
-	 <test name="Autoqueue SimilarTracksRecentyPlayed" annotations="JDK" preserve-order="true">
+	<!-- <test name="Autoqueue SimilarTracksRecentyPlayed" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.autoqueue.SimilarTracksRecentyPlayed" />
 		</classes>
-	</test> 
+	</test> -->
 
     <test name="Recommended SimilarAlbums" annotations="JDK" preserve-order="true">
 		<classes>
