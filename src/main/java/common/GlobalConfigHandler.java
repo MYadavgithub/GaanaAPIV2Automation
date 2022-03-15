@@ -3,6 +3,8 @@ import java.util.*;
 import java.util.Map.Entry;
 import config.Constants;
 import config.v1.GetProp;
+
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -13,9 +15,10 @@ public class GlobalConfigHandler {
      * Only for Local debugging
      */
     public static void setLocalProps(){
-        // System.setProperty("env", "local");
-        // System.setProperty("type", "Stream");
-        // System.setProperty("device_type", "android");
+     //    System.setProperty("env", "prod");
+      //   System.setProperty("type", "Stream");
+     //    System.setProperty("type", "Reco");
+      //   System.setProperty("device_type", "android");
     }
 
     /**
@@ -28,6 +31,7 @@ public class GlobalConfigHandler {
         setLocalProps();
         GetProp prop = new GetProp();
         return prop.baseurl();
+       
     }
 
     /**
@@ -151,9 +155,11 @@ public class GlobalConfigHandler {
     }
 
     public static String encodeUrl(String url_to_encode){
-        String url = "";
+        String url = " ";
         try {
-            url = URLEncoder.encode(url_to_encode, "UTF-8");
+           // url = URLEncoder.encode(url_to_encode, "UTF-8");
+        	url= URLDecoder.decode(url_to_encode, "UTF-8");
+            url= url.replace(" ", "+");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
