@@ -11,6 +11,18 @@
 		<listener class-name="utils.SuiteListener" />
 	</listeners>
 
+	<test name="Autoqueue GetSuggestedSongs" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.GetSuggestedSongs" />
+		</classes>
+	</test>
+
+	<test name="Autoqueue GetSuggestedSongsPost" annotations="JDK" preserve-order="true">
+		<classes>
+			<class name="recomendation.autoqueue.GetSuggestedSongsPost" />
+		</classes>
+	</test>
+
 	<test name="Autoqueue RecommendationSongs" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.autoqueue.RecommendedSongs" />
@@ -59,11 +71,11 @@
 		</classes>
 	</test>
 
-	<test name="Recommended SimilarAlbumsEntityInfo" annotations="JDK" preserve-order="true">
+	<!--<test name="Recommended SimilarAlbumsEntityInfo" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.album.SimilarAlbumsEntityInfo" />
 		</classes>
-	</test>
+	</test> -->
 
 	<test name="Recommended SimilarTopShow" annotations="JDK" preserve-order="true">
 		<classes>
@@ -143,11 +155,11 @@
 		</classes>
 	</test>
 
-	<test name="Recommended MadeForYou" annotations="JDK" preserve-order="true">
+	<!--<test name="Recommended MadeForYou" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.v2.MadeForYou" />
 		</classes>
-	</test>
+	</test>-->
 
 	<test name="Recommended MoodMix" annotations="JDK" preserve-order="true">
 		<classes>
@@ -155,11 +167,11 @@
 		</classes>
 	</test>
 
-    <test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
+    <!--<test name="Recommended Tagaffinity30days" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.v2.Tagaffinity30days" />
 		</classes>
-	</test>
+	</test> -->
 
     <test name="Recommended TrackRecommend" annotations="JDK" preserve-order="true">
 		<classes>

@@ -12,41 +12,40 @@ pipeline {
     }
 
     triggers {
-        // cron('30 09 * * *')
-        cron('0 */4 * * *') // shifted to every four hours.
+        cron('0 6 */2 * *')
     }
 
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
-        def emailTo = "manish.pandey@gaana.com, qa.gaana@timesinternet.in"
-        def abortedTo = "manish.pandey@gaana.com, ajay.malhotra@timesinternet.in, namisha.negi@gaana.com"
+        def emailTo = "manish.pandey@gaana.com, namisha.negi@gaana.com"
+        def abortedTo = "namisha.negi@gaana.com"
         def replyTo = "namisha.negi@gaana.com"
-        def emailSub = "TIP | Recommendation | Daily Regression Test Suite | "
+        def emailSub = "TIP | Stream | Regression Test Suite | "
         def dateTime = new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
     }
 
     parameters
     {
         string(
-            defaultValue: 'release/release/sprint_30th_Sep_2021',
+            defaultValue: 'feature/stream_url_creation',
             description: 'Provide branch for execution',
             name: 'branch',
             trim: true
         )
         string(
-            defaultValue: 'recommendation.xml',
+            defaultValue: 'streaming.xml',
             description: 'Enter your suite xml file which you want to execute.',
             name: 'suiteXmlFile',
             trim: true
         )
         choice(
-            choices: ['prod', 'local', 'preprod'],
+            choices: ['local', 'preprod', 'prod'],
             description: 'Select environment according to your execution requirement.',
             name: 'env'
         )
         string(
-            defaultValue: 'Reco',
+            defaultValue: 'Stream',
             description: 'Execution module Recommendation is default value.',
             name: 'type',
             trim: true
@@ -106,18 +105,6 @@ pipeline {
                 sh "mvn -B -f ${env.WORKSPACE}/pom.xml clean install " + '-Denv=${env} -Dtype=${type} -Ddevice_type=${device_type} -DsuiteXmlFile=${suiteXmlFile}'
             }
         }
-
-        stage ('Genrate Report'){
-            steps{
-                allure includeProperties: false,
-                jdk: '',
-                results: [
-                    [
-                        path: 'allure-results'
-                    ]
-                ]
-            }
-        }
     }
 
     post {
@@ -132,7 +119,6 @@ pipeline {
                     subject: "${emailSub}"+"${dateTime}",
                     body: ''' ${SCRIPT, template="groovy-html.template"}<br>
                     <b>Best Regards,</b><br>
-                    <i>Namisha Negi<br>
                     QA GGL Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true
@@ -143,7 +129,7 @@ pipeline {
                     subject: "${emailSub}"+"${dateTime}",
                     /* groovylint-disable-next-line GStringExpressionWithinString */
                     body: '''
-                    ${FILE, path = "/data/jenkins/workspace/Recommendation_Regression/Reports/EmailerReport.html"}<br><br>
+                    ${FILE, path = "/data/jenkins/workspace/GaanaStream/Reports/EmailerReport.html"}<br><br>
                     <b><i>To see detailed information either click and login with help of provided url & credential : <br>
                     ${BUILD_URL}allure/<br>
                     User Name : report<br>
@@ -151,7 +137,6 @@ pipeline {
                     Or Download attached Extent Report.</i></b><br><br>
                     ${SCRIPT, template="groovy-html.template"}<br>
                     <b>Best Regards,</b><br>
-                    <i>Namisha Negi<br>
                     QA GGL Noida</i></b>''',
                     mimeType: 'text/html',
                     compressLog: true,

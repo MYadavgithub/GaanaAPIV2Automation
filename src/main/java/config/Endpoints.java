@@ -32,6 +32,14 @@ public class Endpoints {
     public static String DAILY_MIX = "/dailyMix/";
     public static String WEEKLY_MIX = "/weeklyMix/";
     public static String DEVICE_LANGUAGE_UPDATE = "/recommendation/deviceLanguageUpdate?deviceId=";
+    public static String TRACKID_ENDPOINT_HASHCODE = "/hashcode?id=";
+    public static String TRACKIDS_ENDPOINT_HASHCODE = "/aes/sum/ids?ids=";
+    public static String GET_SUGGESTED_SONGS = "/recommendation/getSuggestedSongs?type=";
+    public static String GET_SUGGESTED_SONGS_POST = "/recommendation/getSuggestedSongsPOST";
+    public static String GET_URL_V1 = "/getURLV1.php?";
+    public static String APP_STREAM_DECRYPT = "/aes/app/decrypt?val=";
+    public static String WEB_STREAM_DECRYPT = "/aes/web/decrypt?val=";
+
 
     /** Stream Info apis */
     public static String streamInfoEndpoint(String track_ids, String hashkey){
@@ -43,6 +51,7 @@ public class Endpoints {
     public static String autoSuggestStageEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
         endpoint.append("/entityd/mobilesuggest/search?query="+query_params);
+       // endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
         endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1");
         return endpoint.toString();
     }
@@ -57,6 +66,7 @@ public class Endpoints {
     public static String autoSuggestSolrEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
         endpoint.append("/live/mobilesuggest/getErSolr?query=" + query_params);
+       // endpoint.append("/gaanasearch-api/mobilesuggest/getErSolr?query=" + query_params);
         endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1");
         return endpoint.toString();
     }
@@ -66,5 +76,30 @@ public class Endpoints {
         StringBuilder endpoints = new StringBuilder();
         endpoints.append("/mobile/autocomplete-v2?query="+keyword+"&content_filter=2&geoLocation=IN&include=allItems&isRegSrch=0");
         return endpoints.toString().trim();
+        
     }
-}
+        
+        /** new added for voice search*/
+        
+      public static String autoSuggestvoicesearchstageEndpoint(String query_params) {
+            StringBuilder endpoint = new StringBuilder();
+           // endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
+            endpoint.append("/entityd/mobilesuggest/search?query="+query_params);
+            endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1&isvoice=1");
+            return endpoint.toString(); 
+        }
+            
+         public static String autoSuggestvoicesearchliveEndpoint(String query_params) {
+             StringBuilder endpoint = new StringBuilder();
+             endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
+             endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1&isvoice=1");
+             return endpoint.toString();
+        }
+          public static String autoSuggestvoicesearchsolrEndpoint(String query_params) {
+              StringBuilder endpoint = new StringBuilder();
+              endpoint.append("/live/mobilesuggest/getErSolr?query=" + query_params);
+              endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1&isvoice=1");
+              return endpoint.toString();
+    }
+    }
+
