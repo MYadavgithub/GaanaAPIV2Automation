@@ -35,11 +35,11 @@
 		</classes>
 	</test>
 
-	<test name="Autoqueue RecommendationTracksPost" annotations="JDK" preserve-order="true">
+	<!--<test name="Autoqueue RecommendationTracksPost" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.autoqueue.RecommendedTracksPost" />
 		</classes>
-	</test>
+	</test> -->
 
 	<test name="Recommended SimilarTrackGeneric" annotations="JDK" preserve-order="true">
 		<classes>
