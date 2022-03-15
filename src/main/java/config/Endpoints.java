@@ -50,8 +50,8 @@ public class Endpoints {
     public static String searchFeed = "/searchfeed/fetch";
     public static String autoSuggestStageEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
-       // endpoint.append("/entityd/mobilesuggest/search?query="+query_params);
-        endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
+        endpoint.append("/entityd/mobilesuggest/search?query="+query_params);
+       // endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
         endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1");
         return endpoint.toString();
     }
@@ -65,8 +65,8 @@ public class Endpoints {
 
     public static String autoSuggestSolrEndpoint(String query_params) {
         StringBuilder endpoint = new StringBuilder();
-       // endpoint.append("/live/mobilesuggest/getErSolr?query=" + query_params);
-        endpoint.append("/gaanasearch-api/mobilesuggest/getErSolr?query=" + query_params);
+        endpoint.append("/live/mobilesuggest/getErSolr?query=" + query_params);
+       // endpoint.append("/gaanasearch-api/mobilesuggest/getErSolr?query=" + query_params);
         endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1");
         return endpoint.toString();
     }
@@ -83,11 +83,10 @@ public class Endpoints {
         
       public static String autoSuggestvoicesearchstageEndpoint(String query_params) {
             StringBuilder endpoint = new StringBuilder();
-            //endpoint.append("/live/mobilesuggest/getErSolr?query=" + query_params);
-            endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
+           // endpoint.append("/gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?query="+query_params);
+            endpoint.append("/entityd/mobilesuggest/search?query="+query_params);
             endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1&isvoice=1");
-            return endpoint.toString();
-            
+            return endpoint.toString(); 
         }
             
          public static String autoSuggestvoicesearchliveEndpoint(String query_params) {
@@ -98,7 +97,7 @@ public class Endpoints {
         }
           public static String autoSuggestvoicesearchsolrEndpoint(String query_params) {
               StringBuilder endpoint = new StringBuilder();
-              endpoint.append("/gaanasearch-api/mobilesuggest/getErSolr?query="+query_params);
+              endpoint.append("/live/mobilesuggest/getErSolr?query=" + query_params);
               endpoint.append("&UserType=0&geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&usrLang=Hindi,English,Punjabi&testing=1&autocomplete=1&isvoice=1");
               return endpoint.toString();
     }
