@@ -4,7 +4,7 @@ public class Constants{
 
     /**Commonly Used Constants */
     public static int RECO_BASEURL = 0; /** 0 = rec.gaana.com, 1 = prec.gaana.com, 2 = https://svd-rec-prod.gaana.com */
-    public static int RESPONSE_TIME = 2;
+    public static int RESPONSE_TIME = 5;
     public static String CUSTOM_REPORT_FOLDER = "/Reports";
 
     /**Device Types (0 to 11)*/
@@ -48,16 +48,16 @@ public class Constants{
 
     /* Recomended Track Constants */
     public final static int REC_INVOCATION_COUNT = 1;
-    public final static int AS_INVOCATION_COUNT = 500;
+    public final static int AS_INVOCATION_COUNT = 50;
     public static int IS_STAGE_LIVE = 0;
     public final static int ASV2_INVOCATION_COUNT = 18;
 
     /**Emailer Config */
     public static int EMAILER_ENABLED = 0; // 0 disabled 1 enabled
-    public static String EMAILER_EMAIL = "umesh.shukla@gaana.com";
+    public static String EMAILER_EMAIL = "namisha.negi@gaana.com";
     public static String EMAILER_PWD = "pswagczcaoiybomw";
     public static String EMAIL_TO_LIST = "rohit.ranjan@gaana.com";
-    public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, c-abhishek.gupta@gaana.com, umesh.shukla@gaana.com";
+    public static String EMAIL_CC_LIST = "manish.pandey@gaana.com, ritvik.sharma@gaana.com";
     public static String EMAIL_BCC_LIST = "";
 
     public static String AUTOQUEUE_NOT_IMP_KEYS [] = {"lyrics_type", "lyrics_url"};
