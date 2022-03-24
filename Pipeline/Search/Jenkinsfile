@@ -18,7 +18,7 @@ pipeline {
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
-        def emailTo = "manish.pandey@gaana.com, namisha.negi@gaana.com, ritvik.sharma@gaana.com"
+        def emailTo = "manish.pandey@gaana.com, namisha.negi@gaana.com, ritvik.sharma@gaana.com,qa.gaana@timesinternet.in,ajay.malhotra@timesinternet.in"
         def abortedTo = "manish.pandey@gaana.com, namisha.negi@gaana.com"
         def replyTo = "namisha.negi@gaana.com"
         def emailSub = "TIP | Search | Daily Regression Test Suite | "
