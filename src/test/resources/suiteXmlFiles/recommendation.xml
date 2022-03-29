@@ -131,10 +131,10 @@
 		</classes>
 	</test>
 
-	<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
+	<!--<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.podcast.PodcatForYou" />
-		</classes>
+		</classes>-->
 	</test>
 
 	<test name="Search Feed" annotations="JDK" preserve-order="true">
