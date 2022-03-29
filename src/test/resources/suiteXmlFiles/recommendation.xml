@@ -134,8 +134,8 @@
 	<!--<test name="Recommended PodcatForYou" annotations="JDK" preserve-order="true">
 		<classes>
 			<class name="recomendation.podcast.PodcatForYou" />
-		</classes>-->
-	</test>
+		</classes>
+	</test>-->
 
 	<test name="Search Feed" annotations="JDK" preserve-order="true">
 		<classes>
