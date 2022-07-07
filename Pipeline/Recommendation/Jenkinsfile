@@ -19,8 +19,8 @@ pipeline {
     environment {
         /* groovylint-disable-next-line UnusedVariable, VariableTypeRequired */
         def mvnHome = tool name: 'Maven', type: 'maven'
-        def emailTo = "manish.pandey@gaana.com, qa.gaana@timesinternet.in, namisha.negi@gaana.com, ritvik.sharma@gaana.com,rohit.mittal@timesinternet.in,sai.tarun@gaana.com"
-        def abortedTo = "manish.pandey@gaana.com, ajay.malhotra@timesinternet.in, namisha.negi@gaana.com,rohit.mittal@timesinternet.in,sai.tarun@gaana.com"
+        def emailTo = "manish.pandey@gaana.com, qa.gaana@timesinternet.in, namisha.negi@gaana.com, ritvik.sharma@gaana.com,rohit.mittal@timesinternet.in,sai.tarun@gaana.com,maynak.yadav@gaana.com,himanshu.bajaj@gaana.com"
+        def abortedTo = "manish.pandey@gaana.com, ajay.malhotra@timesinternet.in, namisha.negi@gaana.com,rohit.mittal@timesinternet.in,sai.tarun@gaana.com,maynak.yadav@gaana.com,himanshu.bajaj@gaana.com"
         def replyTo = "namisha.negi@gaana.com"
         def emailSub = "TIP | Recommendation | Daily Regression Test Suite | "
         def dateTime = new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
